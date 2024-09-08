@@ -1,35 +1,39 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState } from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Sidebar from "./components/common/Sidebar";
+import BottomNav from "./components/common/BottomNav";
+import StaffHomePage from "./pages/staffPages/StaffHomePage";
+import AppRoutes from "./routes/AppRoutes";
 
-function App() {
-  const [count, setCount] = useState(0)
+export function App() {
+  const [activeMenuItem, setActiveMenuItem] = useState("Dashboard");
+
+  const handleMenuItemClick = (menuItem) => {
+    setActiveMenuItem(menuItem);
+  };
 
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <div className="flex h-screen overflow-hidden">
+      {/* Sidebar: Hidden on small screens, visible on medium and up */}
+      <Sidebar
+        className="hidden md:flex flex-shrink-0"
+        activeMenuItem={activeMenuItem}
+        handleMenuItemClick={handleMenuItemClick}
+      />
+
+      {/* Main content area */}
+      <div className="flex-1 overflow-y-auto">
+        <AppRoutes></AppRoutes>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+
+      {/* BottomNav: Hidden on medium and up, visible on small screens */}
+      <BottomNav
+        className="md:hidden flex-shrink-0"
+        activeMenuItem={activeMenuItem}
+        handleMenuItemClick={handleMenuItemClick}
+      />
+    </div>
+  );
 }
 
-export default App
+export default App;
