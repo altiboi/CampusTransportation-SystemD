@@ -41,7 +41,10 @@ function StaffTasksPage() {
         </Link>
 
         {/* Button for Vehicles */}
-        <Link className="flex flex-col items-center bg-white text-black p-4 rounded-lg w-full lg:w-60 lg:h-60 shadow-md transition-transform transform hover:scale-95 hover:shadow-lg">
+        <Link
+          to={"/vehicles"}
+          className="flex flex-col items-center bg-white text-black p-4 rounded-lg w-full lg:w-60 lg:h-60 shadow-md transition-transform transform hover:scale-95 hover:shadow-lg"
+        >
           <img src={vehiclesImage} alt="Vehicles" className="w-24 h-24 mb-2" />
           <span className="text-lg text-center">Vehicles</span>
         </Link>

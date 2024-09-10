@@ -4,6 +4,7 @@ import StaffAnalyticsPage from "../pages/staffPages/StaffAnalyticsPage";
 import StaffTasksPage from "../pages/staffPages/StaffTasksPage";
 import StaffUpdateBusSchedulePage from "../pages/staffPages/StaffUpdateBusSchedulePage";
 import ScheduleDetailsPage from "../pages/staffPages/ScheduleDetailsPage";
+import VehiclesPage from "../pages/staffPages/VehiclesPage";
 
 function StaffRoutes() {
   return (
@@ -21,6 +22,7 @@ function StaffRoutes() {
         path="/updatebusschedule"
         element={<StaffUpdateBusSchedulePage />}
       />
+      <Route path="/vehicles" element={<VehiclesPage />} />
     </Routes>
   );
 }
