@@ -11,6 +11,7 @@ function UserRoutes() {
       <Route path="/home" element={<UserTestPage />} />
       <Route path="/staffanalytics" element={<StaffAnalyticsPage />} />
       <Route path="/stafftasks" element={<StaffTasksPage />} />
+      <Route path="/scheduledetails" element={<StaffTasksPage />} />
     </Routes>
   );
 }

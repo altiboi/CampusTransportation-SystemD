@@ -1,0 +1,31 @@
+/* src/components/common/SearchBar.css */
+.search-container {
+  margin: 0 auto;
+  max-width: 800px; /* Adjust to make the search bar longer */
+}
+
+.search-bar-wrapper {
+  display: flex;
+  align-items: center;
+  /* border: 1px solid grey; */
+  background-color: white;
+  border-radius: 25px; /* Rounded corners */
+  overflow: hidden;
+  width: 100%; /* Ensures the wrapper takes full width of its container */
+}
+
+.search-bar {
+  flex: 1;
+  padding: 10px;
+  border: none;
+  outline: none;
+  color: black;
+  background-color: white;
+  box-sizing: border-box;
+}
+
+.search-icon {
+  padding: 10px;
+  color: grey;
+  font-size: 16px; /* Adjust as needed */
+}
