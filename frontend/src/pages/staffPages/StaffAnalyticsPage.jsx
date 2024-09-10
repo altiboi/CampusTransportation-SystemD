@@ -3,12 +3,20 @@ import React from "react";
 import MobileHeader from "../../components/common/MobileHeader";
 import PieChart from "../../components/PieChart";
 import Card from "../../components/Card";
+import { useAppContext } from "../../context/AppContext";
+import { useEffect } from "react";
 
 function StaffAnalyticsPage() {
+  const { setTitle, setTask } = useAppContext();
+
+  useEffect(() => {
+    setTitle("Analytics");
+    setTask(0);
+  }, [setTitle, setTask]);
   return (
     <div className="flex flex-col h-screen">
       {/* Flex column with full height */}
-      <MobileHeader title={"Analytics"} />
+
       {/* Add padding top to avoid overlapping with the header */}
       <div className="flex-1 overflow-y-auto p-4 pt-16">
         {/* Add pt-16 to account for the header's height */}
