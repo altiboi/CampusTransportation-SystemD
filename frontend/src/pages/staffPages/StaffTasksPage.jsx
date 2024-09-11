@@ -31,7 +31,10 @@ function StaffTasksPage() {
         </Link>
 
         {/* Button for Create Notifications */}
-        <Link className="flex flex-col items-center bg-white text-black p-4 rounded-lg w-full lg:w-60 lg:h-60 shadow-md transition-transform transform hover:scale-95 hover:shadow-lg">
+        <Link
+          to={"/notifications"}
+          className="flex flex-col items-center bg-white text-black p-4 rounded-lg w-full lg:w-60 lg:h-60 shadow-md transition-transform transform hover:scale-95 hover:shadow-lg"
+        >
           <img
             src={createNotificationImage}
             alt="Create Notifications"

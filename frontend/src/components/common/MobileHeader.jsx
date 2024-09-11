@@ -12,6 +12,10 @@ const MobileHeader = () => {
     navigate(-1); // Navigate back to the previous page
   };
 
+  const handleNotificationsClick = () => {
+    navigate("/notifications"); // Navigate to the notifications page
+  };
+
   return (
     <header className="flex items-center justify-between bg-white p-4 fixed top-0 w-full lg:hidden shadow-sm">
       {task === 1 ? (
@@ -22,7 +26,7 @@ const MobileHeader = () => {
         <div className="mr-4" />
       )}
       <h1 className="text-lg font-semibold text-black">{title}</h1>
-      <button className="text-black">
+      <button onClick={handleNotificationsClick} className="text-black">
         <FontAwesomeIcon icon={faBell} size="lg" />
       </button>
     </header>
