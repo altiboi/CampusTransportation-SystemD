@@ -1,12 +1,15 @@
 // src/pages/ScheduleDetailsPage.jsx
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import BusTrip from "../../components/common/staffComponents/BusTrip";
 import { useAppContext } from "../../context/AppContext";
 import Modal from "../../components/common/staffComponents/Modal";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 
 const ScheduleDetailsPage = () => {
   const { id } = useParams(); // Get the ID from the URL
+  const navigate = useNavigate(); // For navigating back
   const [selectedDay, setSelectedDay] = useState("Mon"); // State to manage selected day
   const [trips, setTrips] = useState({
     // Mock data for bus trips per day
@@ -112,7 +115,15 @@ const ScheduleDetailsPage = () => {
 
   return (
     <div className="pt-20 p-8">
-      <div className="bg-white p-6 rounded-lg shadow-lg mb-6">
+      {/* Back Button for Large Screens */}
+      <button
+        onClick={() => navigate(-1)}
+        className="  lg:block hidden bg-black text-white p-2 rounded-full hover:bg-gray-800"
+      >
+        <FontAwesomeIcon icon={faArrowLeft} />
+      </button>
+
+      <div className="bg-white p-6 rounded-lg shadow-lg lg:mt-6 mb-6">
         <h1 className="text-2xl font-bold mb-4">Schedule Details</h1>
         <div className="mb-6">
           <h2 className="text-xl font-semibold">Pickup Location</h2>

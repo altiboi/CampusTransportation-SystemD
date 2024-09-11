@@ -1,5 +1,6 @@
 // components/BottomNav.jsx
 import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faHome,
@@ -9,12 +10,24 @@ import {
   faReceipt,
 } from "@fortawesome/free-solid-svg-icons";
 
-const BottomNav = ({
-  activeMenuItem,
-  handleMenuItemClick,
-  role,
-  className,
-}) => {
+const BottomNav = ({ handleMenuItemClick, role, className }) => {
+  useEffect(() => {
+    switch (location.pathname) {
+      case "/staffhome":
+        setActiveMenuItem("Home");
+        break;
+      case "/staffanalytics":
+        setActiveMenuItem("Analytics");
+        break;
+      case "/stafftasks":
+        setActiveMenuItem("Tasks");
+        break;
+      default:
+        setActiveMenuItem("Home");
+    }
+  }, [location.pathname]);
+  const [activeMenuItem, setActiveMenuItem] = useState("Home");
+
   const renderNavItems = () => {
     if (role === "staff") {
       return (

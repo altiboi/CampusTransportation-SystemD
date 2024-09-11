@@ -5,9 +5,16 @@ import {
   faHome,
   faChartLine,
   faClipboardCheck,
-  faThLarge, // Icon for services
-  faReceipt, // Icon for activity
+  faThLarge,
+  faReceipt,
+  faSignOutAlt,
+  faBus,
+  faBell,
+  faMessage,
+  faBicycle,
 } from "@fortawesome/free-solid-svg-icons";
+
+import logo from "../../assets/logo.png";
 
 const Sidebar = ({ activeMenuItem, handleMenuItemClick, role }) => {
   const renderMenuItems = () => {
@@ -18,8 +25,8 @@ const Sidebar = ({ activeMenuItem, handleMenuItemClick, role }) => {
             to="/home"
             className={`flex items-center justify-start px-4 py-3 ${
               activeMenuItem === "Home"
-                ? "bg-gray-700 text-gray-200 font-bold text-sm rounded-lg"
-                : "text-gray-700 font-bold text-sm"
+                ? "bg-white text-black font-bold text-sm rounded-lg"
+                : "text-white-700 font-bold text-sm"
             }`}
             onClick={() => handleMenuItemClick("Home")}
           >
@@ -30,8 +37,8 @@ const Sidebar = ({ activeMenuItem, handleMenuItemClick, role }) => {
             to="/staffanalytics"
             className={`flex items-center justify-start px-4 py-3 ${
               activeMenuItem === "Analytics"
-                ? "bg-gray-700 text-gray-200 font-bold text-sm rounded-lg"
-                : "text-gray-700 font-bold text-sm"
+                ? "bg-white text-black font-bold text-sm rounded-lg"
+                : "text-white font-bold text-sm"
             }`}
             onClick={() => handleMenuItemClick("Analytics")}
           >
@@ -39,16 +46,40 @@ const Sidebar = ({ activeMenuItem, handleMenuItemClick, role }) => {
             Analytics
           </Link>
           <Link
-            to="/stafftasks"
+            to="/vehicles"
             className={`flex items-center justify-start px-4 py-3 ${
-              activeMenuItem === "Tasks"
-                ? "bg-gray-700 text-gray-200 font-bold text-sm rounded-lg"
-                : "text-gray-700 font-bold text-sm"
+              activeMenuItem === "Vehicles"
+                ? "bg-white text-black font-bold text-sm rounded-lg"
+                : "text-white-700 font-bold text-sm"
             }`}
-            onClick={() => handleMenuItemClick("Tasks")}
+            onClick={() => handleMenuItemClick("Vehicles")}
           >
-            <FontAwesomeIcon icon={faClipboardCheck} className="mr-2" />
-            Tasks
+            <FontAwesomeIcon icon={faBicycle} className="mr-2" />
+            Vehicles
+          </Link>
+          <Link
+            to="/notifications"
+            className={`flex items-center justify-start px-4 py-3 ${
+              activeMenuItem === "Create Notification"
+                ? "bg-white text-black font-bold text-sm rounded-lg"
+                : "text-white-700 font-bold text-sm"
+            }`}
+            onClick={() => handleMenuItemClick("Create Notification")}
+          >
+            <FontAwesomeIcon icon={faMessage} className="mr-2" />
+            Create Notification
+          </Link>
+          <Link
+            to="/updatebusschedule"
+            className={`flex items-center justify-start px-4 py-3 ${
+              activeMenuItem === "Update Bus Schedule"
+                ? "bg-white text-black font-bold text-sm rounded-lg"
+                : "text-white-700 font-bold text-sm"
+            }`}
+            onClick={() => handleMenuItemClick("Update Bus Schedule")}
+          >
+            <FontAwesomeIcon icon={faBus} className="mr-2" />
+            Update Bus Schedule
           </Link>
         </>
       );
@@ -59,7 +90,7 @@ const Sidebar = ({ activeMenuItem, handleMenuItemClick, role }) => {
             to="/home"
             className={`flex items-center justify-start px-4 py-3 ${
               activeMenuItem === "Home"
-                ? "bg-gray-700 text-gray-200 font-bold text-sm rounded-lg"
+                ? "bg-white text-black font-bold text-sm rounded-lg"
                 : "text-gray-700 font-bold text-sm"
             }`}
             onClick={() => handleMenuItemClick("Home")}
@@ -71,7 +102,7 @@ const Sidebar = ({ activeMenuItem, handleMenuItemClick, role }) => {
             to="/services"
             className={`flex items-center justify-start px-4 py-3 ${
               activeMenuItem === "Services"
-                ? "bg-gray-700 text-gray-200 font-bold text-sm rounded-lg"
+                ? "bg-white text-black font-bold text-sm rounded-lg"
                 : "text-gray-700 font-bold text-sm"
             }`}
             onClick={() => handleMenuItemClick("Services")}
@@ -83,7 +114,7 @@ const Sidebar = ({ activeMenuItem, handleMenuItemClick, role }) => {
             to="/activity"
             className={`flex items-center justify-start px-4 py-3 ${
               activeMenuItem === "Activity"
-                ? "bg-gray-700 text-gray-200 font-bold text-sm rounded-lg"
+                ? "bg-white text-black font-bold text-sm rounded-lg"
                 : "text-gray-700 font-bold text-sm"
             }`}
             onClick={() => handleMenuItemClick("Activity")}
@@ -97,12 +128,23 @@ const Sidebar = ({ activeMenuItem, handleMenuItemClick, role }) => {
   };
 
   return (
-    <div className="bg-gray-100 text-white w-1/4 flex flex-col pl-4 max-w-64 relative hidden lg:flex flex-shrink-0">
-      <div className="px-6 py-3 text-xl font-bold text-black mt-10 mb-10">
-        {activeMenuItem}
+    <div className="bg-black text-white w-64 flex flex-col max-w-64 relative hidden pt-10 lg:flex flex-shrink-0">
+      {/* Logo */}
+      <div className="flex items-center justify-center mb-6">
+        <img src={logo} alt="Logo" className="w-36" />
       </div>
-      {renderMenuItems()}
+      {/* Menu Items */}
+      <div className="flex-grow space-y-5 p-4">{renderMenuItems()}</div>
       {/* Logout Button */}
+      <div className="mt-auto mb-4 p-4">
+        <button
+          onClick={() => console.log("Logout clicked")} // Replace with actual logout logic
+          className="flex items-center justify-center w-full px-4 py-3 bg-red-600 text-white font-bold text-sm rounded-lg hover:bg-red-700"
+        >
+          <FontAwesomeIcon icon={faSignOutAlt} className="mr-2" />
+          Logout
+        </button>
+      </div>
     </div>
   );
 };
