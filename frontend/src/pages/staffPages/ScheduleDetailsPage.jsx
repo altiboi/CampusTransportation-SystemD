@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import BusTrip from "../../components/common/staffComponents/BusTrip";
-import { useAppContext } from "../../context/AppContext";
+import { useAppContext } from "../../contexts/AppContext";
 import Modal from "../../components/common/staffComponents/Modal";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";

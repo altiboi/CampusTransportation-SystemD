@@ -9,14 +9,27 @@ import {
   faReceipt,
   faSignOutAlt,
   faBus,
-  faBell,
   faMessage,
   faBicycle,
 } from "@fortawesome/free-solid-svg-icons";
-
+import { useLocation } from "react-router-dom";
 import logo from "../../assets/logo.png";
+import { useNavigate } from "react-router-dom"; // Import useNavigate to redirect after logout
+import { doSignOut } from "../../firebase/auth";
 
 const Sidebar = ({ activeMenuItem, handleMenuItemClick, role }) => {
+  const location = useLocation();
+  const navigate = useNavigate(); // Initialize the useNavigate hook
+
+  const handleLogout = async () => {
+    try {
+      await doSignOut();
+      navigate("/login"); // Redirect to the login page after signing out
+    } catch (error) {
+      console.error("Error signing out:", error);
+    }
+  };
+
   const renderMenuItems = () => {
     if (role === "staff") {
       return (
@@ -91,7 +104,7 @@ const Sidebar = ({ activeMenuItem, handleMenuItemClick, role }) => {
             className={`flex items-center justify-start px-4 py-3 ${
               activeMenuItem === "Home"
                 ? "bg-white text-black font-bold text-sm rounded-lg"
-                : "text-gray-700 font-bold text-sm"
+                : "text-whitefont-bold text-sm"
             }`}
             onClick={() => handleMenuItemClick("Home")}
           >
@@ -103,7 +116,7 @@ const Sidebar = ({ activeMenuItem, handleMenuItemClick, role }) => {
             className={`flex items-center justify-start px-4 py-3 ${
               activeMenuItem === "Services"
                 ? "bg-white text-black font-bold text-sm rounded-lg"
-                : "text-gray-700 font-bold text-sm"
+                : "text-white font-bold text-sm"
             }`}
             onClick={() => handleMenuItemClick("Services")}
           >
@@ -115,7 +128,7 @@ const Sidebar = ({ activeMenuItem, handleMenuItemClick, role }) => {
             className={`flex items-center justify-start px-4 py-3 ${
               activeMenuItem === "Activity"
                 ? "bg-white text-black font-bold text-sm rounded-lg"
-                : "text-gray-700 font-bold text-sm"
+                : "text-white font-bold text-sm"
             }`}
             onClick={() => handleMenuItemClick("Activity")}
           >
@@ -138,7 +151,7 @@ const Sidebar = ({ activeMenuItem, handleMenuItemClick, role }) => {
       {/* Logout Button */}
       <div className="mt-auto mb-4 p-4">
         <button
-          onClick={() => console.log("Logout clicked")} // Replace with actual logout logic
+          onClick={handleLogout} // Call handleLogout on click
           className="flex items-center justify-center w-full px-4 py-3 bg-red-600 text-white font-bold text-sm rounded-lg hover:bg-red-700"
         >
           <FontAwesomeIcon icon={faSignOutAlt} className="mr-2" />

@@ -3,7 +3,7 @@ import React from "react";
 import MobileHeader from "../../components/common/MobileHeader";
 import PieChart from "../../components/PieChart";
 import Card from "../../components/Card";
-import { useAppContext } from "../../context/AppContext";
+import { useAppContext } from "../../contexts/AppContext";
 import { useEffect } from "react";
 
 function StaffAnalyticsPage() {

@@ -2,7 +2,7 @@
 
 import MobileHeader from "../../components/common/MobileHeader";
 import { useEffect } from "react";
-import { useAppContext } from "../../context/AppContext";
+import { useAppContext } from "../../contexts/AppContext";
 
 function StaffHomePage() {
   const { setTitle, setTask } = useAppContext();

@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import MobileHeader from "../../components/common/MobileHeader";
 import SearchBar from "../../components/common/staffComponents/SearchBar";
 import BusShedule from "../../components/common/staffComponents/BusSchedule";
-import { useAppContext } from "../../context/AppContext";
+import { useAppContext } from "../../contexts/AppContext";
 
 function StaffUpdateBusSchedulePage() {
   const { setTitle, setTask } = useAppContext();

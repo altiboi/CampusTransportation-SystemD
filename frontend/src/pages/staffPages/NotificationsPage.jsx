@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import NotificationCard from "../../components/common/NotificationCard";
 import Modal from "../../components/common/staffComponents/Modal";
 import CreateNotificationModal from "../../components/common/CreateNotificationModal";
-import { useAppContext } from "../../context/AppContext";
+import { useAppContext } from "../../contexts/AppContext";
 // Sample initial notification data
 const INITIAL_NOTIFICATIONS = [
   {

@@ -1,4 +1,5 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import React from "react";
+import { Routes, Route, Navigate } from "react-router-dom";
 import StaffHomePage from "../pages/staffPages/StaffHomePage";
 import StaffAnalyticsPage from "../pages/staffPages/StaffAnalyticsPage";
 import StaffTasksPage from "../pages/staffPages/StaffTasksPage";
@@ -6,25 +7,56 @@ import StaffUpdateBusSchedulePage from "../pages/staffPages/StaffUpdateBusSchedu
 import ScheduleDetailsPage from "../pages/staffPages/ScheduleDetailsPage";
 import VehiclesPage from "../pages/staffPages/VehiclesPage";
 import NotificationsPage from "../pages/staffPages/NotificationsPage";
+import Login from "../pages/Login";
+import Register from "../pages/Register";
+import ProtectedRoute from "./ProtectedRoute";
+import { useAuth } from "../contexts/AuthProvider"; // Assuming you have an AuthProvider
 
 function StaffRoutes() {
+  // Assuming `userLoggedIn` is coming from your AuthProvider
+  const { userLoggedIn } = useAuth();
+
   return (
     <Routes>
-      <Route path="/" element={<StaffHomePage />} />
-      <Route path="/home" element={<StaffHomePage />} />
-      <Route path="/notifications" element={<NotificationsPage />} />
-      <Route path="/staffanalytics" element={<StaffAnalyticsPage />} />
+      <Route
+        path="/"
+        element={
+          userLoggedIn ? <Navigate to="/home" /> : <Navigate to="/login" />
+        }
+      />
+      <Route
+        path="/login"
+        element={userLoggedIn ? <Navigate to="/home" /> : <Login />}
+      />
+      <Route path="/register" element={<Register />} />
+      <Route
+        path="/home"
+        element={<ProtectedRoute element={<StaffHomePage />} />}
+      />
+      <Route
+        path="/notifications"
+        element={<ProtectedRoute element={<NotificationsPage />} />}
+      />
+      <Route
+        path="/staffanalytics"
+        element={<ProtectedRoute element={<StaffAnalyticsPage />} />}
+      />
       <Route
         path="/scheduledetails/:id"
-        element={<ScheduleDetailsPage />}
-      />{" "}
-      {/* Route for schedule details */}
-      <Route path="/stafftasks" element={<StaffTasksPage />} />
+        element={<ProtectedRoute element={<ScheduleDetailsPage />} />}
+      />
+      <Route
+        path="/stafftasks"
+        element={<ProtectedRoute element={<StaffTasksPage />} />}
+      />
       <Route
         path="/updatebusschedule"
-        element={<StaffUpdateBusSchedulePage />}
+        element={<ProtectedRoute element={<StaffUpdateBusSchedulePage />} />}
       />
-      <Route path="/vehicles" element={<VehiclesPage />} />
+      <Route
+        path="/vehicles"
+        element={<ProtectedRoute element={<VehiclesPage />} />}
+      />
     </Routes>
   );
 }

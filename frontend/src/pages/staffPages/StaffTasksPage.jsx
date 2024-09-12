@@ -3,7 +3,7 @@ import updateBusSchedulesImage from "../../assets/updateBusSchedules.jpg";
 import createNotificationImage from "../../assets/createNotification.jpg";
 import { useEffect } from "react";
 
-import { useAppContext } from "../../context/AppContext";
+import { useAppContext } from "../../contexts/AppContext";
 import vehiclesImage from "../../assets/vehicles.jpg";
 import { Link } from "react-router-dom";
 

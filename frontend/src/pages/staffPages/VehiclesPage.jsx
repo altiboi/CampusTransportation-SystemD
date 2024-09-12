@@ -9,7 +9,7 @@ import scooter from "../../assets/scooter.svg";
 import skateBoard from "../../assets/skateBoard.svg";
 import bus from "../../assets/bus.png";
 import bike from "../../assets/bike.svg";
-import { useAppContext } from "../../context/AppContext";
+import { useAppContext } from "../../contexts/AppContext";
 
 const VEHICLE_TAGS = ["Bikes", "Scooters", "Buses", "Skateboards"];
 

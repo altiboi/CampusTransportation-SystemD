@@ -1,4 +1,3 @@
-// src/App.jsx
 import { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import Sidebar from "./components/common/Sidebar";
@@ -6,19 +5,37 @@ import BottomNav from "./components/common/BottomNav";
 import AppRoutes from "./routes/AppRoutes";
 import StaffRoutes from "./routes/StaffRoutes";
 import UserRoutes from "./routes/UserRoutes";
-import { AppProvider, useAppContext } from "./context/AppContext";
+import { AppProvider, useAppContext } from "./contexts/AppContext";
 import MobileHeader from "./components/common/MobileHeader";
 import DesktopHeader from "./components/common/DesktopHeader";
+import { useAuth } from "./contexts/AuthProvider"; // Correct usage of useAuth
 
 export function App() {
   const [activeMenuItem, setActiveMenuItem] = useState("");
+  const { currentUser, userLoggedIn, loading } = useAuth(); // Correct way to access loading
   const [role, setRole] = useState("staff"); // Default role
   const location = useLocation();
   const { task } = useAppContext(); // Access the task value from the context
 
+  // Fetch and set user role when currentUser changes
+  useEffect(() => {
+    const fetchUserRole = async () => {
+      if (currentUser) {
+        try {
+          setRole(currentUser.role);
+        } catch (error) {
+          console.error("Failed to get user role:", error);
+        }
+      }
+    };
+
+    fetchUserRole();
+  }, [currentUser]);
+
+  // Update activeMenuItem based on the location
   useEffect(() => {
     switch (location.pathname) {
-      case "/staffhome":
+      case "/home":
         setActiveMenuItem("Home");
         break;
       case "/staffanalytics":
@@ -27,17 +44,26 @@ export function App() {
       case "/stafftasks":
         setActiveMenuItem("Tasks");
         break;
-      case "/notifications":
-        setActiveMenuItem("Create Notification");
-        break;
       case "/updatebusschedule":
         setActiveMenuItem("Update Bus Schedule");
         break;
-      case "//scheduledetails/:id":
+      case "/notifications":
+        setActiveMenuItem("Create Notification");
+        break;
+      case "/services":
+        setActiveMenuItem("Services");
+        break;
+      case "/activity":
+        setActiveMenuItem("Activity");
+        break;
+      case "/scheduledetails/:id":
         setActiveMenuItem("Update Bus Schedule");
         break;
       case "/vehicles":
         setActiveMenuItem("Vehicles");
+        break;
+      default:
+        setActiveMenuItem("Update Bus Schedule"); // Clear active menu item if path doesn't match
         break;
     }
   }, [location.pathname]);
@@ -58,24 +84,28 @@ export function App() {
 
   return (
     <div className="flex h-screen overflow-hidden">
-      <Sidebar
-        activeMenuItem={activeMenuItem}
-        handleMenuItemClick={handleMenuItemClick}
-        role={role}
-      />
-      <div className="flex-1 flex flex-col ml-1/4">
-        {" "}
-        {/* Adjusted for sidebar width */}
-        <DesktopHeader />
+      {userLoggedIn && !loading && (
+        <>
+          <Sidebar
+            activeMenuItem={activeMenuItem}
+            handleMenuItemClick={handleMenuItemClick}
+            role={role}
+          />
+          <DesktopHeader />
+        </>
+      )}
+      <div className={`flex-1 flex flex-col ${userLoggedIn ? "ml-1/4" : ""}`}>
         <div className="flex-1 overflow-y-auto">{renderRoutes()}</div>
-        <BottomNav
-          activeMenuItem={activeMenuItem}
-          handleMenuItemClick={handleMenuItemClick}
-          role={role}
-          className={`${task === 1 ? "hidden" : ""}`} // Conditionally hide BottomNav
-        />
+        {userLoggedIn && (
+          <BottomNav
+            activeMenuItem={activeMenuItem}
+            handleMenuItemClick={handleMenuItemClick}
+            role={role}
+            className={`${task === 1 ? "hidden" : ""}`} // Conditionally hide BottomNav
+          />
+        )}
       </div>
-      <MobileHeader /> {/* Ensure this is positioned correctly */}
+      {userLoggedIn && <MobileHeader />}
     </div>
   );
 }
