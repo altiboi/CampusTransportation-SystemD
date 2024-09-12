@@ -36,7 +36,7 @@ const Sidebar = ({ activeMenuItem, handleMenuItemClick, role }) => {
         <>
           <Link
             to="/home"
-            className={`flex items-center justify-start px-4 py-3 ${
+            className={`flex items-center justify-start px-4 py-3 transition transform hover:scale-105 ${
               activeMenuItem === "Home"
                 ? "bg-white text-black font-bold text-sm rounded-lg"
                 : "text-white-700 font-bold text-sm"
@@ -48,7 +48,7 @@ const Sidebar = ({ activeMenuItem, handleMenuItemClick, role }) => {
           </Link>
           <Link
             to="/staffanalytics"
-            className={`flex items-center justify-start px-4 py-3 ${
+            className={`flex items-center justify-start px-4 py-3 transition transform hover:scale-105 ${
               activeMenuItem === "Analytics"
                 ? "bg-white text-black font-bold text-sm rounded-lg"
                 : "text-white font-bold text-sm"
@@ -60,7 +60,7 @@ const Sidebar = ({ activeMenuItem, handleMenuItemClick, role }) => {
           </Link>
           <Link
             to="/vehicles"
-            className={`flex items-center justify-start px-4 py-3 ${
+            className={`flex items-center justify-start px-4 py-3 transition transform hover:scale-105 ${
               activeMenuItem === "Vehicles"
                 ? "bg-white text-black font-bold text-sm rounded-lg"
                 : "text-white-700 font-bold text-sm"
@@ -72,7 +72,7 @@ const Sidebar = ({ activeMenuItem, handleMenuItemClick, role }) => {
           </Link>
           <Link
             to="/notifications"
-            className={`flex items-center justify-start px-4 py-3 ${
+            className={`flex items-center justify-start px-4 py-3 transition transform hover:scale-105 ${
               activeMenuItem === "Create Notification"
                 ? "bg-white text-black font-bold text-sm rounded-lg"
                 : "text-white-700 font-bold text-sm"
@@ -84,7 +84,7 @@ const Sidebar = ({ activeMenuItem, handleMenuItemClick, role }) => {
           </Link>
           <Link
             to="/updatebusschedule"
-            className={`flex items-center justify-start px-4 py-3 ${
+            className={`flex items-center justify-start px-4 py-3 transition transform hover:scale-105 ${
               activeMenuItem === "Update Bus Schedule"
                 ? "bg-white text-black font-bold text-sm rounded-lg"
                 : "text-white-700 font-bold text-sm"
@@ -101,10 +101,10 @@ const Sidebar = ({ activeMenuItem, handleMenuItemClick, role }) => {
         <>
           <Link
             to="/home"
-            className={`flex items-center justify-start px-4 py-3 ${
+            className={`flex items-center justify-start px-4 py-3 transition transform hover:scale-105 ${
               activeMenuItem === "Home"
                 ? "bg-white text-black font-bold text-sm rounded-lg"
-                : "text-whitefont-bold text-sm"
+                : "text-white font-bold text-sm"
             }`}
             onClick={() => handleMenuItemClick("Home")}
           >
@@ -113,7 +113,7 @@ const Sidebar = ({ activeMenuItem, handleMenuItemClick, role }) => {
           </Link>
           <Link
             to="/services"
-            className={`flex items-center justify-start px-4 py-3 ${
+            className={`flex items-center justify-start px-4 py-3 transition transform hover:scale-105 ${
               activeMenuItem === "Services"
                 ? "bg-white text-black font-bold text-sm rounded-lg"
                 : "text-white font-bold text-sm"
@@ -125,7 +125,7 @@ const Sidebar = ({ activeMenuItem, handleMenuItemClick, role }) => {
           </Link>
           <Link
             to="/activity"
-            className={`flex items-center justify-start px-4 py-3 ${
+            className={`flex items-center justify-start px-4 py-3 transition transform hover:scale-105 ${
               activeMenuItem === "Activity"
                 ? "bg-white text-black font-bold text-sm rounded-lg"
                 : "text-white font-bold text-sm"
