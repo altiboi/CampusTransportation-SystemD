@@ -38,7 +38,7 @@ const Sidebar = ({ activeMenuItem, handleMenuItemClick, role }) => {
             to="/home"
             className={`flex items-center justify-start px-4 py-3 transition transform hover:scale-105 ${
               activeMenuItem === "Home"
-                ? "bg-white text-black font-bold text-sm rounded-lg"
+                ? "rounded-lg bg-white text-black font-bold text-sm "
                 : "text-white-700 font-bold text-sm"
             }`}
             onClick={() => handleMenuItemClick("Home")}

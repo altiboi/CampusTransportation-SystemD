@@ -1,3 +1,4 @@
+// src/routes/StaffRoutes.js
 import React from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import StaffHomePage from "../pages/staffPages/StaffHomePage";
@@ -10,10 +11,10 @@ import NotificationsPage from "../pages/staffPages/NotificationsPage";
 import Login from "../pages/Login";
 import Register from "../pages/Register";
 import ProtectedRoute from "./ProtectedRoute";
-import { useAuth } from "../contexts/AuthProvider"; // Assuming you have an AuthProvider
+import { useAuth } from "../contexts/AuthProvider";
+import NotFoundPage from "../pages/NotFoundPage"; // Import the NotFoundPage component
 
 function StaffRoutes() {
-  // Assuming `userLoggedIn` is coming from your AuthProvider
   const { userLoggedIn } = useAuth();
 
   return (
@@ -57,6 +58,8 @@ function StaffRoutes() {
         path="/vehicles"
         element={<ProtectedRoute element={<VehiclesPage />} />}
       />
+      {/* Catch-all route for undefined paths */}
+      <Route path="*" element={<NotFoundPage />} />
     </Routes>
   );
 }

@@ -1,3 +1,4 @@
+// src/App.js
 import { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import Sidebar from "./components/common/Sidebar";
@@ -8,16 +9,15 @@ import UserRoutes from "./routes/UserRoutes";
 import { AppProvider, useAppContext } from "./contexts/AppContext";
 import MobileHeader from "./components/common/MobileHeader";
 import DesktopHeader from "./components/common/DesktopHeader";
-import { useAuth } from "./contexts/AuthProvider"; // Correct usage of useAuth
+import { useAuth } from "./contexts/AuthProvider";
 
 export function App() {
   const [activeMenuItem, setActiveMenuItem] = useState("");
-  const { currentUser, userLoggedIn, loading } = useAuth(); // Correct way to access loading
-  const [role, setRole] = useState("staff"); // Default role
+  const { currentUser, userLoggedIn, loading } = useAuth();
+  const [role, setRole] = useState("staff");
   const location = useLocation();
-  const { task } = useAppContext(); // Access the task value from the context
+  const { task } = useAppContext();
 
-  // Fetch and set user role when currentUser changes
   useEffect(() => {
     const fetchUserRole = async () => {
       if (currentUser) {
@@ -32,7 +32,6 @@ export function App() {
     fetchUserRole();
   }, [currentUser]);
 
-  // Update activeMenuItem based on the location
   useEffect(() => {
     switch (location.pathname) {
       case "/home":
@@ -63,7 +62,7 @@ export function App() {
         setActiveMenuItem("Vehicles");
         break;
       default:
-        setActiveMenuItem("Update Bus Schedule"); // Clear active menu item if path doesn't match
+        setActiveMenuItem(""); // Clear active menu item if path doesn't match
         break;
     }
   }, [location.pathname]);
@@ -82,9 +81,12 @@ export function App() {
     }
   };
 
+  // Check if the current route is the NotFound page (404)
+  const isNotFoundRoute = location.pathname === "/404" || !activeMenuItem;
+
   return (
     <div className="flex h-screen overflow-hidden">
-      {userLoggedIn && !loading && (
+      {userLoggedIn && !loading && !isNotFoundRoute && (
         <>
           <Sidebar
             activeMenuItem={activeMenuItem}
@@ -96,16 +98,16 @@ export function App() {
       )}
       <div className={`flex-1 flex flex-col ${userLoggedIn ? "ml-1/4" : ""}`}>
         <div className="flex-1 overflow-y-auto">{renderRoutes()}</div>
-        {userLoggedIn && (
+        {userLoggedIn && !isNotFoundRoute && (
           <BottomNav
             activeMenuItem={activeMenuItem}
             handleMenuItemClick={handleMenuItemClick}
             role={role}
-            className={`${task === 1 ? "hidden" : ""}`} // Conditionally hide BottomNav
+            className={`${task === 1 ? "hidden" : ""}`}
           />
         )}
       </div>
-      {userLoggedIn && <MobileHeader />}
+      {userLoggedIn && !isNotFoundRoute && <MobileHeader />}
     </div>
   );
 }
