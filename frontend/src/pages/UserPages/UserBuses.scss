@@ -1,0 +1,75 @@
+.bus-main-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    background-color: #f4f4f4;
+    height: 100vh; 
+  }
+  
+  .bus-upper-part {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    padding: 20px 0;
+    padding-top: 50px;
+    text-align: center;
+  }
+  
+  .bus-upper-content {
+    font-size: 1.5rem;
+    font-weight: 600;
+  }
+  
+  .bus-middle-part {
+    width: 100%;
+    height: 50%;
+    display: flex;
+    justify-content: center;
+    margin: 40px 0;
+  }
+  
+  .bus-middle-card {
+
+    padding: 40px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .bus-middle-card .faBus {
+  }
+  
+  .bus-lower-part {
+    width: 100%;
+    display: flex;
+    justify-content: space-evenly;
+    padding: 20px 0;
+  }
+  
+  .bus-lower-card {
+    background-color: white;
+    border-radius: 10px;
+    padding: 20px;
+    padding-bottom: 50px;
+    width: 150px;
+    text-align: center;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); 
+    margin-bottom: 20px;
+    border-bottom: 2px solid black;
+
+  }
+
+  
+  .bus-lower-card h5 {
+    font-size: 1.2rem; 
+    font-weight: 500; 
+    
+
+  }
+  .bus-image{
+    max-width: 100%; 
+    height: auto;   
+    display: block;  
+  }

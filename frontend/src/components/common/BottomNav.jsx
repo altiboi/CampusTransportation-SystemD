@@ -13,14 +13,14 @@ import {
 const BottomNav = ({ handleMenuItemClick, role, className }) => {
   useEffect(() => {
     switch (location.pathname) {
-      case "/staffhome":
+      case "/home":
         setActiveMenuItem("Home");
         break;
-      case "/staffanalytics":
-        setActiveMenuItem("Analytics");
+      case "/userService":
+        setActiveMenuItem("Services");
         break;
-      case "/stafftasks":
-        setActiveMenuItem("Tasks");
+      case "/userActivity":
+        setActiveMenuItem("Activity");
         break;
       default:
         setActiveMenuItem("Home");
@@ -78,7 +78,7 @@ const BottomNav = ({ handleMenuItemClick, role, className }) => {
             <span className="text-xs">Home</span>
           </Link>
           <Link
-            to="/services"
+            to="/userService"
             onClick={() => handleMenuItemClick("Services")}
             className={`flex flex-col items-center ${
               activeMenuItem === "Services" ? "text-black" : "text-gray-300"
@@ -88,7 +88,7 @@ const BottomNav = ({ handleMenuItemClick, role, className }) => {
             <span className="text-xs">Services</span>
           </Link>
           <Link
-            to="/activity"
+            to="/userActivity"
             onClick={() => handleMenuItemClick("Activity")}
             className={`flex flex-col items-center ${
               activeMenuItem === "Activity" ? "text-black" : "text-gray-300"

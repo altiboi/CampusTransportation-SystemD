@@ -37,8 +37,14 @@ export function App() {
       case "/home":
         setActiveMenuItem("Home");
         break;
+      case "/":
+        setActiveMenuItem("Home");
+        break;
       case "/staffanalytics":
         setActiveMenuItem("Analytics");
+        break;
+      case "/userRental":
+        setActiveMenuItem("home");
         break;
       case "/stafftasks":
         setActiveMenuItem("Tasks");
@@ -49,10 +55,19 @@ export function App() {
       case "/notifications":
         setActiveMenuItem("Create Notification");
         break;
-      case "/services":
+      case "/userFind":
+        setActiveMenuItem("Home");
+        break;
+
+      case "/UserFines":
         setActiveMenuItem("Services");
         break;
-      case "/activity":
+
+      case "/userService":
+        setActiveMenuItem("Services");
+        break;
+
+      case "/userActivity":
         setActiveMenuItem("Activity");
         break;
       case "/scheduledetails/:id":

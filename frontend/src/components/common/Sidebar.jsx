@@ -112,7 +112,7 @@ const Sidebar = ({ activeMenuItem, handleMenuItemClick, role }) => {
             Home
           </Link>
           <Link
-            to="/services"
+            to="/userService"
             className={`flex items-center justify-start px-4 py-3 transition transform hover:scale-105 ${
               activeMenuItem === "Services"
                 ? "bg-white text-black font-bold text-sm rounded-lg"
@@ -124,7 +124,7 @@ const Sidebar = ({ activeMenuItem, handleMenuItemClick, role }) => {
             Services
           </Link>
           <Link
-            to="/activity"
+            to="/userActivity"
             className={`flex items-center justify-start px-4 py-3 transition transform hover:scale-105 ${
               activeMenuItem === "Activity"
                 ? "bg-white text-black font-bold text-sm rounded-lg"

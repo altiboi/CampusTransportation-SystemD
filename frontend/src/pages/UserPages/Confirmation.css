@@ -1,0 +1,39 @@
+/* Tailwind CSS classes in JSX (used inline) */
+
+.confirmation-container {
+    @apply flex flex-col items-center justify-center min-h-screen bg-gray-100 p-6;
+    /* Move the entire structure down and to the left */
+    margin-top: 20px; /* Adjust as needed */
+    transform: translateX(-10%); /* Shift the container to the left */
+  }
+  
+  .confirmation-header h1 {
+    @apply text-2xl md:text-3xl font-bold text-gray-800 mb-4 text-center;
+  }
+  
+  .confirmation-image {
+    @apply w-full max-w-md rounded-md mb-4;
+    /* Shift the image to the right */
+    margin-left: 1%; /* Adjust as needed */
+  }
+  
+  button {
+    @apply px-4 py-2 bg-black text-white rounded mt-4;
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .confirmation-container {
+      transform: translateX(-5%); /* Adjust the left shift for smaller screens */
+    }
+  
+    .confirmation-image {
+      margin-left: 5%; /* Adjust image shift for smaller screens */
+      @apply max-w-sm; /* Adjust image size for smaller screens */
+    }
+  
+    .confirmation-header h1 {
+      @apply text-xl; /* Adjust text size for smaller screens */
+    }
+  }
+  
