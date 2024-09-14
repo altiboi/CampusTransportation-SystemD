@@ -5,10 +5,10 @@ import SearchBar from "../../components/common/staffComponents/SearchBar";
 import Modal from "../../components/common/staffComponents/Modal";
 import VehicleCard from "../../components/common/VehicleCard";
 import AddVehicleModal from "../../components/common/staffComponents/AddVehicleModal";
-import scooter from "../../assets/scooter.svg";
-import skateBoard from "../../assets/skateBoard.svg";
-import bus from "../../assets/bus.png";
-import bike from "../../assets/bike.svg";
+import scooter from "../../vehicles/scooter.png";
+import skateBoard from "../../vehicles/skateboard.png";
+import bus from "../../vehicles/bus.png";
+import bike from "../../vehicles/bicycle.png";
 import { useAppContext } from "../../contexts/AppContext";
 
 const VEHICLE_TAGS = ["Bikes", "Scooters", "Buses", "Skateboards"];
