@@ -10,48 +10,28 @@ import skateBoard from "../../assets/skateBoard.svg";
 import bus from "../../assets/bus.png";
 import bike from "../../assets/bike.svg";
 import { useAppContext } from "../../contexts/AppContext";
+import { getAllVehicles } from "../../api/functions";
 
-const VEHICLE_TAGS = ["Bikes", "Scooters", "Buses", "Skateboards"];
+const VEHICLE_TAGS = ["bike", "scooter", "bus", "skateboard"];
 
-// Sample vehicle data
-const VEHICLES = [
-  {
-    id: 1,
-    type: "Bikes",
-    registration: "ABC123",
-    make: "Yamaha",
-    model: "MT-07",
-    year: 2022,
-    location: "Campus Central Park",
-  },
-  {
-    id: 2,
-    type: "Scooters",
-    registration: "XYZ789",
-    make: "Honda",
-    model: "Metropolitan",
-    year: 2023,
-    location: "Yale Village",
-  },
-  // Add more vehicle data here
-];
+
 
 const getVehicleImage = (type) => {
   switch (type) {
-    case "Bikes":
+    case "bike":
       return bike;
-    case "Scooters":
+    case "scooter":
       return scooter;
-    case "Skateboards":
+    case "skateboard":
       return skateBoard;
-    case "Buses":
+    case "buses":
       return bus;
     default:
       return null;
   }
 };
 
-const VehiclesPage = () => {
+const VehiclesPage = ({ vehicles }) => {
   const [selectedTags, setSelectedTags] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredVehicles, setFilteredVehicles] = useState([]);
@@ -68,7 +48,7 @@ const VehiclesPage = () => {
 
   useEffect(() => {
     const filterVehicles = () => {
-      return VEHICLES.filter((vehicle) => {
+      return vehicles.filter((vehicle) => {
         const matchesTag =
           selectedTags.length === 0 || selectedTags.includes(vehicle.type);
         const matchesSearch =
@@ -149,9 +129,9 @@ const VehiclesPage = () => {
                 type={vehicle.type}
                 registration={vehicle.registration}
                 make={vehicle.make}
-                model={vehicle.model}
+             
                 year={vehicle.year}
-                location={vehicle.location}
+                location={vehicle.rentalStationID}
                 onClick={() => openModal(vehicle)}
               />
             ))
@@ -173,10 +153,7 @@ const VehiclesPage = () => {
             <h3 className="text-lg font-semibold">Make</h3>
             <p>{selectedVehicle.make}</p>
           </div>
-          <div className="mb-4">
-            <h3 className="text-lg font-semibold">Model</h3>
-            <p>{selectedVehicle.model}</p>
-          </div>
+         
           <div className="mb-4">
             <h3 className="text-lg font-semibold">Year</h3>
             <p>{selectedVehicle.year}</p>
