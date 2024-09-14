@@ -10,7 +10,7 @@ import skateBoard from "../../vehicles/skateboard.png";
 import bus from "../../vehicles/bus.png";
 import bike from "../../vehicles/bicycle.png";
 import { useAppContext } from "../../contexts/AppContext";
-import { getAllVehicles } from "../../api/functions";
+import { addVehicle, getAllVehicles } from "../../api/functions";
 
 const VEHICLE_TAGS = ["bike", "scooter", "bus", "skateboard"];
 
@@ -31,8 +31,9 @@ const getVehicleImage = (type) => {
   }
 };
 
-const VehiclesPage = ({ vehicles }) => {
+const VehiclesPage = ({ vehicles  }) => {
   const [selectedTags, setSelectedTags] = useState([]);
+  const [localVehicles, setLocalVehicles] = useState(vehicles); // Local state for vehicles
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredVehicles, setFilteredVehicles] = useState([]);
   const [selectedVehicle, setSelectedVehicle] = useState(null);
@@ -48,7 +49,7 @@ const VehiclesPage = ({ vehicles }) => {
 
   useEffect(() => {
     const filterVehicles = () => {
-      return vehicles.filter((vehicle) => {
+      return localVehicles.filter((vehicle) => {
         const matchesTag =
           selectedTags.length === 0 || selectedTags.includes(vehicle.type);
         const matchesSearch =
@@ -62,7 +63,7 @@ const VehiclesPage = ({ vehicles }) => {
     };
 
     setFilteredVehicles(filterVehicles());
-  }, [selectedTags, searchTerm]);
+  }, [localVehicles, selectedTags, searchTerm]);
 
   const handleTagClick = (tag) => {
     setSelectedTags((prevTags) =>
@@ -94,9 +95,16 @@ const VehiclesPage = ({ vehicles }) => {
     setIsAddVehicleModalOpen(false);
   };
 
-  const handleAddVehicle = (newVehicle) => {
-    VEHICLES.push({ ...newVehicle, id: VEHICLES.length + 1 }); // Add new vehicle to the array
-    setFilteredVehicles([...VEHICLES]); // Update the filtered vehicles list
+  const handleAddVehicle = async (newVehicle) => {
+    try {
+      await addVehicle(newVehicle);
+      const updatedVehicles = await getAllVehicles(); 
+      
+      setLocalVehicles(updatedVehicles); 
+    } catch (error) {
+      console.error("Error adding vehicle:", error);
+    }
+    closeAddVehicleModal(); 
   };
 
   return (
@@ -129,6 +137,7 @@ const VehiclesPage = ({ vehicles }) => {
                 type={vehicle.type}
                 registration={vehicle.registration}
                 make={vehicle.make}
+                model ={vehicle.model}
              
                 year={vehicle.year}
                 location={vehicle.rentalStationID}
@@ -152,6 +161,10 @@ const VehiclesPage = ({ vehicles }) => {
           <div className="mb-4">
             <h3 className="text-lg font-semibold">Make</h3>
             <p>{selectedVehicle.make}</p>
+          </div>
+          <div className="mb-4">
+            <h3 className="text-lg font-semibold">Model</h3>
+            <p>{selectedVehicle.model}</p>
           </div>
          
           <div className="mb-4">

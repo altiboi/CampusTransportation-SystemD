@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import Modal from "./Modal";
 
-const VEHICLE_TYPES = ["Bikes", "Scooters", "Buses", "Skateboards"];
+const VEHICLE_TYPES = ["bike", "scooter", "bus", "skateboard"];
 
 const AddVehicleModal = ({ isOpen, onClose, onAdd }) => {
   const [type, setType] = useState("");
@@ -10,7 +10,7 @@ const AddVehicleModal = ({ isOpen, onClose, onAdd }) => {
   const [make, setMake] = useState("");
   const [model, setModel] = useState("");
   const [year, setYear] = useState("");
-  const [location, setLocation] = useState("Main Campus");
+  const [location, setLocation] = useState("Station 01");
 
   const handleSubmit = () => {
     if (!type || !registration || !make || !model || !year) {

@@ -1,5 +1,5 @@
 import { auth, rentalservice_db } from "../firebase/firebase.js";
-import { collection, getDocs } from "firebase/firestore";
+import { collection, getDocs , addDoc } from "firebase/firestore";
 
 
 export const getAllVehicles = async () => {
@@ -8,11 +8,9 @@ export const getAllVehicles = async () => {
 
        
         const vehiclesSnapshot = await getDocs(vehiclesCollection);
-
-        // Map the documents to an array of objects
         const vehiclesList = vehiclesSnapshot.docs.map(doc => ({
-            id: doc.id,  // Document ID
-            ...doc.data() // Document data
+            id: doc.id,  
+            ...doc.data() 
         }));
 
         return vehiclesList;
@@ -21,3 +19,34 @@ export const getAllVehicles = async () => {
         throw error;
     }
 };
+
+export const addVehicle = async (vehicle) => {
+    try {
+        const vehiclesCollection = collection(rentalservice_db, "Vehicles");
+
+       
+        const docRef = await addDoc(vehiclesCollection, {
+            year: vehicle.year,
+            available: true,
+            registration: vehicle.registration,
+            currentRentalID: "----",
+            lastMaintenance: null,
+            rentalStationID: vehicle.rentalStationID || "----",
+            make: vehicle.make,
+            model:vehicle.model,
+            type: vehicle.type,
+          });
+      
+
+          return {
+            id: docRef.id,
+            ...vehicle
+          };
+    } catch (error) {
+        console.error("Error adding vehicles:", error.message);
+        throw error;
+    }
+};
+
+
+

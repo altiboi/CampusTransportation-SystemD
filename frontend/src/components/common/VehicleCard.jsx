@@ -26,6 +26,7 @@ const VehicleCard = ({
   type,
   registration,
   make,
+  model,
   
   year,
   location,
@@ -41,7 +42,7 @@ const VehicleCard = ({
         <p className="vehicle-card-registration">{registration}</p>
         <div className="vehicle-card-details">
           <p>
-            {make}
+            {make},{model}
           </p>
           <p>{year}</p>
           <p>{location}</p>
