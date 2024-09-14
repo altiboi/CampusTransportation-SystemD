@@ -25,4 +25,7 @@ const analytics = getAnalytics(app);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-export { app, auth, db };
+const mapping_db = getFirestore(app, "rentalservice");
+const rentalservice_db = getFirestore(app , "rentalservice");
+
+export { app, auth, db , mapping_db , rentalservice_db };

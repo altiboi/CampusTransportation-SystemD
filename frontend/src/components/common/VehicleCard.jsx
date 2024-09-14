@@ -9,13 +9,13 @@ import "./VehicleCard.css";
 
 const getVehicleImage = (type) => {
   switch (type) {
-    case "Bikes":
+    case "bike":
       return bike;
-    case "Scooters":
+    case "scooter":
       return scooter;
-    case "Skateboards":
+    case "skateboard":
       return skateBoard;
-    case "Buses":
+    case "bus":
       return bus;
     default:
       return null;
@@ -26,7 +26,7 @@ const VehicleCard = ({
   type,
   registration,
   make,
-  model,
+  
   year,
   location,
   onClick,
@@ -41,7 +41,7 @@ const VehicleCard = ({
         <p className="vehicle-card-registration">{registration}</p>
         <div className="vehicle-card-details">
           <p>
-            {make} {model}
+            {make}
           </p>
           <p>{year}</p>
           <p>{location}</p>

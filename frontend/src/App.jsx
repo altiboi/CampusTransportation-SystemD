@@ -1,4 +1,3 @@
-// src/App.js
 import { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import Sidebar from "./components/common/Sidebar";
@@ -10,11 +9,15 @@ import { AppProvider, useAppContext } from "./contexts/AppContext";
 import MobileHeader from "./components/common/MobileHeader";
 import DesktopHeader from "./components/common/DesktopHeader";
 import { useAuth } from "./contexts/AuthProvider";
+import { getAllVehicles } from "./api/functions"; // Import the function
+
 
 export function App() {
   const [activeMenuItem, setActiveMenuItem] = useState("");
   const { currentUser, userLoggedIn, loading } = useAuth();
   const [role, setRole] = useState("staff");
+  const [vehicles, setVehicles] = useState([]); // Add state for vehicles
+
   const location = useLocation();
   const { task } = useAppContext();
 
@@ -31,6 +34,19 @@ export function App() {
 
     fetchUserRole();
   }, [currentUser]);
+
+  useEffect(() => {
+    const fetchVehicles = async () => {
+      try {
+        const vehicleData = await getAllVehicles();
+        setVehicles(vehicleData);
+      } catch (error) {
+        console.error("Error fetching vehicles:", error.message);
+      }
+    };
+
+    fetchVehicles();
+  }, []);
 
   useEffect(() => {
     switch (location.pathname) {
@@ -88,7 +104,7 @@ export function App() {
 
   const renderRoutes = () => {
     if (role === "staff") {
-      return <StaffRoutes />;
+      return <StaffRoutes vehicles={vehicles} />;
     } else if (role === "user") {
       return <UserRoutes />;
     } else {

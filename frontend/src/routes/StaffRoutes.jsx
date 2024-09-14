@@ -14,7 +14,7 @@ import ProtectedRoute from "./ProtectedRoute";
 import { useAuth } from "../contexts/AuthProvider";
 import NotFoundPage from "../pages/NotFoundPage"; // Import the NotFoundPage component
 
-function StaffRoutes() {
+function StaffRoutes({ vehicles }) {
   const { userLoggedIn } = useAuth();
 
   return (
@@ -56,7 +56,7 @@ function StaffRoutes() {
       />
       <Route
         path="/vehicles"
-        element={<ProtectedRoute element={<VehiclesPage />} />}
+        element={<ProtectedRoute element={<VehiclesPage vehicles={vehicles}/>} />}
       />
       {/* Catch-all route for undefined paths */}
       <Route path="*" element={<NotFoundPage />} />
