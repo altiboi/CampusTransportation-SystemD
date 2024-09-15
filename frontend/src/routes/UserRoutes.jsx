@@ -4,7 +4,7 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import UserHome from "../pages/UserPages/UserHome";
 import UserService from "../pages/UserPages/UserService";
 import Find from "../pages/UserPages/Find";
-import Rental from "../pages/UserPages/Rental";
+import Rental from "../pages/UserPages/UserRental";
 import Book from "../pages/UserPages/Book";
 import Reserve from "../pages/UserPages/Reserve";
 import Confirmation from "../pages/UserPages/Confirmation";

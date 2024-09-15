@@ -43,6 +43,15 @@ export function App() {
       case "/staffanalytics":
         setActiveMenuItem("Analytics");
         break;
+        case "/UserBuses":
+        setActiveMenuItem("Services");
+        break;
+        case "/UserRental":
+          setActiveMenuItem("home");
+          break;
+        case "/":
+        setActiveMenuItem("home");
+        break;
       case "/userRental":
         setActiveMenuItem("home");
         break;

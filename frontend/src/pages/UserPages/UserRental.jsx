@@ -4,8 +4,16 @@ import Card from '../../components/Card';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft, faSearch } from '@fortawesome/free-solid-svg-icons';
 import './Rental.css';
+import { useAppContext } from "../../contexts/AppContext";
+import { useEffect } from "react";
 
 export default function UserRental() {
+  const { setTitle, setTask } = useAppContext();
+
+  useEffect(() => {
+    setTitle("Rent Vehicle");
+    setTask(1);
+  }, [setTitle, setTask]);
   const categories = ['All', 'Bike', 'Scooter', 'Skateboard'];
   const [activeCategory, setActiveCategory] = useState('All');
   const navigate = useNavigate();

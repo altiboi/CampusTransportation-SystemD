@@ -6,8 +6,17 @@ import { faTruck, faLocationDot, faRoute, faBicycle, faClipboardList, faCalendar
 import { faMapMarkerAlt } from '@fortawesome/free-solid-svg-icons'; 
 
 import './UserService.css'; 
+import { useAppContext } from "../../contexts/AppContext";
+import { useEffect } from "react";
+
 
 function UserService() {
+  const { setTitle, setTask } = useAppContext();
+
+  useEffect(() => {
+    setTitle("Services");
+    setTask(1);
+  }, [setTitle, setTask]);
   return (
     <main className='user-service-container'>
       <section className='header-section'>
@@ -55,6 +64,7 @@ function UserService() {
             <h2 className="card-heading">Bus Schedule</h2>
             <section className='card-icon'>
               <FontAwesomeIcon icon={faClipboardList} className='icon-medium' />
+           
             </section>
           </Card>
           <Card className="action-card">

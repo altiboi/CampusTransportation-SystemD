@@ -3,8 +3,17 @@ import Card from '../../components/Card';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLocationDot, faRoute, faPersonWalking, faCar, faCheckCircle } from '@fortawesome/free-solid-svg-icons';
 import './UserActivity.scss'; 
+import { useAppContext } from "../../contexts/AppContext";
+import { useEffect } from "react";
+
 
 function UserActivity() {
+    const { setTitle, setTask } = useAppContext();
+
+    useEffect(() => {
+      setTitle("Activity");
+      setTask(1);
+    }, [setTitle, setTask]);
   return (
     <main className='activity-main-container'>
 
