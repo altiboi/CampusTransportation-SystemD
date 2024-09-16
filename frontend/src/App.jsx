@@ -123,7 +123,7 @@ export function App() {
 
   const renderRoutes = () => {
     if (role === "staff") {
-      return <StaffRoutes vehicles={vehicles} notifs = {notifs} currentUser = {currentUser.name} />;
+      return <StaffRoutes vehicles={vehicles} notifs = {notifs} currentUser = {currentUser?.name} />;
       
     } else if (role === "user") {
       return <UserRoutes />;

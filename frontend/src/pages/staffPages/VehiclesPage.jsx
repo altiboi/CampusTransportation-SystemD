@@ -10,7 +10,7 @@ import skateBoard from "../../vehicles/skateboard.png";
 import bus from "../../vehicles/bus.png";
 import bike from "../../vehicles/bicycle.png";
 import { useAppContext } from "../../contexts/AppContext";
-import { addVehicle, getAllVehicles } from "../../api/functions";
+import { addVehicle, getAllVehicles, fetchRentalStations } from "../../api/functions";
 
 const VEHICLE_TAGS = ["bike", "scooter", "bus", "skateboard"];
 
@@ -39,6 +39,7 @@ const VehiclesPage = ({ vehicles  }) => {
   const [selectedVehicle, setSelectedVehicle] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isAddVehicleModalOpen, setIsAddVehicleModalOpen] = useState(false); // New state for add vehicle modal
+  const [rentalStations, setRentalStations] = useState([]);
 
   const { setTitle, setTask } = useAppContext();
 
@@ -107,6 +108,24 @@ const VehiclesPage = ({ vehicles  }) => {
     closeAddVehicleModal(); 
   };
 
+  useEffect(() => {
+    const getRentalStations = async () => {
+      try {
+        const stations = await fetchRentalStations();
+        setRentalStations(stations);
+      } catch (error) {
+        console.error("Error fetching rental stations:", error);
+      }
+    };
+
+    getRentalStations();
+  }, []);
+
+  const getStationName = (stationID) => {
+    const station = rentalStations.find((s) => s.id === stationID);
+    return station ? station.name : "Unknown Station";
+  };
+
   return (
     <div className="pt-20 p-8">
       <div className="bg-white p-6 rounded-lg shadow-lg mb-6">
@@ -140,7 +159,7 @@ const VehiclesPage = ({ vehicles  }) => {
                 model ={vehicle.model}
              
                 year={vehicle.year}
-                location={vehicle.rentalStationID}
+                location={getStationName(vehicle.rentalStationID)}
                 onClick={() => openModal(vehicle)}
               />
             ))
@@ -172,8 +191,8 @@ const VehiclesPage = ({ vehicles  }) => {
             <p>{selectedVehicle.year}</p>
           </div>
           <div className="mb-4">
-            <h3 className="text-lg font-semibold">Current Location</h3>
-            <p>{selectedVehicle.location}</p>
+            <h3 className="text-lg font-semibold">Location</h3>
+            <p>{getStationName(selectedVehicle.rentalStationID)}</p>
           </div>
           <button
             onClick={closeModal}
@@ -189,6 +208,7 @@ const VehiclesPage = ({ vehicles  }) => {
         isOpen={isAddVehicleModalOpen}
         onClose={closeAddVehicleModal}
         onAdd={handleAddVehicle}
+        rentalStations={rentalStations}
       />
     </div>
   );

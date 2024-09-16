@@ -48,9 +48,9 @@ export const addVehicle = async (vehicle) => {
             year: vehicle.year,
             available: true,
             registration: vehicle.registration,
-            currentRentalID: "----",
+            currentRentalID: null,
             lastMaintenance: null,
-            rentalStationID: vehicle.rentalStationID || "----",
+            rentalStationID: vehicle.location,
             make: vehicle.make,
             model:vehicle.model,
             type: vehicle.type,
@@ -66,6 +66,18 @@ export const addVehicle = async (vehicle) => {
         throw error;
     }
 };
+
+export const fetchRentalStations = async () => {
+    const rentalStationsRef = collection(rentalservice_db, "RentalStation");
+    const rentalStationsSnapshot = await getDocs(rentalStationsRef);
+  
+    const rentalStationsList = rentalStationsSnapshot.docs.map(doc => ({
+      id: doc.id,
+      ...doc.data()
+    }));
+  
+    return rentalStationsList;
+}
 
 export const createNotification = async (notification) => {
     try {
@@ -100,6 +112,5 @@ export const setNotificationAsRead = async (notificationId) => {
       console.error("Error setting notification as read:", error);
     }
   };
-
 
 

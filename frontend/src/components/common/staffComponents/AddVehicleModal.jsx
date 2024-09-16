@@ -1,19 +1,21 @@
 // src/components/common/AddVehicleModal.jsx
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Modal from "./Modal";
+import { fetchRentalStations } from "../../../api/functions";
 
-const VEHICLE_TYPES = ["bike", "scooter", "bus", "skateboard"];
+const VEHICLE_TYPES = ["Bike", "Scooter", "Bus", "Skateboard"];
 
-const AddVehicleModal = ({ isOpen, onClose, onAdd }) => {
-  const [type, setType] = useState("");
+const AddVehicleModal = ({ isOpen, onClose, onAdd, rentalStations }) => {
+  const [type, setType] = useState(null);
   const [registration, setRegistration] = useState("");
-  const [make, setMake] = useState("");
-  const [model, setModel] = useState("");
-  const [year, setYear] = useState("");
-  const [location, setLocation] = useState("Station 01");
+  const [make, setMake] = useState(null);
+  const [model, setModel] = useState(null);
+  const [year, setYear] = useState(null);
+  const [location, setLocation] = useState(null);
+  //const [stations, setStations] = useState([]);
 
   const handleSubmit = () => {
-    if (!type || !registration || !make || !model || !year) {
+    if (!type || !registration || !make || !model || !year || !location) {
       alert("Please fill in all fields.");
       return;
     }
@@ -21,6 +23,8 @@ const AddVehicleModal = ({ isOpen, onClose, onAdd }) => {
     onAdd({ type, registration, make, model, year, location });
     onClose();
   };
+
+  //console.log(stations);
 
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
@@ -34,7 +38,7 @@ const AddVehicleModal = ({ isOpen, onClose, onAdd }) => {
         >
           <option value="">Select Type</option>
           {VEHICLE_TYPES.map((vehicleType) => (
-            <option key={vehicleType} value={vehicleType}>
+            <option key={vehicleType} value={vehicleType.toLowerCase()}>
               {vehicleType}
             </option>
           ))}
@@ -78,12 +82,18 @@ const AddVehicleModal = ({ isOpen, onClose, onAdd }) => {
       </div>
       <div className="mb-4">
         <label className="block text-lg font-semibold mb-2">Location</label>
-        <input
-          type="text"
+        <select
           value={location}
-          readOnly
+          onChange={(e) => setLocation(e.target.value)}
           className="border rounded px-4 py-2 w-full"
-        />
+        >
+          <option value="">Select Location</option>
+          {rentalStations.map((station) => (
+            <option key={station.id} value={station.id}>
+              {station.name}
+            </option>
+          ))}
+        </select>
       </div>
       <button
         onClick={handleSubmit}

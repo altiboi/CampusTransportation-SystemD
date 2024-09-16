@@ -1,27 +1,52 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link,useNavigate } from 'react-router-dom';
 import Card from '../../components/Card';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft, faSearch } from '@fortawesome/free-solid-svg-icons';
 import './Rental.css';
+import { getAllVehicles } from '../../api/functions';
+import bike from "../../assets/bike.svg";
+import scooter from "../../assets/scooter.svg";
+import skateboard from "../../assets/skateBoard.svg";
+import bus from "../../assets/bus.png";
 
 export default function UserRental() {
   const categories = ['All', 'Bike', 'Scooter', 'Skateboard'];
   const [activeCategory, setActiveCategory] = useState('All');
+  const [vehicles, setVehicles] = useState([]);
   const navigate = useNavigate();
 
-  const allRentalItems = [
-    { name: 'Bike 1', category: 'Bike', image: '/images/bike1.jpeg' },
-    { name: 'Bike 2', category: 'Bike', image: '/images/bike2.jpeg' },
-    { name: 'Scooter 1', category: 'Scooter', image: '/images/scooter1.jpeg' },
-    { name: 'Scooter 2', category: 'Scooter', image: '/images/scooter2.jpeg' },
-    { name: 'Skateboard 1', category: 'Skateboard', image: '/images/skateboard1.jpeg' },
-    { name: 'Skateboard 2', category: 'Skateboard', image: '/images/skateboard2.jpeg' },
-  ];
+  useEffect(() => {
+    const fetchVehicles = async () => {
+      try {
+        const vehicleData = await getAllVehicles();
+        setVehicles(vehicleData);
+      } catch (error) {
+        console.error("Error fetching vehicles:", error.message);
+      }
+    };
+
+    fetchVehicles();
+  }, []);
 
   const filteredRentalItems = activeCategory === 'All' 
-    ? allRentalItems 
-    : allRentalItems.filter(item => item.category === activeCategory);
+    ? vehicles
+    : vehicles.filter(item => item.type === activeCategory.toLowerCase());
+  
+  const getVehicleImage = (type) => {
+    switch (type.toLowerCase()) {
+      case 'bike':
+        return bike;
+      case 'scooter':
+        return scooter;
+      case 'skateboard':
+        return skateboard;
+      case 'bus':
+        return bus;
+      default:
+        return '';
+    }
+  };
 
   return (
     <main className="p-4 max-w-7xl mx-auto w-full">
@@ -79,7 +104,7 @@ export default function UserRental() {
               </Link>
               </div>
             </div>
-            <img src={item.image} alt={item.name} className="w-24 h-24 object-cover" />
+            <img src={getVehicleImage(item.type)} alt={item.name} className="w-24 h-24 object-cover" />
           </Card>
         ))}
       </div>
