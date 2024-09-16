@@ -4,61 +4,37 @@ import NotificationCard from "../../components/common/NotificationCard";
 import Modal from "../../components/common/staffComponents/Modal";
 import CreateNotificationModal from "../../components/common/CreateNotificationModal";
 import { useAppContext } from "../../contexts/AppContext";
-// Sample initial notification data
-const INITIAL_NOTIFICATIONS = [
-  {
-    id: 1,
-    title: "System Maintenance",
-    body: "Scheduled maintenance will occur at midnight.",
-    isRead: false,
-    profileImage: "https://via.placeholder.com/50",
-    audience: "Everyone",
-    createdByUser: false,
-    from: "Alex",
-    timestamp: "2024-09-11T09:40:51.640Z",
-  },
-  {
-    id: 2,
-    title: "New Policy Update",
-    body: "Please review the updated staff policies.",
-    isRead: true,
-    profileImage: "https://via.placeholder.com/50",
-    audience: "Staff",
-    createdByUser: false,
-    from: "Sims",
-    timestamp: "2024-09-11T09:40:51.640Z",
-  },
-  {
-    id: 3,
-    title: "New Staff Member",
-    body: "Please welcome Simphile Mkhize as our new backup dancer. Please greet him and apprecitate him for his hard work whenever you see him",
-    isRead: true,
-    profileImage: "https://via.placeholder.com/50",
-    audience: "Staff",
-    createdByUser: true,
-    from: "Korah",
-    timestamp: "2024-09-11T09:40:51.640Z",
-  },
-];
+import { createNotification, getNotifications } from "../../api/functions"; // Update the path
 
-const NotificationsPage = () => {
-  const [notifications, setNotifications] = useState(INITIAL_NOTIFICATIONS);
+
+const NotificationsPage = ({ notifs , currentUser}) => {  
+  const [notifications, setNotifications] = useState(notifs);
   const [selectedNotification, setSelectedNotification] = useState(null);
   const [isNotificationModalOpen, setIsNotificationModalOpen] = useState(false);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [showUserNotifications, setShowUserNotifications] = useState(false);
 
-  const openNotificationModal = (notification) => {
-    setSelectedNotification(notification);
-    setIsNotificationModalOpen(true);
+  const { setTitle, setTask } = useAppContext();
+
+  const refreshNotifications = async () => {
+    try {
+      const updatedNotifications = await getNotifications(); 
+      setNotifications(updatedNotifications); 
+    } catch (error) {
+      console.error("Failed to fetch notifications:", error);
+    }
   };
 
-  const { setTitle, setTask } = useAppContext();
 
   useEffect(() => {
     setTitle("Notifications");
     setTask(1);
   }, [setTitle, setTask]);
+
+  const openNotificationModal = (notification) => {
+    setSelectedNotification(notification);
+    setIsNotificationModalOpen(true);
+  };
 
   const closeNotificationModal = () => {
     // Mark the notification as read when closing the modal
@@ -79,12 +55,19 @@ const NotificationsPage = () => {
     setIsCreateModalOpen(false);
   };
 
-  const handleCreateNotification = (newNotification) => {
-    setNotifications([
-      ...notifications,
-      { ...newNotification, createdByUser: true },
-    ]);
-    closeCreateNotificationModal();
+  const handleCreateNotification = async (newNotification) => {
+    try {
+      createNotification(newNotification);
+      
+      closeCreateNotificationModal();
+      await refreshNotifications();
+
+    } catch (error) {
+      setError("Failed to create notification."); // Set error state
+      console.error("Error creating notification:", error.message);
+    } 
+
+
   };
 
   const handleDeleteNotification = (id) => {
@@ -127,13 +110,13 @@ const NotificationsPage = () => {
                   ...notification,
                   // Truncate the body for display in the list
                   body:
-                    notification.body.length > 75
-                      ? `${notification.body.substring(0, 75)}...`
-                      : notification.body,
+                    notification.Body.length > 75
+                      ? `${notification.Body.substring(0, 75)}...`
+                      : notification.Body,
                 }}
                 onClick={() => openNotificationModal(notification)}
                 onDelete={
-                  notification.createdByUser
+                  notification.Sender == currentUser.Name
                     ? () => handleDeleteNotification(notification.id)
                     : null
                 }
@@ -152,24 +135,24 @@ const NotificationsPage = () => {
           onClose={closeNotificationModal}
         >
           <h2 className="text-xl font-bold mb-4">
-            {selectedNotification.title}
+            {selectedNotification.Title}
           </h2>
 
           <div className="mb-4">
             <h3 className="text-lg font-semibold">From:</h3>
-            <p>{selectedNotification.from}</p>
+            <p>{selectedNotification.Sender}</p>
           </div>
 
           <div className="mb-4">
             <h3 className="text-lg font-semibold">Date:</h3>
             <p className="text-sm text-gray-500">
-              {selectedNotification.timestamp}
+              {selectedNotification.Date}
             </p>
           </div>
 
           <div className="mb-4">
             <h3 className="text-lg font-semibold">Audience:</h3>
-            <p>{selectedNotification.audience}</p>
+            <p>{selectedNotification.Audience}</p>
           </div>
 
           <div className="mb-4">
@@ -182,7 +165,7 @@ const NotificationsPage = () => {
                 overflowY: "auto",
               }}
             >
-              <p className="break-words">{selectedNotification.body}</p>
+              <p className="break-words">{selectedNotification.Body}</p>
             </div>
           </div>
 
@@ -201,6 +184,7 @@ const NotificationsPage = () => {
           isOpen={isCreateModalOpen}
           onClose={closeCreateNotificationModal}
           onCreate={handleCreateNotification}
+          currentUser = {currentUser}
         />
       )}
     </div>

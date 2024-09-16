@@ -11,16 +11,8 @@ import {
   faMap,
 } from "@fortawesome/free-solid-svg-icons";
 import "./UserHome.css"; // Import custom CSS
-import { useAppContext } from "../../contexts/AppContext";
-import { useEffect } from "react";
 
 function UserHome() {
-  const { setTitle, setTask } = useAppContext();
-
-  useEffect(() => {
-    setTitle("Home");
-    setTask(1);
-  }, [setTitle, setTask]);
   return (
     <main className="main-container">
       <section className="upper-part">
@@ -70,12 +62,10 @@ function UserHome() {
         </section>
         <section className="lower-card-section  w-full flex flex-row justify-around">
           <Card className="lower-card">
-          <Link to={"/UserRental"}>
             <h2 className="card-title">Rent Bike</h2>
             <section className="card-icon">
               <FontAwesomeIcon icon={faBicycle} className="icon" />
             </section>
-            </Link>
           </Card>
           <Card className="lower-card">
             <Link to={"/UserBuses"}>

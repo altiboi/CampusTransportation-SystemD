@@ -1,5 +1,4 @@
 import React from "react";
-import {Link} from "react-router-dom"
 import Card from "../../components/Card";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -45,9 +44,8 @@ function Find() {
               <FontAwesomeIcon icon={faCheckCircle} className="icon" />
             </section>
             <section>
-              <Link to={'/UserWhereTo'}>
-              <h2 className="find-card-title"> Choose Destination</h2>
-              </Link>
+              <h2 className="find-card-title">Destination</h2>
+              <h2 className="find-place">Library Laws</h2>
             </section>
           </Card>
         </section>

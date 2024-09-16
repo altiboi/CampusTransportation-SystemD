@@ -5,54 +5,35 @@ import SearchBar from "../../components/common/staffComponents/SearchBar";
 import Modal from "../../components/common/staffComponents/Modal";
 import VehicleCard from "../../components/common/VehicleCard";
 import AddVehicleModal from "../../components/common/staffComponents/AddVehicleModal";
-import scooter from "../../assets/scooter.svg";
-import skateBoard from "../../assets/skateBoard.svg";
-import bus from "../../assets/bus.png";
-import bike from "../../assets/bike.svg";
+import scooter from "../../vehicles/scooter.png";
+import skateBoard from "../../vehicles/skateboard.png";
+import bus from "../../vehicles/bus.png";
+import bike from "../../vehicles/bicycle.png";
 import { useAppContext } from "../../contexts/AppContext";
+import { addVehicle, getAllVehicles } from "../../api/functions";
 
-const VEHICLE_TAGS = ["Bikes", "Scooters", "Buses", "Skateboards"];
+const VEHICLE_TAGS = ["bike", "scooter", "bus", "skateboard"];
 
-// Sample vehicle data
-const VEHICLES = [
-  {
-    id: 1,
-    type: "Bikes",
-    registration: "ABC123",
-    make: "Yamaha",
-    model: "MT-07",
-    year: 2022,
-    location: "Campus Central Park",
-  },
-  {
-    id: 2,
-    type: "Scooters",
-    registration: "XYZ789",
-    make: "Honda",
-    model: "Metropolitan",
-    year: 2023,
-    location: "Yale Village",
-  },
-  // Add more vehicle data here
-];
+
 
 const getVehicleImage = (type) => {
   switch (type) {
-    case "Bikes":
+    case "bike":
       return bike;
-    case "Scooters":
+    case "scooter":
       return scooter;
-    case "Skateboards":
+    case "skateboard":
       return skateBoard;
-    case "Buses":
+    case "buses":
       return bus;
     default:
       return null;
   }
 };
 
-const VehiclesPage = () => {
+const VehiclesPage = ({ vehicles  }) => {
   const [selectedTags, setSelectedTags] = useState([]);
+  const [localVehicles, setLocalVehicles] = useState(vehicles); // Local state for vehicles
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredVehicles, setFilteredVehicles] = useState([]);
   const [selectedVehicle, setSelectedVehicle] = useState(null);
@@ -68,7 +49,7 @@ const VehiclesPage = () => {
 
   useEffect(() => {
     const filterVehicles = () => {
-      return VEHICLES.filter((vehicle) => {
+      return localVehicles.filter((vehicle) => {
         const matchesTag =
           selectedTags.length === 0 || selectedTags.includes(vehicle.type);
         const matchesSearch =
@@ -82,7 +63,7 @@ const VehiclesPage = () => {
     };
 
     setFilteredVehicles(filterVehicles());
-  }, [selectedTags, searchTerm]);
+  }, [localVehicles, selectedTags, searchTerm]);
 
   const handleTagClick = (tag) => {
     setSelectedTags((prevTags) =>
@@ -114,9 +95,16 @@ const VehiclesPage = () => {
     setIsAddVehicleModalOpen(false);
   };
 
-  const handleAddVehicle = (newVehicle) => {
-    VEHICLES.push({ ...newVehicle, id: VEHICLES.length + 1 }); // Add new vehicle to the array
-    setFilteredVehicles([...VEHICLES]); // Update the filtered vehicles list
+  const handleAddVehicle = async (newVehicle) => {
+    try {
+      await addVehicle(newVehicle);
+      const updatedVehicles = await getAllVehicles(); 
+      
+      setLocalVehicles(updatedVehicles); 
+    } catch (error) {
+      console.error("Error adding vehicle:", error);
+    }
+    closeAddVehicleModal(); 
   };
 
   return (
@@ -149,9 +137,10 @@ const VehiclesPage = () => {
                 type={vehicle.type}
                 registration={vehicle.registration}
                 make={vehicle.make}
-                model={vehicle.model}
+                model ={vehicle.model}
+             
                 year={vehicle.year}
-                location={vehicle.location}
+                location={vehicle.rentalStationID}
                 onClick={() => openModal(vehicle)}
               />
             ))
@@ -177,6 +166,7 @@ const VehiclesPage = () => {
             <h3 className="text-lg font-semibold">Model</h3>
             <p>{selectedVehicle.model}</p>
           </div>
+         
           <div className="mb-4">
             <h3 className="text-lg font-semibold">Year</h3>
             <p>{selectedVehicle.year}</p>

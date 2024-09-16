@@ -4,7 +4,7 @@ import { faCreditCard } from '@fortawesome/free-solid-svg-icons'; // Solid icon
 import { faApplePay } from '@fortawesome/free-brands-svg-icons'; // Brand icon
 import Card from '../../components/Card';
 
-import './UserPayments.scss'; 
+import './UserPayments.scss'; // Make sure this path is correct
 
 function UserPayments() {
   return (

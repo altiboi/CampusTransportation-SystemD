@@ -1,4 +1,3 @@
-// src/App.js
 import { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import Sidebar from "./components/common/Sidebar";
@@ -10,16 +9,23 @@ import { AppProvider, useAppContext } from "./contexts/AppContext";
 import MobileHeader from "./components/common/MobileHeader";
 import DesktopHeader from "./components/common/DesktopHeader";
 import { useAuth } from "./contexts/AuthProvider";
+import { getAllVehicles , getNotifications } from "./api/functions"; 
+
 
 export function App() {
   const [activeMenuItem, setActiveMenuItem] = useState("");
   const { currentUser, userLoggedIn, loading } = useAuth();
   const [role, setRole] = useState("staff");
+  const [vehicles, setVehicles] = useState([]); // Add state for vehicles
+  const [notifs, setNotifs] = useState([]); // Add state for notifs
+
+
   const location = useLocation();
   const { task } = useAppContext();
 
   useEffect(() => {
     const fetchUserRole = async () => {
+      console.log(currentUser.name)
       if (currentUser) {
         try {
           setRole(currentUser.role);
@@ -33,6 +39,35 @@ export function App() {
   }, [currentUser]);
 
   useEffect(() => {
+    const fetchVehicles = async () => {
+      try {
+        const vehicleData = await getAllVehicles();
+        setVehicles(vehicleData);
+      } catch (error) {
+        console.error("Error fetching vehicles:", error.message);
+      }
+    };
+
+    fetchVehicles();
+  }, []);
+
+  useEffect(() => {
+    const fetchNotifs = async () => {
+      try {
+        const notifData = await getNotifications();
+        console.log(notifData)
+        setNotifs(notifData);
+      } catch (error) {
+        console.error("Error fetching notifications:", error.message);
+      }
+    };
+
+    fetchNotifs();
+  }, []);
+
+
+
+  useEffect(() => {
     switch (location.pathname) {
       case "/home":
         setActiveMenuItem("Home");
@@ -42,15 +77,6 @@ export function App() {
         break;
       case "/staffanalytics":
         setActiveMenuItem("Analytics");
-        break;
-        case "/UserBuses":
-        setActiveMenuItem("Services");
-        break;
-        case "/UserRental":
-          setActiveMenuItem("home");
-          break;
-        case "/":
-        setActiveMenuItem("home");
         break;
       case "/userRental":
         setActiveMenuItem("home");
@@ -85,9 +111,6 @@ export function App() {
       case "/vehicles":
         setActiveMenuItem("Vehicles");
         break;
-      case "/whereTo":
-        setActiveMenuItem("whereTo");
-        break;
       default:
         setActiveMenuItem(""); // Clear active menu item if path doesn't match
         break;
@@ -100,7 +123,8 @@ export function App() {
 
   const renderRoutes = () => {
     if (role === "staff") {
-      return <StaffRoutes />;
+      return <StaffRoutes vehicles={vehicles} notifs = {notifs} currentUser = {currentUser.name} />;
+      
     } else if (role === "user") {
       return <UserRoutes />;
     } else {
