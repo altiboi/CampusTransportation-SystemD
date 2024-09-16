@@ -4,7 +4,7 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import UserHome from "../pages/UserPages/UserHome";
 import UserService from "../pages/UserPages/UserService";
 import Find from "../pages/UserPages/Find";
-import Rental from "../pages/UserPages/UserRental";
+import Rental from "../pages/UserPages/Rental";
 import Book from "../pages/UserPages/Book";
 import Reserve from "../pages/UserPages/Reserve";
 import Confirmation from "../pages/UserPages/Confirmation";
@@ -18,10 +18,6 @@ import Register from "../pages/Register";
 import ProtectedRoute from "./ProtectedRoute";
 import { useAuth } from "../contexts/AuthProvider";
 import NotFoundPage from "../pages/NotFoundPage"; // Optional: Catch-all route for undefined paths
-import NotificationsPage from "../pages/UserPages/UserNotification";
-import UserWhereTo from "../pages/UserPages/UserWherTo";
-import UserBusSchedule from "../pages/UserPages/UserBusSchedule";
-import UserMap from "../pages/UserPages/UserMap";
 
 function UserRoutes() {
   const { userLoggedIn } = useAuth();
@@ -81,22 +77,6 @@ function UserRoutes() {
       <Route
         path="/userBuses"
         element={<ProtectedRoute element={<UserBuses />} />}
-      />
-      <Route
-        path="/notifications"
-        element={<ProtectedRoute element={<NotificationsPage/>} />}
-      />
-      <Route
-        path="/UserWhereTo"
-        element={<ProtectedRoute element={<UserWhereTo/>} />}
-      />
-      <Route
-        path="/UserBusSchedule"
-        element={<ProtectedRoute element={<UserBusSchedule/>} />}
-      />
-      <Route
-        path="/UserMap"
-        element={<ProtectedRoute element={<UserMap/>} />}
       />
       {/* Optional: Catch-all route for undefined paths */}
       <Route path="*" element={<NotFoundPage />} />

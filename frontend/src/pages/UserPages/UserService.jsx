@@ -6,17 +6,8 @@ import { faTruck, faLocationDot, faRoute, faBicycle, faClipboardList, faCalendar
 import { faMapMarkerAlt } from '@fortawesome/free-solid-svg-icons'; 
 
 import './UserService.css'; 
-import { useAppContext } from "../../contexts/AppContext";
-import { useEffect } from "react";
-
 
 function UserService() {
-  const { setTitle, setTask } = useAppContext();
-
-  useEffect(() => {
-    setTitle("Services");
-    setTask(1);
-  }, [setTitle, setTask]);
   return (
     <main className='user-service-container'>
       <section className='header-section'>
@@ -39,7 +30,7 @@ function UserService() {
           <section className="card-item">
             <Card className="card card-highlight">
               <section className='card-content'>
-              <Link to={'/UserMap'}> <span className='card-heading'>Nearby Rental Stations</span></Link> 
+                <span className='card-heading'>Nearby Rental Stations</span>
               </section>
               <section className='card-icon'>
                 <FontAwesomeIcon icon={faMapMarkerAlt} className='icon-large' />
@@ -61,10 +52,9 @@ function UserService() {
             </section>
           </Card>
           <Card className="action-card">
-            <Link to={'/UserBusSchedule'}><h2 className="card-heading">Bus Schedule</h2></Link>
+            <h2 className="card-heading">Bus Schedule</h2>
             <section className='card-icon'>
               <FontAwesomeIcon icon={faClipboardList} className='icon-medium' />
-           
             </section>
           </Card>
           <Card className="action-card">
@@ -74,7 +64,7 @@ function UserService() {
             </section>
           </Card>
           <Card className="action-card">
-            <Link to={'/UserFines'}  className="action-Link w-full h-full">
+            <Link to={'/UserFines'}  className="w-full h-full">
               <h2 className="card-heading">Fines</h2>
               <section className='card-icon'>
                 <FontAwesomeIcon icon={faTicket} className='icon-medium' />
@@ -89,7 +79,7 @@ function UserService() {
           </Card>
           <Card className="action-card">
             <section className='card-content'>
-              <Link to={'/UserMap'}><span className='card-heading'>Campus Map</span></Link>
+              <span className='card-heading'>Campus Map</span>
             </section>
             <section className='card-icon'>
               <FontAwesomeIcon icon={faLocationDot} className='icon-medium' />
