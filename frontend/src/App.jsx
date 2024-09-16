@@ -85,6 +85,9 @@ export function App() {
       case "/vehicles":
         setActiveMenuItem("Vehicles");
         break;
+      case "/whereTo":
+        setActiveMenuItem("whereTo");
+        break;
       default:
         setActiveMenuItem(""); // Clear active menu item if path doesn't match
         break;
