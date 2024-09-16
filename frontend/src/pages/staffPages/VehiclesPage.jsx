@@ -5,31 +5,10 @@ import SearchBar from "../../components/common/staffComponents/SearchBar";
 import Modal from "../../components/common/staffComponents/Modal";
 import VehicleCard from "../../components/common/VehicleCard";
 import AddVehicleModal from "../../components/common/staffComponents/AddVehicleModal";
-import scooter from "../../vehicles/scooter.png";
-import skateBoard from "../../vehicles/skateboard.png";
-import bus from "../../vehicles/bus.png";
-import bike from "../../vehicles/bicycle.png";
 import { useAppContext } from "../../contexts/AppContext";
 import { addVehicle, getAllVehicles, fetchRentalStations } from "../../api/functions";
 
 const VEHICLE_TAGS = ["bike", "scooter", "bus", "skateboard"];
-
-
-
-const getVehicleImage = (type) => {
-  switch (type) {
-    case "bike":
-      return bike;
-    case "scooter":
-      return scooter;
-    case "skateboard":
-      return skateBoard;
-    case "buses":
-      return bus;
-    default:
-      return null;
-  }
-};
 
 const VehiclesPage = ({ vehicles  }) => {
   const [selectedTags, setSelectedTags] = useState([]);
