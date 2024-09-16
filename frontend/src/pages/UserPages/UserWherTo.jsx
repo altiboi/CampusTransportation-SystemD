@@ -68,7 +68,7 @@ function UserWhereTo() {
           <option value="the-matrix">The Matrix</option>
           <option value="flower-hall">Flower Hall</option>
           <option value="wss3">WSS3</option>
-          <option value="uthombo-building">Uthombo Building</option>
+          <option value="umthombo-building">Umthombo Building</option>
           <option value="bozoli">Bozoli</option>
           <option value="other">Other</option>
         </select>
