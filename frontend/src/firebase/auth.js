@@ -35,6 +35,8 @@ export const doCreateUserWithEmailAndPassword = async (
     surname,
     dateOfBirth,
     role,
+    readNotifications: [],
+
   });
 
   return user;
