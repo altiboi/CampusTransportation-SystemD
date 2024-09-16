@@ -28,17 +28,6 @@ const INITIAL_NOTIFICATIONS = [
     from: "Sims",
     timestamp: "2024-09-11T09:40:51.640Z",
   },
-  {
-    id: 3,
-    title: "New Staff Member",
-    body: "Please welcome Simphile Mkhize as our new backup dancer. Please greet him and apprecitate him for his hard work whenever you see him",
-    isRead: true,
-    profileImage: "https://via.placeholder.com/50",
-    audience: "Staff",
-    createdByUser: true,
-    from: "Korah",
-    timestamp: "2024-09-11T09:40:51.640Z",
-  },
 ];
 
 const NotificationsPage = () => {
@@ -101,21 +90,6 @@ const NotificationsPage = () => {
         <h1 className="text-2xl font-bold mb-4">Notifications</h1>
 
         <div className="flex justify-between items-center mb-4">
-          <button
-            className="bg-black text-white px-4 py-2 rounded hover:bg-gray-800"
-            onClick={openCreateNotificationModal}
-          >
-            Create Notification
-          </button>
-
-          <button
-            className="bg-gray-200 px-4 py-2 rounded hover:bg-gray-300"
-            onClick={() => setShowUserNotifications(!showUserNotifications)}
-          >
-            {showUserNotifications
-              ? "Show All Notifications"
-              : "Show My Notifications"}
-          </button>
         </div>
 
         <div className="grid grid-cols-1 gap-4">
