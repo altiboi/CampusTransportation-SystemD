@@ -67,14 +67,39 @@ export const addVehicle = async (vehicle) => {
     }
 };
 
-export const setNotificationAsRead = async (vehicle) => {
+export const createNotification = async (notification) => {
     try {
+        const notificationData = {
+            Audience: notification.Audience,
+            Body: notification.Body,
+            Date: notification.Date,
+            Sender: notification.Sender,
+            Title: notification.Title,
+            isRead: notification.isRead
+        };
+
+        // Add the notification to the Firestore database
+        const docRef = await addDoc(collection(db, 'Notifications'), notificationData);
+
+        console.log("Notification added with ID: ", docRef.id);
+        return docRef.id;
         
     } catch (error) {
         console.error("Error setting Notification as read:", error.message);
         throw error;
     }
 };
+
+export const setNotificationAsRead = async (notificationId) => {
+    try {
+      const notificationRef = doc(db, "notifications", notificationId);
+      await updateDoc(notificationRef, {
+        isRead: true,
+      });
+    } catch (error) {
+      console.error("Error setting notification as read:", error);
+    }
+  };
 
 
 

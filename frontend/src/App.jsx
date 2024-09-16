@@ -9,7 +9,7 @@ import { AppProvider, useAppContext } from "./contexts/AppContext";
 import MobileHeader from "./components/common/MobileHeader";
 import DesktopHeader from "./components/common/DesktopHeader";
 import { useAuth } from "./contexts/AuthProvider";
-import { getAllVehicles } from "./api/functions"; // Import the function
+import { getAllVehicles , getNotifications } from "./api/functions"; 
 
 
 export function App() {
@@ -17,12 +17,15 @@ export function App() {
   const { currentUser, userLoggedIn, loading } = useAuth();
   const [role, setRole] = useState("staff");
   const [vehicles, setVehicles] = useState([]); // Add state for vehicles
+  const [notifs, setNotifs] = useState([]); // Add state for notifs
+
 
   const location = useLocation();
   const { task } = useAppContext();
 
   useEffect(() => {
     const fetchUserRole = async () => {
+      console.log(currentUser.name)
       if (currentUser) {
         try {
           setRole(currentUser.role);
@@ -47,6 +50,22 @@ export function App() {
 
     fetchVehicles();
   }, []);
+
+  useEffect(() => {
+    const fetchNotifs = async () => {
+      try {
+        const notifData = await getNotifications();
+        console.log(notifData)
+        setNotifs(notifData);
+      } catch (error) {
+        console.error("Error fetching notifications:", error.message);
+      }
+    };
+
+    fetchNotifs();
+  }, []);
+
+
 
   useEffect(() => {
     switch (location.pathname) {
@@ -104,7 +123,8 @@ export function App() {
 
   const renderRoutes = () => {
     if (role === "staff") {
-      return <StaffRoutes vehicles={vehicles} />;
+      return <StaffRoutes vehicles={vehicles} notifs = {notifs} currentUser = {currentUser.name} />;
+      
     } else if (role === "user") {
       return <UserRoutes />;
     } else {

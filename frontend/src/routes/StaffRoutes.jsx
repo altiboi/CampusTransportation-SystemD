@@ -14,8 +14,10 @@ import ProtectedRoute from "./ProtectedRoute";
 import { useAuth } from "../contexts/AuthProvider";
 import NotFoundPage from "../pages/NotFoundPage"; // Import the NotFoundPage component
 
-function StaffRoutes({ vehicles }) {
+function StaffRoutes({ vehicles , notifs ,currentUser}) {
   const { userLoggedIn } = useAuth();
+
+
 
   return (
     <Routes>
@@ -36,7 +38,7 @@ function StaffRoutes({ vehicles }) {
       />
       <Route
         path="/notifications"
-        element={<ProtectedRoute element={<NotificationsPage />} />}
+        element={<ProtectedRoute element={<NotificationsPage notifs = {notifs} currentUser = {currentUser}/>} />}
       />
       <Route
         path="/staffanalytics"

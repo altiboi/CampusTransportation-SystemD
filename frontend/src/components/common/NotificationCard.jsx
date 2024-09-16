@@ -10,12 +10,12 @@ const NotificationCard = ({ notification, onClick, onDelete }) => {
       onClick={onClick}
     >
       <div className="flex items-center">
-        <Avatar name={notification.from} size={40} />{" "}
+        <Avatar name={notification.Sender} size={40} />{" "}
         {/* Replace profile image with Avatar */}
         <div className="ml-4 flex-1">
-          <h4 className="text-lg">{notification.title}</h4>
+          <h4 className="text-lg">{notification.Title}</h4>
           <p className="text-sm text-gray-600">
-            {notification.body.slice(0, 50)}...
+            {notification.Body.slice(0, 50)}...
           </p>
         </div>
         {onDelete && (

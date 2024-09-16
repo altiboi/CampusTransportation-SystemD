@@ -1,22 +1,23 @@
 // src/components/common/CreateNotificationModal.jsx
 import React, { useState } from "react";
 import Modal from "./staffComponents/Modal";
-const CreateNotificationModal = ({ isOpen, onClose, onCreate }) => {
-  const [title, setTitle] = useState("");
-  const [body, setBody] = useState("");
-  const [attachment, setAttachment] = useState(null);
-  const [audience, setAudience] = useState("Everyone");
+const CreateNotificationModal = ({ isOpen, onClose, onCreate ,currentUser}) => {
+  const [Title, setTitle] = useState("");
+  const [Body, setBody] = useState("");
+  const [Sender,setSender] = useState(currentUser);
+  
+  const [Audience, setAudience] = useState("Everyone");
 
   const handleCreate = () => {
     const newNotification = {
-      id: Date.now(),
-      title,
-      body,
+     
+      Title,
+      Body,
       isRead: false,
-      profileImage: "https://via.placeholder.com/50", // Placeholder image
-      audience,
-      from: "Nkabi",
-      timestamp: new Date().toISOString(),
+  
+      Audience,
+      Sender,
+      Date: new Date().toISOString(),
     };
     onCreate(newNotification);
   };
@@ -28,23 +29,19 @@ const CreateNotificationModal = ({ isOpen, onClose, onCreate }) => {
         type="text"
         placeholder="Title"
         className="w-full p-2 mb-4 border border-gray-300 rounded"
-        value={title}
+        value={Title}
         onChange={(e) => setTitle(e.target.value)}
       />
       <textarea
         placeholder="Body"
         className="w-full p-2 mb-4 border border-gray-300 rounded"
-        value={body}
+        value={Body}
         onChange={(e) => setBody(e.target.value)}
       />
-      <input
-        type="file"
-        className="w-full p-2 mb-4"
-        onChange={(e) => setAttachment(e.target.files[0])}
-      />
+     
       <select
         className="w-full p-2 mb-4 border border-gray-300 rounded"
-        value={audience}
+        value={Audience}
         onChange={(e) => setAudience(e.target.value)}
       >
         <option value="Staff">Staff</option>
