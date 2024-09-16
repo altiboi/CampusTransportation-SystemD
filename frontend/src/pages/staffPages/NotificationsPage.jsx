@@ -4,7 +4,7 @@ import NotificationCard from "../../components/common/NotificationCard";
 import Modal from "../../components/common/staffComponents/Modal";
 import CreateNotificationModal from "../../components/common/CreateNotificationModal";
 import { useAppContext } from "../../contexts/AppContext";
-import { createNotification } from "../../api/functions"; // Update the path
+import { createNotification, getNotifications } from "../../api/functions"; // Update the path
 
 
 const NotificationsPage = ({ notifs , currentUser}) => {  
@@ -15,6 +15,16 @@ const NotificationsPage = ({ notifs , currentUser}) => {
   const [showUserNotifications, setShowUserNotifications] = useState(false);
 
   const { setTitle, setTask } = useAppContext();
+
+  const refreshNotifications = async () => {
+    try {
+      const updatedNotifications = await getNotifications(); 
+      setNotifications(updatedNotifications); 
+    } catch (error) {
+      console.error("Failed to fetch notifications:", error);
+    }
+  };
+
 
   useEffect(() => {
     setTitle("Notifications");
@@ -50,10 +60,14 @@ const NotificationsPage = ({ notifs , currentUser}) => {
       createNotification(newNotification);
       
       closeCreateNotificationModal();
+      await refreshNotifications();
+
     } catch (error) {
       setError("Failed to create notification."); // Set error state
       console.error("Error creating notification:", error.message);
     } 
+
+
   };
 
   const handleDeleteNotification = (id) => {
