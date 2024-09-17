@@ -51,7 +51,7 @@ function Register() {
   };
 
   return (
-    <div className="flex w-full h-screen overflow-hidden">
+    <div className="flex w-full h-full overflow-hidden">
       <div className="w-full overflow-auto flex flex-col items-center justify-center lg:w-1/2">
         <div className="w-11/12 max-w-[700px] px-10 py-20 rounded-3xl bg-white border-2 border-gray-100">
           <h1 className="text-5xl font-semibold">Sign Up!</h1>
@@ -203,7 +203,8 @@ function Register() {
           </div>
         </div>
       </div>
-      <div className="hidden relative w-1/2 h-full lg:flex lg:h-full items-center justify-center bg-black">
+      <div className="hidden lg:flex w-full lg:w-1/2 h-full items-center justify-center bg-black">
+        {" "}
         <img src={logo} alt="Logo" className="w-1/2 h-auto animate-bounce" />
       </div>
     </div>

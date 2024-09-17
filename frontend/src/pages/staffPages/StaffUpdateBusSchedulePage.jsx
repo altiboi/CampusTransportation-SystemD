@@ -1,8 +1,7 @@
-// src/pages/StaffUpdateBusSchedulePage.jsx
 import React, { useState, useEffect } from "react";
 import MobileHeader from "../../components/common/MobileHeader";
 import SearchBar from "../../components/common/staffComponents/SearchBar";
-import BusShedule from "../../components/common/staffComponents/BusSchedule";
+import BusSchedule from "../../components/common/staffComponents/BusSchedule";
 import { useAppContext } from "../../contexts/AppContext";
 
 function StaffUpdateBusSchedulePage() {
@@ -12,56 +11,25 @@ function StaffUpdateBusSchedulePage() {
 
   // Define the schedules outside of the component's render cycle
   const schedules = [
-    {
-      id: 1,
-      pickup: "Main Campus",
-      destination: "Education Campus",
-      time: "8:00 AM",
-    },
-    {
-      id: 2,
-      pickup: "Med Campus",
-      destination: "Yale Village",
-      time: "9:15 AM",
-    },
-    {
-      id: 3,
-      pickup: "Campus Central Park Town",
-      destination: "Horizon Heights",
-      time: "11:00 AM",
-    },
-    {
-      id: 4,
-      pickup: "44 Stanley",
-      destination: "Main Campus",
-      time: "1:30 PM",
-    },
-    {
-      id: 5,
-      pickup: "Education Campus",
-      destination: "Med Campus",
-      time: "3:45 PM",
-    },
-    {
-      id: 6,
-      pickup: "Yale Village",
-      destination: "Campus Central Park Town",
-      time: "5:00 PM",
-    },
-    {
-      id: 7,
-      pickup: "Horizon Heights",
-      destination: "44 Stanley",
-      time: "7:15 PM",
-    },
+    { id: 1, routeName: "Full Circuit" },
+    { id: 2, routeName: "NSW | WEC | AMIC | NSW | WEC" },
+    { id: 3, routeName: "WJ | WEC | AMIC" },
+    { id: 4, routeName: "WJ | WEC | AMIC" },
+    { id: 5, routeName: "AMIC | NSW | WEC" },
+    { id: 6, routeName: "AMIC | NSW | WEC" },
+    { id: 7, routeName: "EOH | KNK | AMIC" },
+    { id: 8, routeName: "Full Circuit (excluding WJ RESIDENCE)" },
+    { id: 9, routeName: "WJ | WEC | AMIC" },
+    { id: 10, routeName: "AMIC | KNK | ROSEBANK | KNK| AMIC" },
+    { id: 11, routeName: "AMIC | NSW| ROSEBANK" },
+    { id: 12, routeName: "WEC | EOH | ROSEBANK" },
+    { id: 13, routeName: "WJ | ROSEBANK" },
   ];
 
   useEffect(() => {
     // Filter schedules based on the search term when the searchTerm changes
-    const filtered = schedules.filter(
-      (schedule) =>
-        schedule.pickup.toLowerCase().includes(searchTerm.toLowerCase())
-      // schedule.destination.toLowerCase().includes(searchTerm.toLowerCase())
+    const filtered = schedules.filter((schedule) =>
+      schedule.routeName.toLowerCase().includes(searchTerm.toLowerCase())
     );
     setFilteredSchedules(filtered);
   }, [searchTerm]); // Only depend on searchTerm to avoid infinite loop
@@ -80,13 +48,7 @@ function StaffUpdateBusSchedulePage() {
         </div>
         <div className="space-y-4">
           {filteredSchedules.map((schedule) => (
-            <BusShedule
-              key={schedule.id}
-              pickup={schedule.pickup}
-              // destination={schedule.destination}
-              time={schedule.time}
-              id={schedule.id}
-            />
+            <BusSchedule id={schedule.id} pickup={schedule.routeName} />
           ))}
         </div>
       </div>

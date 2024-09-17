@@ -7,6 +7,7 @@ import Find from "../pages/UserPages/Find";
 import Rental from "../pages/UserPages/UserRental";
 import Book from "../pages/UserPages/Book";
 import Reserve from "../pages/UserPages/Reserve";
+import UserTestPage from "../components/common/UserTestPage";
 import Confirmation from "../pages/UserPages/Confirmation";
 import FinalDetails from "../pages/UserPages/FinalDetails";
 import UserActivity from "../pages/UserPages/UserActivity";
@@ -36,7 +37,10 @@ function UserRoutes() {
       />
       <Route path="/register" element={<Register />} />
 
-      <Route path="/home" element={<ProtectedRoute element={<UserHome />} />} />
+      <Route
+        path="/home"
+        element={<ProtectedRoute element={<UserTestPage />} />}
+      />
       <Route
         path="/userService"
         element={<ProtectedRoute element={<UserService />} />}
