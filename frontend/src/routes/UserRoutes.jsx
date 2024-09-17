@@ -4,7 +4,7 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import UserHome from "../pages/UserPages/UserHome";
 import UserService from "../pages/UserPages/UserService";
 import Find from "../pages/UserPages/Find";
-import Rental from "../pages/UserPages/UserRental";
+import Rental from "../pages/UserPages/Rental";
 import Book from "../pages/UserPages/Book";
 import Reserve from "../pages/UserPages/Reserve";
 import Confirmation from "../pages/UserPages/Confirmation";
@@ -18,7 +18,8 @@ import Register from "../pages/Register";
 import ProtectedRoute from "./ProtectedRoute";
 import { useAuth } from "../contexts/AuthProvider";
 import NotFoundPage from "../pages/NotFoundPage"; // Optional: Catch-all route for undefined paths
-
+import Returns from "../pages/UserPages/Returns";
+import ReturnConfirmation from "../pages/UserPages/ReturnConfirmation.jsx";
 function UserRoutes() {
   const { userLoggedIn } = useAuth();
 
@@ -45,6 +46,14 @@ function UserRoutes() {
       <Route
         path="/userRental"
         element={<ProtectedRoute element={<Rental />} />}
+      />
+         <Route
+        path="/Returns"
+        element={<ProtectedRoute element={<Returns />} />}
+      />
+         <Route
+        path="/ReturnConfirmation"
+        element={<ProtectedRoute element={<ReturnConfirmation />} />}
       />
       <Route
         path="/book/:itemName"

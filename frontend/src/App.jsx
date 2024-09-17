@@ -37,15 +37,62 @@ export function App() {
       case "/home":
         setActiveMenuItem("Home");
         break;
-      case "/":
-        setActiveMenuItem("Home");
-        break;
+      
       case "/staffanalytics":
         setActiveMenuItem("Analytics");
+        break;
+        case "/Returns":
+        setActiveMenuItem("Services");
+        break;
+        case "/ReturnConfirmation":
+        setActiveMenuItem("Services");
+        break;
+        case "/confirmation":
+        setActiveMenuItem("Services");
+        break;
+        case "/finalDetails":
+        setActiveMenuItem("Services");
         break;
         case "/UserBuses":
         setActiveMenuItem("Services");
         break;
+         case "/Book/Bike%201":
+        setActiveMenuItem("Services");
+        break;
+        case "/Book/Bike%202":
+          setActiveMenuItem("Services");
+          break;
+          case "/Book/Scooter%201":
+          setActiveMenuItem("Services");
+          break;
+          case "/Book/Scooter%202":
+          setActiveMenuItem("Services");
+          break;
+          case "/Book/Skateboard%201":
+          setActiveMenuItem("Services");
+          break;
+          case "/Book/Skateboard%202":
+          setActiveMenuItem("Services");
+          break;
+          case "/Reserve/Bike%201":
+            setActiveMenuItem("Services");
+            break;
+            case "/Reserve/Bike%202":
+              setActiveMenuItem("Services");
+              break;
+              case "/Reserve/Scooter%201":
+                setActiveMenuItem("Services");
+                break;
+                case "/Reserve/Scooter%202":
+                  setActiveMenuItem("Services");
+                  break;
+                  case "/Reserve/Skateboard%201":
+                  setActiveMenuItem("Services");
+                  break;
+                  case "/Reserve/Skateboard%202":
+                  setActiveMenuItem("Services");
+                  break;
+                  
         case "/UserRental":
           setActiveMenuItem("home");
           break;

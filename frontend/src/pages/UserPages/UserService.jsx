@@ -73,6 +73,7 @@ function UserService() {
               <FontAwesomeIcon icon={faCalendarCheck} className='icon-medium' />
             </section>
           </Card>
+
           <Card className="action-card">
             <Link to={'/UserFines'}  className="w-full h-full">
               <h2 className="card-heading">Fines</h2>
@@ -82,10 +83,12 @@ function UserService() {
             </Link>
           </Card>
           <Card className="action-card">
+          <Link to={'/Returns'}  className="w-full h-full">
             <h2 className="card-heading">Returns</h2>
             <section className='card-icon'>
               <FontAwesomeIcon icon={faRotateLeft} className='icon-medium' />
             </section>
+            </Link>
           </Card>
           <Card className="action-card">
             <section className='card-content'>

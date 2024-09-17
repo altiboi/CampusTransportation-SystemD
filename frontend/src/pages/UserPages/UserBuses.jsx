@@ -20,8 +20,8 @@ function UserBuses() {
     const handleDownloadClick = () => {
         // Create a mock PDF for download
         const link = document.createElement('a');
-        link.href = "/mock-bus-schedule.pdf"; // Mock PDF path
-        link.download = 'bus-schedule.pdf';
+        link.href = "/bus.pdf"; // Mock PDF path
+        link.download = 'bus.pdf';
         link.click();
     };
 
