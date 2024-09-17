@@ -16,6 +16,7 @@ import { useLocation } from "react-router-dom";
 import logo from "../../assets/logo.png";
 import { useNavigate } from "react-router-dom"; // Import useNavigate to redirect after logout
 import { doSignOut } from "../../firebase/auth";
+import React from "react";
 
 const Sidebar = ({ activeMenuItem, handleMenuItemClick, role }) => {
   const location = useLocation();
@@ -111,7 +112,7 @@ const Sidebar = ({ activeMenuItem, handleMenuItemClick, role }) => {
             <FontAwesomeIcon icon={faHome} className="mr-2" />
             Home
           </Link>
-          
+
           <Link
             to="/userService"
             className={`flex items-center justify-start px-4 py-3 transition transform hover:scale-105 ${
@@ -124,7 +125,7 @@ const Sidebar = ({ activeMenuItem, handleMenuItemClick, role }) => {
             <FontAwesomeIcon icon={faThLarge} className="mr-2" />
             Services
           </Link>
-          
+
           <Link
             to="/userActivity"
             className={`flex items-center justify-start px-4 py-3 transition transform hover:scale-105 ${

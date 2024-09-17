@@ -43,13 +43,13 @@ export function App() {
       case "/staffanalytics":
         setActiveMenuItem("Analytics");
         break;
-        case "/UserBuses":
+      case "/UserBuses":
         setActiveMenuItem("Services");
         break;
-        case "/UserRental":
-          setActiveMenuItem("home");
-          break;
-        case "/":
+      case "/UserRental":
+        setActiveMenuItem("home");
+        break;
+      case "/":
         setActiveMenuItem("home");
         break;
       case "/userRental":
@@ -90,10 +90,6 @@ export function App() {
         break;
     }
   }, [location.pathname]);
-
-  const handleMenuItemClick = (menuItem) => {
-    setActiveMenuItem(menuItem);
-  };
 
   const renderRoutes = () => {
     if (role === "staff") {

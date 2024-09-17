@@ -19,7 +19,7 @@ function UserHome() {
 
   useEffect(() => {
     setTitle("Home");
-    setTask(1);
+    setTask(0);
   }, [setTitle, setTask]);
   return (
     <main className="main-container">
@@ -70,11 +70,11 @@ function UserHome() {
         </section>
         <section className="lower-card-section  w-full flex flex-row justify-around">
           <Card className="lower-card">
-          <Link to={"/UserRental"}>
-            <h2 className="card-title">Rent Bike</h2>
-            <section className="card-icon">
-              <FontAwesomeIcon icon={faBicycle} className="icon" />
-            </section>
+            <Link to={"/UserRental"}>
+              <h2 className="card-title">Rent Bike</h2>
+              <section className="card-icon">
+                <FontAwesomeIcon icon={faBicycle} className="icon" />
+              </section>
             </Link>
           </Card>
           <Card className="lower-card">
