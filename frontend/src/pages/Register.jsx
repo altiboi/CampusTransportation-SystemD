@@ -116,7 +116,7 @@ function Register() {
                 />
               </div>
               <div className="flex flex-col mt-4">
-                <label className="text-sm text-gray-600 font-bold">
+                <label  className="text-sm text-gray-600 font-bold">
                   Date of Birth
                 </label>
                 <input
