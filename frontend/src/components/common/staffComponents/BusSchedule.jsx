@@ -4,10 +4,11 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBus } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 
-const BusSchedule = ({ pickup, destination, id }) => {
+const BusSchedule = ({ route, id }) => {
   return (
     <Link
-      to={`/scheduledetails/${id}`} // Ensure the correct path for redirection
+      to={`/scheduledetails/${id}`}
+      state={{ route }} // Ensure the correct path for redirection
       className="block" // Make Link a block element
     >
       <div className="relative bg-white rounded-lg p-4 hover:scale-105 hover:shadow-lg max-w-2xl h-32 mx-auto overflow-hidden flex items-center justify-center">
@@ -25,9 +26,8 @@ const BusSchedule = ({ pickup, destination, id }) => {
         <div className="flex items-center space-x-4 z-10 bg-white px-2">
           {" "}
           {/* Background color to "cut" the line */}
-          <span className="text-black font-semibold">{pickup}</span>
+          <span className="text-black font-semibold">{route.route_name}</span>
           <FontAwesomeIcon icon={faBus} className="text-black" />
-          <span className="text-black font-semibold">{destination}</span>
         </div>
       </div>
     </Link>

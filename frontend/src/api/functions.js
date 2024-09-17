@@ -1,5 +1,5 @@
 import { auth, rentalservice_db , db } from "../firebase/firebase.js";
-import { collection, getDocs , addDoc } from "firebase/firestore";
+import { collection, addDoc, getDocs, query, where } from "firebase/firestore";
 
 
 export const getAllVehicles = async () => {
@@ -134,5 +134,25 @@ export const setNotificationAsRead = async (notificationId) => {
       console.error("Error setting notification as read:", error);
     }
   };
-
-
+  
+  export const fetchBusRoutes = async () => {
+    try {
+      const today = new Date().getDay();
+      const dayType = today === 0 || today === 6 ? "weekend" : "weekday";
+      const q = query(collection(db, "Bus-Schedules"), where("day_type", "==", dayType));
+      const querySnapshot = await getDocs(q);
+  
+      if (!querySnapshot.empty) {
+        const routes = querySnapshot.docs.map(doc => ({
+          id: doc.id,
+          ...doc.data()
+        }));
+        return routes;
+      } else {
+        console.log("No documents found for the specified day type.");
+        return [];
+      }
+    } catch (error) {
+      console.error("Error fetching bus routes:", error);
+    }
+  };
