@@ -20,25 +20,6 @@ export const getAllVehicles = async () => {
     }
 };
 
-export const getNotifications = async () => {
-    try {
-        const notifsCollection = collection(db, "Notifications");
-
-       
-        const NotifSnapshot = await getDocs(notifsCollection);
-        const notifsList = NotifSnapshot.docs.map(doc => ({
-            id: doc.id,  
-            ...doc.data() 
-        }));
-        console.log(notifsList)
-
-        return notifsList;
-    } catch (error) {
-        console.error("Error fetching Notifications:", error.message);
-        throw error;
-    }
-};
-
 export const addVehicle = async (vehicle) => {
     try {
         const vehiclesCollection = collection(rentalservice_db, "Vehicles");
@@ -78,6 +59,70 @@ export const fetchRentalStations = async () => {
   
     return rentalStationsList;
 }
+
+export const getUserRentals = async (userID) => {
+  try {
+      const rentalsCollection = collection(rentalservice_db, "VehicleRentals");
+      
+      // Query to filter rentals by userID
+      const userRentalsQuery = query(rentalsCollection, where("userID", "==", userID));
+
+      // Fetch rentals based on the query
+      const rentalsSnapshot = await getDocs(userRentalsQuery);
+      const rentalsList = rentalsSnapshot.docs.map(doc => ({
+          id: doc.id,  
+          ...doc.data() 
+      }));
+
+      return rentalsList;
+  } catch (error) {
+      console.error("Error fetching user rentals:", error.message);
+      throw error;
+  }
+};
+
+export const fetchUserFines = async (userID) => {
+  try {
+    const finesQuery = query(collection(rentalservice_db, 'RentalFines'), where("userID", "==", userID));
+    const querySnapshot = await getDocs(finesQuery);
+    const fines = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    return fines;
+  } catch (error) {
+    console.error("Error fetching fines: ", error);
+    return [];
+  }
+};
+
+export const handleFinePayment = async (fineID) => {
+  try {
+    const fineRef = doc(rentalservice_db, "RentalFines", fineID);
+    await updateDoc(fineRef, { paid: true });
+    console.log(`Fine ${fineID} has been paid.`);
+  } catch (error) {
+    console.error("Error processing fine payment: ", error);
+  }
+};
+
+//Notifications
+
+export const getNotifications = async () => {
+  try {
+      const notifsCollection = collection(db, "Notifications");
+
+     
+      const NotifSnapshot = await getDocs(notifsCollection);
+      const notifsList = NotifSnapshot.docs.map(doc => ({
+          id: doc.id,  
+          ...doc.data() 
+      }));
+      console.log(notifsList)
+
+      return notifsList;
+  } catch (error) {
+      console.error("Error fetching Notifications:", error.message);
+      throw error;
+  }
+};
 
 export const createNotification = async (notification) => {
     try {
@@ -134,6 +179,8 @@ export const setNotificationAsRead = async (notificationId) => {
       console.error("Error setting notification as read:", error);
     }
   };
+
+  //Bus Schedules
   
   export const fetchBusRoutes = async () => {
     try {

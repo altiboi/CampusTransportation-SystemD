@@ -4,57 +4,13 @@ import MobileHeader from "../../components/common/MobileHeader";
 import SearchBar from "../../components/common/staffComponents/SearchBar";
 import BusShedule from "../../components/common/staffComponents/BusSchedule";
 import { useAppContext } from "../../contexts/AppContext";
+import { fetchBusRoutes } from "../../api/functions";
 
 function UserBusSchedule() {
   const { setTitle, setTask } = useAppContext();
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredSchedules, setFilteredSchedules] = useState([]);
-
-  // Define the schedules outside of the component's render cycle
-  const schedules = [
-    {
-      id: 1,
-      pickup: "Main Campus",
-      destination: "Education Campus",
-      time: "8:00 AM",
-    },
-    {
-      id: 2,
-      pickup: "Med Campus",
-      destination: "Yale Village",
-      time: "9:15 AM",
-    },
-    {
-      id: 3,
-      pickup: "Campus Central Park Town",
-      destination: "Horizon Heights",
-      time: "11:00 AM",
-    },
-    {
-      id: 4,
-      pickup: "44 Stanley",
-      destination: "Main Campus",
-      time: "1:30 PM",
-    },
-    {
-      id: 5,
-      pickup: "Education Campus",
-      destination: "Med Campus",
-      time: "3:45 PM",
-    },
-    {
-      id: 6,
-      pickup: "Yale Village",
-      destination: "Campus Central Park Town",
-      time: "5:00 PM",
-    },
-    {
-      id: 7,
-      pickup: "Horizon Heights",
-      destination: "44 Stanley",
-      time: "7:15 PM",
-    },
-  ];
+  const [schedules, setSchedules] = useState([]);
 
   useEffect(() => {
     // Filter schedules based on the search term when the searchTerm changes
@@ -69,6 +25,19 @@ function UserBusSchedule() {
   useEffect(() => {
     setTitle("Update Bus Schedule");
     setTask(1);
+
+    const fetchSchedules = async () => {
+      try {
+        const schedulesData = await fetchBusRoutes();
+        setSchedules(schedulesData); // Update schedules with fetched data
+        setFilteredSchedules(schedulesData); // Set filtered schedules to initial fetch data
+      } catch (error) {
+        console.error("Error fetching bus schedules:", error);
+      }
+    };
+
+    fetchSchedules();
+
   }, [setTitle, setTask]);
 
   return (
@@ -79,14 +48,8 @@ function UserBusSchedule() {
           <SearchBar onSearch={setSearchTerm} />
         </div>
         <div className="space-y-4">
-          {filteredSchedules.map((schedule) => (
-            <BusShedule
-              key={schedule.id}
-              pickup={schedule.pickup}
-              // destination={schedule.destination}
-              time={schedule.time}
-              id={schedule.id}
-            />
+          {filteredSchedules.map((route) => (
+            <BusShedule id={route.id} key={route.id} route={route}/>
           ))}
         </div>
       </div>

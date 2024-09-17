@@ -15,6 +15,7 @@ export default function RentalDetails({ itemName, action }) {
       state: { itemName, action }
     });
   };
+  
 
   return (
     <div className="rental-details-container">
@@ -36,20 +37,33 @@ export default function RentalDetails({ itemName, action }) {
 
         <div className="rental-info">
           <h2>Details</h2>
-          <p>{itemName} has no automatic brakes</p>
+          {/* Original Details */}
+         
+
+          {/* Additional Vehicle Details */}
+          <div className="vehicle-details">
+            <p><strong>Registration:</strong> ABC123</p>
+            <p><strong>Make:</strong> Yamaha</p>
+            <p><strong>Model:</strong> MT-07</p>
+            <p><strong>Year:</strong> 2022</p>
+            <p><strong>Current Location:</strong> Campus Central Park</p>
+          </div>
         </div>
 
-        <div className="date-time-selector">
-          <span>Select Date and Time</span>
-          <FontAwesomeIcon icon={faCalendarAlt} className="calendar-icon" />
-          <DatePicker
-            selected={startDate}
-            onChange={(date) => setStartDate(date)}
-            showTimeSelect
-            dateFormat="Pp"
-            className="date-picker"
-          />
-        </div>
+        {/* Conditionally show the DatePicker only if action is "reserve" */}
+        {action === 'reserve' && (
+          <div className="date-time-selector">
+            <span>Select Date and Time</span>
+            <FontAwesomeIcon icon={faCalendarAlt} className="calendar-icon" />
+            <DatePicker
+              selected={startDate}
+              onChange={(date) => setStartDate(date)}
+              showTimeSelect
+              dateFormat="Pp"
+              className="date-picker"
+            />
+          </div>
+        )}
 
         <button onClick={handleAction} className="book-now-button">
           {action === 'book' ? 'Book Now' : 'Reserve Now'}

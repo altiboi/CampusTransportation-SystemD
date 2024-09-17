@@ -11,9 +11,19 @@ const Confirmation = () => {
     navigate('/finalDetails', { state: { itemName, action } });
   };
 
+  const handleBack = () => {
+    navigate(-1); // Go back to the previous page
+  };
+
   return (
     <div className="confirmation-container">
       <header className="confirmation-header">
+        <button 
+          onClick={handleBack} 
+          className="back-button"
+        >
+          &larr; Back
+        </button>
         <h1>Your {itemName} has been {action}ed...</h1>
       </header>
       <img 

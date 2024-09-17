@@ -22,6 +22,9 @@ import UserWhereTo from "../pages/UserPages/UserWherTo";
 import NotificationsPage from "../pages/UserPages/UserNotification";
 import UserBusSchedule from "../pages/UserPages/UserBusSchedule";
 import UserMap from "../pages/UserPages/UserMap";
+import Returns from "../pages/UserPages/Returns";
+import ReturnConfirmation from "../pages/UserPages/ReturnConfirmation";
+import ScheduleDetailsPage from "../pages/staffPages/ScheduleDetailsPage";
 
 function UserRoutes() {
   const { userLoggedIn } = useAuth();
@@ -50,6 +53,14 @@ function UserRoutes() {
         path="/userRental"
         element={<ProtectedRoute element={<Rental />} />}
       />
+      <Route
+        path="/Returns"
+        element={<ProtectedRoute element={<Returns />} />}
+      />
+         <Route
+        path="/ReturnConfirmation"
+        element={<ProtectedRoute element={<ReturnConfirmation />} />}
+        />
       <Route
         path="/book/:itemName"
         element={<ProtectedRoute element={<Book />} />}
@@ -93,6 +104,10 @@ function UserRoutes() {
       <Route
         path="/UserBusSchedule"
         element={<ProtectedRoute element={<UserBusSchedule/>} />}
+      />
+      <Route
+        path="/scheduledetails/:id"
+        element={<ProtectedRoute element={<ScheduleDetailsPage />} />}
       />
       <Route
         path="/UserMap"

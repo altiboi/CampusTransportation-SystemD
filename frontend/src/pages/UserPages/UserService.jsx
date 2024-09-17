@@ -26,7 +26,6 @@ function UserService() {
         </section>
         <section className='card-group'>
           <section className='card-item'>
-          <Link to="/userFind">
             <Card className="card card-highlight">
               <section className='card-content'>
                 <span className='card-heading'>Trip</span>
@@ -35,13 +34,12 @@ function UserService() {
                 <FontAwesomeIcon icon={faRoute} className='icon-large' />
               </section>
             </Card>
-          </Link>
           </section>
        
           <section className="card-item">
             <Card className="card card-highlight">
               <section className='card-content'>
-              <Link to={'/UserMap'}> <span className='card-heading'>Nearby Rental Stations</span></Link> 
+                <span className='card-heading'>Nearby Rental Stations</span>
               </section>
               <section className='card-icon'>
                 <FontAwesomeIcon icon={faMapMarkerAlt} className='icon-large' />
@@ -63,7 +61,7 @@ function UserService() {
             </section>
           </Card>
           <Card className="action-card">
-            <Link to={'/UserBusSchedule'}><h2 className="card-heading">Bus Schedule</h2></Link>
+            <h2 className="card-heading">Bus Schedule</h2>
             <section className='card-icon'>
               <FontAwesomeIcon icon={faClipboardList} className='icon-medium' />
            
@@ -75,8 +73,9 @@ function UserService() {
               <FontAwesomeIcon icon={faCalendarCheck} className='icon-medium' />
             </section>
           </Card>
+
           <Card className="action-card">
-            <Link to={'/UserFines'}  className="action-Link w-full h-full">
+            <Link to={'/UserFines'}  className="w-full h-full">
               <h2 className="card-heading">Fines</h2>
               <section className='card-icon'>
                 <FontAwesomeIcon icon={faTicket} className='icon-medium' />
@@ -84,14 +83,16 @@ function UserService() {
             </Link>
           </Card>
           <Card className="action-card">
+          <Link to={'/Returns'}  className="w-full h-full">
             <h2 className="card-heading">Returns</h2>
             <section className='card-icon'>
               <FontAwesomeIcon icon={faRotateLeft} className='icon-medium' />
             </section>
+            </Link>
           </Card>
           <Card className="action-card">
             <section className='card-content'>
-              <Link to={'/UserMap'}><span className='card-heading'>Campus Map</span></Link>
+              <span className='card-heading'>Campus Map</span>
             </section>
             <section className='card-icon'>
               <FontAwesomeIcon icon={faLocationDot} className='icon-medium' />

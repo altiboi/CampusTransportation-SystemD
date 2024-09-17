@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBus, faArrowLeft } from '@fortawesome/free-solid-svg-icons'; // Import the back icon
 import { useAppContext } from "../../contexts/AppContext";
@@ -15,14 +14,14 @@ function UserBuses() {
 
     const handleViewClick = () => {
         // Navigate to the new page (e.g., bus schedule page)
-        window.location.href = "/bus-schedule"; // Replace with actual path
+        window.location.href = "/UserBusSchedule"; // Replace with actual path
     };
 
     const handleDownloadClick = () => {
         // Create a mock PDF for download
         const link = document.createElement('a');
-        link.href = "/mock-bus-schedule.pdf"; // Mock PDF path
-        link.download = 'bus-schedule.pdf';
+        link.href = "/bus.pdf"; // Mock PDF path
+        link.download = 'bus.pdf';
         link.click();
     };
 
@@ -62,8 +61,9 @@ function UserBuses() {
                 <section className='bus-lower-part flex flex-col lg:flex-row justify-center items-center gap-4 py-4'>
                     <button
                         className='bus-button bg-gray-200 hover:bg-gray-300 text-black font-bold py-2 px-6 rounded'
+                        onClick={handleViewClick}
                     >
-                      <Link to={'/UserBusSchedule'}> View</Link> 
+                        View
                     </button>
                     <button
                         className='bus-button bg-gray-200 hover:bg-gray-300 text-black font-bold py-2 px-6 rounded'
