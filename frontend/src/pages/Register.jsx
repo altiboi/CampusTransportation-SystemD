@@ -51,7 +51,7 @@ function Register() {
   };
 
   return (
-    <div className="flex w-full h-screen overflow-hidden">
+    <div className="flex w-full h-full overflow-hidden">
       <div className="w-full overflow-auto flex flex-col items-center justify-center lg:w-1/2">
         <div className="w-11/12 max-w-[700px] px-10 py-20 rounded-3xl bg-white border-2 border-gray-100">
           <h1 className="text-5xl font-semibold">Sign Up!</h1>
@@ -60,7 +60,7 @@ function Register() {
           </p>
           <div className="mt-8">
             <form onSubmit={onSubmit}>
-              <div className="flex flex-col">
+              <div className="flex flex-col mt-4">
                 <label className="text-lg font-medium">Name</label>
                 <input
                   type="text"

@@ -77,7 +77,7 @@ function UserHome() {
           </Card>
           <Card className="lower-card">
             <section className="card-content">
-              <span className="card-title">Campus Map</span>
+            <Link to={'/UserMap'}><span className="card-title">Campus Map</span></Link>
             </section>
             <section className="card-icon">
               <FontAwesomeIcon icon={faLocationDot} className="icon" />

@@ -18,6 +18,10 @@ import Register from "../pages/Register";
 import ProtectedRoute from "./ProtectedRoute";
 import { useAuth } from "../contexts/AuthProvider";
 import NotFoundPage from "../pages/NotFoundPage"; // Optional: Catch-all route for undefined paths
+import UserWhereTo from "../pages/UserPages/UserWherTo";
+import NotificationsPage from "../pages/UserPages/UserNotification";
+import UserBusSchedule from "../pages/UserPages/UserBusSchedule";
+import UserMap from "../pages/UserPages/UserMap";
 
 function UserRoutes() {
   const { userLoggedIn } = useAuth();
@@ -77,6 +81,22 @@ function UserRoutes() {
       <Route
         path="/userBuses"
         element={<ProtectedRoute element={<UserBuses />} />}
+      />
+      <Route
+        path="/notifications"
+        element={<ProtectedRoute element={<NotificationsPage/>} />}
+      />
+      <Route
+        path="/UserWhereTo"
+        element={<ProtectedRoute element={<UserWhereTo/>} />}
+      />
+      <Route
+        path="/UserBusSchedule"
+        element={<ProtectedRoute element={<UserBusSchedule/>} />}
+      />
+      <Route
+        path="/UserMap"
+        element={<ProtectedRoute element={<UserMap/>} />}
       />
       {/* Optional: Catch-all route for undefined paths */}
       <Route path="*" element={<NotFoundPage />} />
