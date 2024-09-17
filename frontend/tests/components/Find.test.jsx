@@ -27,6 +27,7 @@ describe('Find Component', () => {
     const emailInput = screen.getByText(/Select Location/i);
     expect(emailInput).not.toBeNull(); 
   });
+  
 
   it('renders the location and destination cards', () => {
     render(
