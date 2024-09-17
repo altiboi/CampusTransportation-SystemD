@@ -25,7 +25,7 @@ export function App() {
 
   useEffect(() => {
     const fetchUserRole = async () => {
-      console.log(currentUser.name)
+   
       if (currentUser) {
         try {
           setRole(currentUser.role);
@@ -123,7 +123,7 @@ export function App() {
 
   const renderRoutes = () => {
     if (role === "staff") {
-      return <StaffRoutes vehicles={vehicles} notifs = {notifs} currentUser = {currentUser?.name} />;
+      return <StaffRoutes vehicles={vehicles} notifs = {notifs} currentUser = {currentUser.name} />;
       
     } else if (role === "user") {
       return <UserRoutes />;

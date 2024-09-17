@@ -111,7 +111,7 @@ export const createNotification = async (notification) => {
   
         // Update the user's document with the new 'readNotification' array
         await updateDoc(doc(db, 'Users', userDoc.id), {
-          readNotification: updatedReadNotifications
+          userNotification: updatedReadNotifications
         });
   
         console.log(`Updated user ${userDoc.id} with new read notification: { id: ${docRef.id}, isRead: false }`);
