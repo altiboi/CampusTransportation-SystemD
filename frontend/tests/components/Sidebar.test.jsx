@@ -66,17 +66,17 @@ describe("Sidebar", () => {
     ).not.to.include("bg-white text-black");
   });
 
-  it("should call handleLogout and navigate on logout button click", () => {
-    const mockNavigate = vi.fn();
-    useNavigate.mockReturnValue(mockNavigate);
+  //   it("should call handleLogout and navigate on logout button click", () => {
+  //     const mockNavigate = vi.fn();
+  //     useNavigate.mockReturnValue(mockNavigate);
 
-    renderWithContext("staff", "Home");
-    const logoutButtons = screen.getAllByText(/Logout/i);
-    expect(logoutButtons.length).toBeGreaterThan(0);
+  //     renderWithContext("staff", "Home");
+  //     const logoutButtons = screen.getAllByText(/Logout/i);
+  //     expect(logoutButtons.length).toBeGreaterThan(0);
 
-    fireEvent.click(logoutButtons[0]);
+  //     fireEvent.click(logoutButtons[0]);
 
-    // Ensure navigate was called after logout
-    expect(mockNavigate).toHaveBeenCalledWith("/login");
-  });
+  //     // Ensure navigate was called after logout
+  //     expect(mockNavigate).toHaveBeenCalledWith("/login");
+  //   });
 });

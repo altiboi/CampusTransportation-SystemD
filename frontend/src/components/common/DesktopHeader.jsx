@@ -3,6 +3,7 @@ import { faBell, faBars } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
 import { useAppContext } from "../../contexts/AppContext";
 import { useState } from "react";
+import React from "react";
 
 const DesktopHeader = () => {
   const { title } = useAppContext();
