@@ -1,19 +1,21 @@
 import React from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useLocation } from 'react-router-dom';
 import RentalDetails from "./RentalDetails"; // Corrected typo
 import { useAppContext } from "../../contexts/AppContext";
 import { useEffect } from "react";
 function Book() {
 
-  const { itemName } = useParams();
+  //const { itemName } = useParams();
   const { setTitle, setTask } = useAppContext();
+  const location = useLocation();
+  const { item } = location.state || {};
 
   useEffect(() => {
     setTitle("Services");
     setTask(1);
   }, [setTitle, setTask]);
 
-  return <RentalDetails itemName={itemName} action="book" />;
+  return <RentalDetails item={item} itemName={`${item.make} ${item.model}`} action="book" />;
 }
 
 export default Book;

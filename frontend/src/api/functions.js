@@ -1,5 +1,5 @@
 import { auth, rentalservice_db , db } from "../firebase/firebase.js";
-import { collection, addDoc, getDocs, query, where } from "firebase/firestore";
+import { collection, addDoc, doc, updateDoc, getDocs, query, where } from "firebase/firestore";
 
 
 export const getAllVehicles = async () => {
@@ -46,6 +46,54 @@ export const addVehicle = async (vehicle) => {
         console.error("Error adding vehicles:", error.message);
         throw error;
     }
+};
+
+export const addNewRentalAndUpdateVehicle = async (rentalStationID, type, userID, vehicleID, rentalDurationInHours) => {
+  try {
+      // Get the current time for rentedAt
+      const rentedAt = new Date();
+
+      // Calculate dueReturnAt based on rental duration in hours
+      const dueReturnAt = new Date();
+      dueReturnAt.setHours(rentedAt.getHours() + rentalDurationInHours);
+
+      // Prepare rental data
+      const rentalData = {
+          dueReturnAt: dueReturnAt.toUTCString(), // Store in UTC format
+          rentedAt: rentedAt.toUTCString(),
+          returnedAt: null, // Not yet returned
+          rentalStationID,
+          type,
+          userID,
+          vehicleID
+      };
+
+      // Reference to the "VehicleRentals" collection
+      const rentalsCollection = collection(rentalservice_db, "VehicleRentals");
+
+      // Add the new rental document
+      const rentalDocRef = await addDoc(rentalsCollection, rentalData);
+      
+      console.log("New rental added with ID: ", rentalDocRef.id);
+
+      // Update the corresponding vehicle document
+      const vehicleDocRef = doc(rentalservice_db, "Vehicles", vehicleID);
+
+      await updateDoc(vehicleDocRef, {
+          available: false, // Set the vehicle as unavailable
+          currentRentalID: rentalDocRef.id // Link the new rental to the vehicle
+      });
+
+      console.log("Vehicle updated successfully!");
+      
+      return {
+          rentalID: rentalDocRef.id,
+          ...rentalData
+      };
+  } catch (error) {
+      console.error("Error adding rental or updating vehicle:", error.message);
+      throw error;
+  }
 };
 
 export const fetchRentalStations = async () => {

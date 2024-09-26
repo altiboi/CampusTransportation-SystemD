@@ -66,6 +66,8 @@ export default function UserRental() {
     setFilteredRentalItems(filteredItems);
   }, [activeCategory, searchText, selectedStation, vehicles]);
 
+  console.log(filteredRentalItems)
+
   return (
     <main className="p-4 max-w-7xl mx-auto w-full">
       <header className="desktop-header mb-4 flex items-center">
@@ -127,14 +129,14 @@ export default function UserRental() {
                       <Link 
                         to={`/Book/${item.name}`} 
                         className="px-4 py-2 bg-black text-white rounded"
-                        state={{ item }}  // Pass the vehicle details as state
+                        state={{ item, rentalStationID: selectedStation.id}}  // Pass the vehicle details as state
                       >
                         Book now
                       </Link>
                       <Link 
                         to={`/Reserve/${item.name}`} 
                         className="px-4 py-2 bg-gray-200 text-black rounded"
-                        state={{ item }}  // Pass the vehicle details as state
+                        state={{ item, rentalStationID: selectedStation.id }}  // Pass the vehicle details as state
                       >
                         Reserve
                       </Link>

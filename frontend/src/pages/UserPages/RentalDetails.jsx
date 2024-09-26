@@ -1,18 +1,22 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft, faCalendarAlt } from '@fortawesome/free-solid-svg-icons';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import './RentalDetails.css';
+import { addNewRentalAndUpdateVehicle } from '../../api/functions';
+import { useAuth } from '../../contexts/AuthProvider';
 
-export default function RentalDetails({ itemName, action }) {
+export default function RentalDetails({ item, itemName, action }) {
   const [startDate, setStartDate] = useState(new Date());
   const navigate = useNavigate();
+  const location = useLocation();
+  //const { item } = location.state || {};
 
   const handleAction = () => {
     navigate('/confirmation', {
-      state: { itemName, action }
+      state: { itemName, action, item }
     });
   };
   
@@ -24,7 +28,7 @@ export default function RentalDetails({ itemName, action }) {
           <FontAwesomeIcon icon={faArrowLeft} />
         </button>
         <span className="header-title">
-          {action === 'book' ? 'Booking' : 'Reserving'} {itemName}
+          {action === 'book' ? 'Booking' : 'Reserving'} {item.name}
         </span>
       </header>
 
@@ -42,11 +46,10 @@ export default function RentalDetails({ itemName, action }) {
 
           {/* Additional Vehicle Details */}
           <div className="vehicle-details">
-            <p><strong>Registration:</strong> ABC123</p>
-            <p><strong>Make:</strong> Yamaha</p>
-            <p><strong>Model:</strong> MT-07</p>
-            <p><strong>Year:</strong> 2022</p>
-            <p><strong>Current Location:</strong> Campus Central Park</p>
+            <p><strong>Registration:</strong> {item.registration}</p>
+            <p><strong>Make:</strong> {item.make}</p>
+            <p><strong>Model:</strong> {item.model}</p>
+            <p><strong>Year:</strong> {item.year}</p>
           </div>
         </div>
 
