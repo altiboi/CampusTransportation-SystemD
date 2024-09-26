@@ -22,7 +22,7 @@ function UserActivity() {
   useEffect(() => {
     const fetchRentals = async () => {
       try {
-        const rentals = await getUserRentals(currentUser?.id);
+        const rentals = await getUserRentals(currentUser?.uid);
         const now = new Date();
 
         // Filter rentals into upcoming, current, and history
@@ -116,9 +116,9 @@ function UserActivity() {
               <section key={rental.id} className='activity-upper-card'>
                 <Card className="activity-card">
                   <section>
-                    <h2 className="activity-card-title">You are using {rental.type}</h2>
-                    <h2 className='activity-place'>{new Date(rental.rentedAt).toLocaleDateString()}</h2>
-                    <h2 className='activity-time'>{new Date(rental.rentedAt).toLocaleTimeString()} - {new Date(rental.dueReturnAt).toLocaleTimeString()}</h2>
+                    <h2 className="activity-card-title">You are currently renting a {rental.type}</h2>
+                    <h2 className='activity-place'>Date: {new Date(rental.rentedAt).toLocaleDateString()}</h2>
+                    <h2 className='activity-time'>Rental Period: {new Date(rental.rentedAt).toLocaleTimeString()} - {new Date(rental.dueReturnAt).toLocaleTimeString()}</h2>
                   </section>
                 </Card>
               </section>
