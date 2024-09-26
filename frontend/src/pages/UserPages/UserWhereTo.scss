@@ -1,0 +1,97 @@
+// General container styling
+.user-where-to-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem;
+    min-height: 100vh;
+  }
+  .find-upper-part{
+    width: 100%;
+    flex: 1;
+  }
+  .title{
+    h1{
+        font-size: 3rem; 
+      }
+  }
+
+  .user-where-to-input-section {
+    width: 100%;
+    flex: 3;
+    margin-bottom: 1.5rem;
+    
+    .user-where-to-card {
+      display: flex;
+      align-items: center;
+      border-radius: 8px;
+      background-color: #fff;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      margin-bottom: 1.5rem;
+      
+      .card-icon {
+        font-size: 1.5rem;
+        color: #4caf50; // Green color for the icon
+        flex: 1;
+        .icon{
+          color: orangered;
+        }
+      }
+      
+      .card-content {
+        flex: 5;
+        
+        .user-where-to-custom-input {
+          width: 100%;
+          padding: 0.5rem;
+          border: 1px solid #ddd;
+          border-radius: 4px;
+          font-size: 1rem;
+          outline: none;
+          
+          &:focus {
+            border-color: #4caf50;
+            box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.2);
+          }
+        }
+      }
+    }
+  }
+  
+  // Select section styling
+  .user-where-to-select-section {
+    width: 100%;
+    
+    .user-where-to-select-dropdown {
+      width: 100%;
+      padding: 0.5rem;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-size: 1rem;
+      outline: none;
+      cursor: pointer;
+      
+      &:focus {
+        border-color: #4caf50;
+        box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.2);
+      }
+    }
+    
+    option {
+      padding: 0.5rem;
+    }
+  }
+  
+  // General responsive design adjustments
+  @media (max-width: 768px) {
+    .user-where-to-container {
+      padding: 1rem;
+    }
+    
+    .user-where-to-input-section, .user-where-to-select-section {
+      max-width: 100%;
+    }
+  }
+  

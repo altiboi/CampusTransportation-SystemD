@@ -1,0 +1,35 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [10, 53.54]
+      },
+      "properties": {
+        "name": "Sample Location",
+        "color": "#FF0000"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [10, 53.54],
+            [10.1, 53.54],
+            [10.1, 53.6],
+            [10, 53.6],
+            [10, 53.54]
+          ]
+        ]
+      },
+      "properties": {
+        "name": "Sample Area",
+        "color": "#00FF00"
+      }
+    }
+  ]
+}

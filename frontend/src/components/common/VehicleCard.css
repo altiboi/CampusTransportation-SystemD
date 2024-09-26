@@ -1,0 +1,46 @@
+/* src/components/common/VehicleCard.css */
+
+.vehicle-card {
+  display: flex;
+  align-items: center;
+  padding: 1rem;
+  background-color: #fff;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: transform 0.2s ease-in-out;
+}
+
+.vehicle-card:hover {
+  transform: scale(1.05);
+}
+
+.vehicle-card-image {
+  width: 60px; /* Adjust the size as needed */
+  height: 60px; /* Adjust the size as needed */
+  border-radius: 30%;
+  object-fit: cover;
+  margin-right: 1rem;
+}
+
+.vehicle-card-content {
+  flex: 1;
+}
+
+.vehicle-card-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.vehicle-card-registration {
+  color: #6b7280;
+}
+
+.vehicle-card-details {
+  margin-top: 0.5rem;
+}
+
+.vehicle-card-details p {
+  color: #374151;
+  margin: 0;
+}

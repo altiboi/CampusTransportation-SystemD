@@ -1,0 +1,135 @@
+.user-payments-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 20px;
+    background-color: #f8f8f8; // Background color of the main container
+    color: #333; // Default text color
+    font-family: Arial, sans-serif;
+  
+    .header-payments-section,
+    .actions-payments-middle-section,
+    .actions-payments-last-section {
+      background-color: #ffffff;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+    }
+  
+    .header-payments-title,
+    .actions-payments-title {
+      font-size: 1.5rem;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+  
+    .card-payments-group {
+      display: flex;
+      gap: 20px;
+      margin-top: 10px;
+    }
+  
+    .card-payments-item {
+      flex: 1;
+      .card-payments-highlight {
+        background-color: #f0f0f0;
+        text-align: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 8px;
+
+        .card-payments-icon {
+          width: 100%;
+          height: 100%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+  
+          .icon-large {
+            font-size: 2rem;
+       
+          }
+        }
+  
+        .card-payments-heading {
+          font-size: 1rem;
+          font-weight: 600;
+          color: #333;
+        }
+      }
+    }
+  
+    .actions-payments-middle-section {
+        padding: 0;
+      .title-main {
+        font-size: 1rem;
+        font-weight: bold;
+        margin-bottom: 10px;
+      }
+      .actions-payments-title{
+        height: 10%;
+      }
+      .actions-payments-group{
+        width: 100%;
+        height: 90%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .action-card {
+        background-color: #e0e0e0;
+        width: 100%;
+        height: 90%;
+        padding: 20px;
+        border-radius: 8px;
+        text-align: center;
+  
+        .card-payments-heading {
+          font-size: 1.2rem;
+          font-weight: 600;
+        }
+      }
+    }
+  
+    .actions-payments-last-section {
+      .action-payments-inner-upper-section {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        border-bottom: 2px solid black;
+        .title-main {
+          font-size: 1rem;
+          font-weight: 600;
+        }
+      }
+  
+      button {
+        background-color: #007bff;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 4px;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+  
+        &:hover {
+          background-color: #0056b3;
+        }
+      }
+    }
+    .actions-payments-title{
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+    .action-payments-inner-lower-section{
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+  }
+  

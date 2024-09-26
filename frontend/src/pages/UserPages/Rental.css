@@ -1,0 +1,94 @@
+
+
+/* Sidebar */
+.sidebar {
+  width: 20%; /* Adjust this to your desired width */
+  position: fixed;
+  height: 100%;
+  background-color: #333;
+}
+
+/* Main content */
+.main-content {
+  margin-left: 22%; /* Adjust based on sidebar width */
+  padding: 2% 5%; /* Move the content lower */
+  width: 70%; /* Increase the content size */
+}
+
+.vehicle-card {
+  width: 100%; /* This ensures each card fits the container */
+  max-width: 300px; /* You can adjust this for a larger card size */
+  margin: 20px; /* Add space between cards */
+}
+
+/* Responsive adjustments for desktop */
+@media screen and (min-width: 1024px) {
+  .main-content {
+    padding: 2% 5%;
+  }
+  
+  .vehicle-card {
+    max-width: 350px; /* Larger card size for desktops */
+  }
+}
+
+/* Responsive adjustments for tablets and below */
+@media screen and (max-width: 1024px) {
+  .sidebar {
+    display: none; /* Hide sidebar on smaller screens */
+  }
+
+  .main-content {
+    margin-left: 0;
+    width: 100%; /* Take full width on smaller screens */
+    padding: 2% 5%;
+  }
+
+  .vehicle-card {
+    max-width: 100%; /* Make cards take full width */
+    margin: 10px 0; /* Reduce margin for more compact layout */
+  }
+}
+  
+  .vehicle-card {
+    max-width: 350px; /* Larger card size for desktops */
+  }
+
+/* Responsive adjustments for mobile phones */
+@media screen and (max-width: 768px) {
+  .desktop-header {
+    margin-top: 20px; /* Reduce top margin for mobile */
+  }
+
+  .desktop-search {
+    margin-top: 10px; /* Adjust spacing if needed */
+  }
+
+  .desktop-category-buttons {
+    margin-top: 10px;
+  }
+
+  .vehicle-grid {
+    flex-direction: column; /* Stack items vertically */
+  }
+
+  .vehicle-card {
+    width: 100%; /* Full width cards on mobile */
+  }
+}
+.desktop-header {
+  margin-top: 120px; /* Adjust this value to lower the header */
+}
+
+.desktop-search {
+  margin-top: 10px; /* Adjust this value to lower the search bar */
+}
+
+/* Optional: Adjust the spacing for other elements if necessary */
+.desktop-category-buttons {
+  margin-top: 10px;
+}
+
+.desktop-card {
+  margin-top: 10px;
+}
