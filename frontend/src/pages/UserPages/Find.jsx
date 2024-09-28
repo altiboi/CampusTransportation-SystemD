@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from "react";
-import {Link} from "react-router-dom"
-
+import { useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 import Card from "../../components/Card";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -16,17 +16,23 @@ import { APIProvider, Map, Marker, useMap, useMapsLibrary } from "@vis.gl/react-
 
 function Find() {
   const { setTitle, setTask } = useAppContext();
-
   const [currentLocation, setCurrentLocation] = useState({ lat: -26.190424531742913, lng: 28.0259034605168 });
-  const [destinationPosition, setDestinationPosition] = useState({
-    lat: -26.19010710587139,
-    lng: 28.030646555352817,
-  });
+  const [destinationPosition, setDestinationPosition] = useState({ lat: -26.19010710587139, lng: 28.030646555352817 });
+  const [travelMode, setTravelMode] = useState("WALKING"); // Use string instead of google.maps.TravelMode
+  const [destinationName, setDestinationName] = useState(""); // State for destination name
+
+
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const destinationParam = queryParams.get("destination");
+  const apiKey = import.meta.env.REACT_APP_GOOGLE_MAPS_API_KEY;
+
 
   useEffect(() => {
     setTitle("Find");
     setTask(1);
 
+    // Handle user location
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
@@ -42,6 +48,31 @@ function Find() {
       setCurrentLocation({ lat: -26.190424531742913, lng: 28.0259034605168 });
     }
   }, [setTitle, setTask]);
+
+  useEffect(() => {
+    if (destinationParam) {
+      try {
+        // Parse the destination JSON
+        const destination = JSON.parse(decodeURIComponent(destinationParam));
+       
+        const { coordinates } = destination;
+
+        // Set destination position using the parsed coordinates
+        if (coordinates) {
+          setDestinationPosition({
+            lat: coordinates.latitude,
+            lng: coordinates.longitude
+          });
+        }
+
+        if (destination.name) {
+          setDestinationName(destination.name);
+        }
+      } catch (error) {
+        console.error("Error parsing destination:", error);
+      }
+    }
+  }, [destinationParam]);
 
   return (
     <APIProvider apiKey="AIzaSyBxWXlgW0k0aTUwyanFnudRdqdNp8y413o">
@@ -59,7 +90,11 @@ function Find() {
                 >
                   <Marker position={currentLocation} />
                   <Marker position={destinationPosition} />
-                  <Directions userPosition={currentLocation} destinationPosition={destinationPosition} />
+                  <Directions
+                    userPosition={currentLocation}
+                    destinationPosition={destinationPosition}
+                    travelMode={travelMode}
+                  />
                 </Map>
               </div>
             ) : (
@@ -79,7 +114,7 @@ function Find() {
               </section>
               <section>
                 <h2 className="find-card-title">Location</h2>
-                <h2 className="find-place">Barnato Hall</h2>
+                {/* <h2 className="find-place">Barnato Hall</h2> */}
               </section>
             </Card>
             <Card className="find-upper-card">
@@ -88,14 +123,17 @@ function Find() {
               </section>
               <section>
                 <Link to={'/UserWhereTo'}>
-                <h2 className="find-card-title">Destination</h2>
-                <h2 className="find-place">Library Laws</h2>
+                  <h2 className="find-card-title">Destination</h2>
+                  <h2 className="find-place">{destinationName}</h2>
                 </Link>
               </section>
             </Card>
           </section>
           <section className="find-lower-section">
-            <Card className="find-lower-card-section">
+            <Card
+              className={`find-lower-card-section ${travelMode === "WALKING" ? 'selected' : ''}`}
+              onClick={() => setTravelMode("WALKING")}
+            >
               <section className="find-card-content">
                 <span className="find-card-title">Walk</span>
               </section>
@@ -103,7 +141,10 @@ function Find() {
                 <FontAwesomeIcon icon={faPersonWalking} />
               </section>
             </Card>
-            <Card className="find-lower-card-section">
+            <Card
+              className={`find-lower-card-section ${travelMode === "DRIVING" ? 'selected' : ''}`}
+              onClick={() => setTravelMode("DRIVING")}
+            >
               <section className="find-card-content">
                 <span className="find-card-title">View Routes</span>
               </section>
@@ -111,7 +152,10 @@ function Find() {
                 <FontAwesomeIcon icon={faRoute} />
               </section>
             </Card>
-            <Card className="find-lower-card-section">
+            <Card
+              className={`find-lower-card-section ${travelMode === "DRIVING" ? 'selected' : ''}`}
+              onClick={() => setTravelMode("DRIVING")}
+            >
               <section className="find-card-content">
                 <span className="find-card-title">Vehicle</span>
               </section>
@@ -126,7 +170,7 @@ function Find() {
   );
 }
 
-function Directions({ userPosition, destinationPosition }) {
+function Directions({ userPosition, destinationPosition, travelMode }) {
   const map = useMap();
   const routesLibrary = useMapsLibrary("routes");
   const [directionsService, setDirectionsService] = useState();
@@ -138,22 +182,15 @@ function Directions({ userPosition, destinationPosition }) {
     directionsService
       .route({
         origin: new google.maps.LatLng(userPosition.lat, userPosition.lng),
-        destination: new google.maps.LatLng(
-          destinationPosition.lat,
-          destinationPosition.lng
-        ),
-        travelMode: google.maps.TravelMode.WALKING,
+        destination: new google.maps.LatLng(destinationPosition.lat, destinationPosition.lng),
+        travelMode: google.maps.TravelMode[travelMode], // Ensure travelMode is used here
         provideRouteAlternatives: true,
       })
       .then((response) => {
         directionsRenderer.setDirections(response);
-      });
-  }, [
-    directionsService,
-    directionsRenderer,
-    userPosition,
-    destinationPosition,
-  ]);
+      })
+      .catch((error) => console.error("Error updating route:", error));
+  }, [directionsService, directionsRenderer, userPosition, destinationPosition, travelMode]);
 
   useEffect(() => {
     if (!routesLibrary || !map) return;
@@ -172,12 +209,13 @@ function Directions({ userPosition, destinationPosition }) {
 
   useEffect(() => {
     if (userPosition && destinationPosition) {
-      updateRoute();
+      updateRoute(); // Ensure this recalculates the route when travelMode changes
     }
-  }, [updateRoute, userPosition, destinationPosition]);
+  }, [updateRoute, userPosition, destinationPosition, travelMode]); // Add travelMode as a dependency
 
   return null;
 }
+
 
 const nightModeMapStyles = [
   { elementType: "geometry", stylers: [{ color: "#212121" }] },
@@ -190,12 +228,15 @@ const nightModeMapStyles = [
   { featureType: "poi", elementType: "labels.text.fill", stylers: [{ color: "#757575" }] },
   { featureType: "poi.park", elementType: "geometry", stylers: [{ color: "#181818" }] },
   { featureType: "poi.park", elementType: "labels.text.fill", stylers: [{ color: "#616161" }] },
-  { featureType: "road", elementType: "geometry.fill", stylers: [{ color: "#2c2c2c" }] },
+  { featureType: "road", elementType: "geometry", stylers: [{ color: "#2c2c2c" }] },
   { featureType: "road", elementType: "labels.text.fill", stylers: [{ color: "#8a8a8a" }] },
-  { featureType: "road.arterial", elementType: "geometry", stylers: [{ color: "#373737" }] },
-  { featureType: "road.highway", elementType: "geometry", stylers: [{ color: "#3c3c3c" }] },
-  { featureType: "road.highway.controlled_access", elementType: "geometry", stylers: [{ color: "#4e4e4e" }] },
+  { featureType: "road", elementType: "labels.text.stroke", stylers: [{ color: "#212121" }] },
+  { featureType: "road.highway", elementType: "geometry", stylers: [{ color: "#646464" }] },
+  { featureType: "road.highway", elementType: "labels.text.fill", stylers: [{ color: "#ffffff" }] },
+  { featureType: "transit", elementType: "geometry", stylers: [{ color: "#f2f2f2" }] },
+  { featureType: "transit.station", elementType: "labels.text.fill", stylers: [{ color: "#000000" }] },
   { featureType: "water", elementType: "geometry", stylers: [{ color: "#000000" }] },
+  { featureType: "water", elementType: "labels.text.fill", stylers: [{ color: "#3d3d3d" }] },
 ];
 
 export default Find;
