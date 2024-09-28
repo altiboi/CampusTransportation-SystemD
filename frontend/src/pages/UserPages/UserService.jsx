@@ -26,29 +26,29 @@ function UserService() {
         </section>
         <section className='card-group'>
           <section className='card-item'>
-          <Link to="/userFind ">
-            <Card className="card card-highlight border-none">
-             
-                <section className='card-icon'>
-                  <FontAwesomeIcon icon={faRoute} className='icon-large' />
-                </section>
-                <section className='card-content'>
-                  <span className='card-heading'>Trip</span>
-                </section>
-            </Card>
+            <Link to="/userFind ">
+              <Card className="card card-highlight border-none">
+              
+                  <section className='card-icon'>
+                    <FontAwesomeIcon icon={faRoute} className='icon-large' />
+                  </section>
+                  <section className='card-content'>
+                    <span className='card-heading'>Trip</span>
+                  </section>
+              </Card>
             </Link>
           </section>
        
           <section className="card-item">
-          <Link to={"/UserMap"} className="card-link w-full">
-            <Card className="card card-highlight border-none">
-              <section className='card-icon'>
-                <FontAwesomeIcon icon={faMapMarkerAlt} className='icon-large' />
-              </section>
-              <section className='card-content'>
-                <span className='card-heading'>Nearby Rental Stations</span>
-              </section>
-            </Card>
+            <Link to={"/UserMap"} className="card-link w-full">
+              <Card className="card card-highlight border-none">
+                <section className='card-icon'>
+                  <FontAwesomeIcon icon={faMapMarkerAlt} className='icon-large' />
+                </section>
+                <section className='card-content'>
+                  <span className='card-heading'>Nearby Rental Stations</span>
+                </section>
+              </Card>
             </Link>
           </section>
         </section>

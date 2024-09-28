@@ -15,7 +15,7 @@
     flex-direction: column;
     gap: 16px;
     width: 100%;
-    margin-top: 55px;
+    margin-top: 40px;
     height: 30%;
 }
 
@@ -71,6 +71,7 @@
     max-width: calc(33.333% - 16px);
     margin: 8px;
     box-sizing: border-box;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px, rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
 }
 .Link {
     display: flex;
@@ -122,9 +123,13 @@
     flex-wrap: wrap;
     flex-direction: row;
     border-radius: 8px;
-    border: 2px solid black;
     overflow: hidden;
     margin: 8px;
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, 
+    rgba(0, 0, 0, 0.12) 0px -12px 30px,
+     rgba(0, 0, 0, 0.12) 0px 4px 6px,
+      rgba(0, 0, 0, 0.17) 0px 12px 13px, 
+      rgba(0, 0, 0, 0.09) 0px -3px 5px;
 }
 .card-Lin{
     display: flex;

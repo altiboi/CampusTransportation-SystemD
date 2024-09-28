@@ -45,7 +45,7 @@ function Find() {
 
   return (
     <APIProvider apiKey="AIzaSyBxWXlgW0k0aTUwyanFnudRdqdNp8y413o">
-      <main className="find-main-container">
+      <main className="Userfind-container">
         <section className="find-upper-part">
           <section className="find-Map find-w-1/2">
             {currentLocation ? (
