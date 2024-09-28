@@ -74,15 +74,11 @@ describe('UserHome Component', () => {
 
     const FinesCard = screen.getByText('Fines');
     fireEvent.click(FinesCard);
-    
-
     expect(window.location.pathname).toBe('/UserFines');
 
 
     const CampusCard = screen.getByText('Campus Map');
     fireEvent.click(CampusCard);
-    
-
     expect(window.location.pathname).toBe('/UserMap');
   });
 
