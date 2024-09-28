@@ -42,18 +42,18 @@ function UserWhereTo() {
 
   return (
     <main className="user-where-to-container">
-        <section className="find-upper-part">
-            <section className="find-Map find-w-1/2">The Map</section>
-        </section>
-      <section className="title w-full">
-      <button
-            className=' top-5 left 4 p-2 text-gray-600 hover:text-gray-800'
-            onClick={handleBackClick}
-            >
-                <FontAwesomeIcon icon={faArrowLeft} className='text-xl' />
-        </button>
-        <h1>Where To</h1>
+      <section className="find-upper-part">
+          <section className="find-Map find-w-1/2">The Map</section>
       </section>
+      <section className="title w-full">
+        <button
+              className=' top-5 left 4 p-2 text-gray-600 hover:text-gray-800'
+              onClick={handleBackClick}
+              >
+                  <FontAwesomeIcon icon={faArrowLeft} className='text-xl' />
+          </button>
+          <h1>Where To</h1>
+        </section>
       <section className="user-where-to-input-section w-full">
         <Card className="user-where-to-card">
           <section className="card-icon">

@@ -5,26 +5,28 @@
   width: 100%;
   background-color: #f5f5f5;
   overflow-y: auto;
+  .find-upper-part {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #ffffff;
+    border-bottom: 2px solid black;
+    height: 50%;
+    .find-Map {
+      font-size: 1.5rem;
+      color: #333;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  }
 }
 
-.find-upper-part {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: #ffffff;
-  border-bottom: 2px solid black;
-  height: 50%;
-}
 
-.find-Map {
-  font-size: 1.5rem;
-  color: #333;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
+
+
 
 .find-lower-part {
   display: flex;
@@ -33,16 +35,151 @@
   justify-content: center;
   height: 50%;
   width: 100%;
+
+  .section-Title {
+    width: 100%;
+    height: 10%;
+    display: flex;
+    align-items: center;
+    padding-left: 0.5rem;
+
+    .find-card-title {
+      font-size: 2.5rem;
+      font-weight: 900;
+      color: black;
+    }
+  }
+
+  .find-upper-section {
+    display: flex;
+    flex-direction: column; /* Default: column on small screens */
+    padding: 0.5rem;
+    justify-content: center;
+    width: 100%;
+    height: 50%;
+    gap: 0.5rem;
+    margin-bottom: 2rem;
+
+    .find-upper-card {
+      display: flex;
+      align-items: center;
+      background-color: #ffffff;
+      border-radius: 15px;
+      padding: 1.5rem;
+      box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+      width: 100%;
+      min-height: 55%;
+      max-height: 80%;
+
+      .find-card-icon {
+        flex: 1;
+        font-size: 3rem;
+        color: black;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .find-card-content {
+        flex: 5;
+        font-size: 2rem;
+        color: black;
+      }
+    }
+  }
+
+  @media (min-width: 1020px) {
+    .find-upper-section {
+      flex-direction: row; /* Change to row on large screens */
+      padding: 0.5rem;
+      justify-content: center;
+      width: 100%;
+      height: 50%;
+      gap: 0.5rem;
+      margin-bottom: 2rem;
+      .find-upper-card {
+        display: flex;
+        align-items: center;
+        background-color: #ffffff;
+        border-radius: 15px;
+        padding: 1.5rem;
+       
+        width: 100%;
+        min-height: 55%;
+        max-height: 80%;
+  
+        .find-card-icon {
+          flex: 1;
+          font-size: 5rem;
+          color: black;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+  
+        .find-card-content {
+          flex: 5;
+     
+          .link{
+            width: 100%;
+            height: 100%;
+         
+            h2{
+              font-size: 1rem;
+              color: black;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .find-lower-section {
+    display: flex;
+    flex-direction: row;
+    gap: 0.5rem;
+    height: 40%;
+    width: 100%;
+    padding: 0.5rem;
+    padding-bottom: 10px;
+  
+    .find-lower-card {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+      border-radius: 15px;
+      width: 33.333%;
+      height: 80%;
+      box-sizing: border-box;
+      box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset;
+  
+      .find-card-icon {
+        margin-right: 1rem;
+        color: black;
+        font-size: 2rem; 
+      }
+  
+      .find-card-content {
+
+        display: flex;
+        align-items: center;
+        font-size: 2rem;
+      }
+  
+      @media (max-width: 768px) {
+        .find-card-content {
+          display: none; 
+          flex: 0;
+        }
+      }
+    }
+  }
+  
+  
 }
 
-.find-w-full {
-  width: 100%;
-  height: 10%;
-  display: flex;
-  padding: 2rem;
-  align-items: center;
-  padding-left: 3rem;
-}
+
 
 .find-title {
   font-size: 1.25rem;
@@ -50,75 +187,19 @@
   color: #333;
 }
 
-.find-upper-section {
-  display: flex;
-  flex-direction: column;
-  padding: 0.5rem;
-  justify-content: center;
-  width: 100%;
-  height: 50%;
-  gap: 0.5rem;
-  margin-bottom: 2rem;
-}
-
-.find-upper-card {
-  display: flex;
-  align-items: center;
-  background-color: #ffffff;
-  border-radius: 15px;
-  padding: 1.5rem;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  width: 100%;
-  min-height: 55%;
-  max-height: 80%;
-}
 
 
-.find-card-icon {
-  margin-right: 1rem;
-  color: black;
-}   
-.icon{
-  color: black;
-}
 
-.find-card-content {
-  display: flex;
-  align-items: center;
-}
 
-.find-card-title {
-  font-size: 1rem;
-  font-weight: bold;
-  color: #333;
-}
+
 
 .find-place {
   font-size: 0.875rem;
   color: #666;
 }
 
-.find-lower-section {
-  display: flex;
-  flex-direction: row;
-  gap: 0.5rem;
-  height: 40%;
-  width: 100%;
-  padding: 0.5rem;
-  padding-bottom: 10px;
-}
 
-.find-lower-card-section {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  border-radius: 15px;
-  overflow: hidden;
-  width: 33.333%;
-  height: 70%;
-  box-sizing: border-box;
-}
+
 @media (min-width: 1020px) {
 
   .find-lower-part {
