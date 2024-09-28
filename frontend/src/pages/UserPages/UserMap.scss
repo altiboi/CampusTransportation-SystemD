@@ -1,71 +1,26 @@
-// UserMap.scss
+.Map-container{
+  width: 100%;
+  height: 100%;
+  position: relative;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  .back-button{
+    position: absolute;
 
-.find-main-container {
+    left: 2rem;
+    color: black;
+
+  }
+  .relative{
+    width: 100%;
+    height: 100%;
     display: flex;
-    flex-direction: column;
     align-items: center;
-    justify-content: flex-start; 
-    min-height: 100vh; 
-    width: 100vw; 
-    overflow: hidden; 
-    position: relative; 
-  }
-  
-  .back-button {
-    position: absolute; 
-    top: 1rem; 
-    left: -40rem;
-    background: none; 
-    border: none;
-    color: gray;
-    cursor: pointer; 
-    transition: color 0.2s;
-  
-    &:hover {
-      color: darkgray; 
+    justify-content: center;
+    .title{
+      font-size: xx-large;
+      font-weight: 900;
     }
   }
-  
-  .title {
-    text-align: center; 
-    font-size: 2rem;
-    font-weight: bold;
-    color: #333; 
-    margin-top: 4rem;
-  }
-  
-
-  .find-map {
-    position: absolute; 
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0; 
-    background-color: #f0f0f0; 
-    z-index: -1;
-  }
-  
-
-  @media (max-width: 768px) {
-    .title {
-      font-size: 1.5rem;
-    }
-  
-    .back-button {
-      top: 0.75rem;
-      left: 1rem;
-    }
-    
-  }
-  
-  @media (max-width: 412px) {
-    .title {
-      font-size: 1.5rem;
-    }
-  
-    .back-button {
-      top: 0.75rem;
-      left: -8rem;
-    }
-    
-  }
+}

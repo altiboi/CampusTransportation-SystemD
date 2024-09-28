@@ -13,25 +13,22 @@ function UserMap() {
   }, [setTitle, setTask]);
 
   const handleBackClick = () => {
-    // Go back to the previous page
+
     window.history.back();
   };
 
   return (
-    <main className="find-main-container">
-      <div className="relative">
+    <main className="Map-container">
         <button
           className="back-button"
           onClick={handleBackClick}
         >
           <FontAwesomeIcon icon={faArrowLeft} className="text-xl" />
         </button>
-        <h2 className="title">The Map</h2>
+      <div className="relative">
 
-        {/* Fullscreen map section */}
+        <h2 className="title">The Map</h2>
         <div className="find-map">
-          {/* This is where you can integrate your map component */}
-          {/* For example, you can use Google Maps API or any other map library */}
         </div>
       </div>
     </main>

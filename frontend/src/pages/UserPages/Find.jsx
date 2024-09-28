@@ -47,7 +47,6 @@ function Find() {
     <APIProvider apiKey="AIzaSyBxWXlgW0k0aTUwyanFnudRdqdNp8y413o">
       <main className="find-main-container">
         <section className="find-upper-part">
-          {/* Map Section */}
           <section className="find-Map find-w-1/2">
             {currentLocation ? (
               <div style={{ height: "100%", width: "100%" }}>
@@ -72,22 +71,26 @@ function Find() {
           <section className="find-w-full p-2">
             <h2 className="find-card-title find-title">Select Location</h2>
           </section>
-          <section className="find-upper-section find-w-full find-flex find-justify-around">
+          <section className="find-upper-section ">
             <Card className="find-upper-card">
               <section className="find-card-icon">
                 <FontAwesomeIcon icon={faLocationDot} className="icon" />
               </section>
               <section>
-                <h2 className="find-card-title">Location</h2>
+                  <Link to={'/From'}>
+                  <h2 className="find-card-title">Location</h2>
+                  <p>location</p>
+                  </Link>
               </section>
             </Card>
             <Card className="find-upper-card">
               <section className="find-card-icon">
-                <FontAwesomeIcon icon={faCheckCircle} className="icon" />
+                <FontAwesomeIcon icon={faCheckCircle} className="icon " />
               </section>
               <section>
                 <Link to={'/UserWhereTo'}>
                 <h2 className="find-card-title">Destination</h2>
+                <p>destination</p>
                 </Link>
               </section>
             </Card>
