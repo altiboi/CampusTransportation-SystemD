@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { useLocation } from "react-router-dom";
 import { Link } from "react-router-dom";
+import { getAllLocations } from "../../api/functions"; // Import your Firebase function
+
 import Card from "../../components/Card";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -12,7 +14,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import "./Find.scss";
 import { useAppContext } from "../../contexts/AppContext";
-import { APIProvider, Map, Marker, useMap, useMapsLibrary } from "@vis.gl/react-google-maps";
+import {  APIProvider, Map, Marker, useMap, useMapsLibrary } from "@vis.gl/react-google-maps";
 
 function Find() {
   const { setTitle, setTask } = useAppContext();
@@ -20,6 +22,8 @@ function Find() {
   const [destinationPosition, setDestinationPosition] = useState({ lat: -26.19010710587139, lng: 28.030646555352817 });
   const [travelMode, setTravelMode] = useState("WALKING"); // Use string instead of google.maps.TravelMode
   const [destinationName, setDestinationName] = useState(""); // State for destination name
+  const [pointsofinterest, setpointsofinterest] = useState([]);  // Store fetched locations
+  const [markersVisible, setMarkersVisible] = useState(false); // State for marker visibility
 
 
   const location = useLocation();
@@ -28,9 +32,26 @@ function Find() {
   const apiKey = import.meta.env.REACT_APP_GOOGLE_MAPS_API_KEY;
 
 
+  const fetchPOIs = async () => {
+    try {
+      const allLocations = await getAllLocations();
+      // Filter out locations with null coordinates
+      const POIs = allLocations.filter(location => location.category);
+      console.log(POIs)
+      setpointsofinterest(POIs);
+    } catch (error) {
+      console.error("Error fetching locations:", error);
+    }
+  };
+
+
   useEffect(() => {
     setTitle("Find");
     setTask(1);
+
+    fetchPOIs()
+
+    
 
     // Handle user location
     if (navigator.geolocation) {
@@ -74,6 +95,11 @@ function Find() {
     }
   }, [destinationParam]);
 
+  const toggleMarkers = () => {
+    setMarkersVisible((prev) => !prev);
+  };
+
+
   return (
     <APIProvider apiKey="AIzaSyBxWXlgW0k0aTUwyanFnudRdqdNp8y413o">
       <main className="find-main-container">
@@ -88,8 +114,29 @@ function Find() {
                   options={{ styles: nightModeMapStyles }}
                   style={{ width: "100%", height: "100%" }}
                 >
+                   
                   <Marker position={currentLocation} />
                   <Marker position={destinationPosition} />
+
+                  {markersVisible && pointsofinterest.map((poi, index) => {
+                    
+
+                    return (
+                      <Marker
+                        key={index}
+                        position={{ lat: poi.coordinates.latitude, lng: poi.coordinates.longitude }}
+                        icon={{
+                          url: "https://img.icons8.com/restaurant",
+                          scaledSize: new google.maps.Size(30, 30), // Adjust the size as needed
+                        }}
+                        title={poi.name}
+                      />
+                    );
+                  })}
+
+
+
+
                   <Directions
                     userPosition={currentLocation}
                     destinationPosition={destinationPosition}
@@ -143,10 +190,11 @@ function Find() {
             </Card>
             <Card
               className={`find-lower-card-section ${travelMode === "DRIVING" ? 'selected' : ''}`}
-              onClick={() => setTravelMode("DRIVING")}
+              onClick={toggleMarkers} // Toggle markers on click
+
             >
               <section className="find-card-content">
-                <span className="find-card-title">View Routes</span>
+                <span className="find-card-title">Alt. Route</span>
               </section>
               <section className="find-card-icon">
                 <FontAwesomeIcon icon={faRoute} />
@@ -184,7 +232,7 @@ function Directions({ userPosition, destinationPosition, travelMode }) {
         origin: new google.maps.LatLng(userPosition.lat, userPosition.lng),
         destination: new google.maps.LatLng(destinationPosition.lat, destinationPosition.lng),
         travelMode: google.maps.TravelMode[travelMode], // Ensure travelMode is used here
-        provideRouteAlternatives: true,
+        provideRouteAlternatives: false,
       })
       .then((response) => {
         directionsRenderer.setDirections(response);

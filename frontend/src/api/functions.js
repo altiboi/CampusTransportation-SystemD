@@ -289,11 +289,12 @@ export const setNotificationAsRead = async (notificationId) => {
                 } : null,
             };
         });
+
+        console.log(poiList)
         
 
         // Combine buildings and POIs into a single list
         const allLocations = [...buildingsList, ...poiList];
-        console.log(allLocations)
    
         
 

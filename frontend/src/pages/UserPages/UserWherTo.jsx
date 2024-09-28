@@ -27,6 +27,7 @@ function UserWhereTo() {
         const allLocations = await getAllLocations();
         // Filter out locations with null coordinates
         const validLocations = allLocations.filter(location => location.coordinates);
+        console.log(validLocations)
         setLocations(validLocations);
       } catch (error) {
         console.error("Error fetching locations:", error);
