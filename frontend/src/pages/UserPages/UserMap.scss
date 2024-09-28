@@ -1,0 +1,71 @@
+// UserMap.scss
+
+.find-main-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start; 
+    min-height: 100vh; 
+    width: 100vw; 
+    overflow: hidden; 
+    position: relative; 
+  }
+  
+  .back-button {
+    position: absolute; 
+    top: 1rem; 
+    left: -40rem;
+    background: none; 
+    border: none;
+    color: gray;
+    cursor: pointer; 
+    transition: color 0.2s;
+  
+    &:hover {
+      color: darkgray; 
+    }
+  }
+  
+  .title {
+    text-align: center; 
+    font-size: 2rem;
+    font-weight: bold;
+    color: #333; 
+    margin-top: 4rem;
+  }
+  
+
+  .find-map {
+    position: absolute; 
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0; 
+    background-color: #f0f0f0; 
+    z-index: -1;
+  }
+  
+
+  @media (max-width: 768px) {
+    .title {
+      font-size: 1.5rem;
+    }
+  
+    .back-button {
+      top: 0.75rem;
+      left: 1rem;
+    }
+    
+  }
+  
+  @media (max-width: 412px) {
+    .title {
+      font-size: 1.5rem;
+    }
+  
+    .back-button {
+      top: 0.75rem;
+      left: -8rem;
+    }
+    
+  }

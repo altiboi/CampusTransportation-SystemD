@@ -79,7 +79,6 @@ function Find() {
               </section>
               <section>
                 <h2 className="find-card-title">Location</h2>
-                <h2 className="find-place">Barnato Hall</h2>
               </section>
             </Card>
             <Card className="find-upper-card">
@@ -89,34 +88,33 @@ function Find() {
               <section>
                 <Link to={'/UserWhereTo'}>
                 <h2 className="find-card-title">Destination</h2>
-                <h2 className="find-place">Library Laws</h2>
                 </Link>
               </section>
             </Card>
           </section>
           <section className="find-lower-section">
             <Card className="find-lower-card-section">
-              <section className="find-card-content">
-                <span className="find-card-title">Walk</span>
-              </section>
               <section className="find-card-icon">
                 <FontAwesomeIcon icon={faPersonWalking} />
               </section>
+              <section className="find-card-content">
+                <span className="find-card-title">Walk</span>
+              </section>
             </Card>
             <Card className="find-lower-card-section">
-              <section className="find-card-content">
-                <span className="find-card-title">View Routes</span>
-              </section>
               <section className="find-card-icon">
                 <FontAwesomeIcon icon={faRoute} />
               </section>
+              <section className="find-card-content">
+                <span className="find-card-title">View Routes</span>
+              </section>
             </Card>
             <Card className="find-lower-card-section">
-              <section className="find-card-content">
-                <span className="find-card-title">Vehicle</span>
-              </section>
               <section className="find-card-icon">
                 <FontAwesomeIcon icon={faCar} />
+              </section>
+              <section className="find-card-content">
+                <span className="find-card-title">Vehicle</span>
               </section>
             </Card>
           </section>

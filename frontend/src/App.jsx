@@ -93,11 +93,6 @@ export function App() {
       case "/userFind":
         setActiveMenuItem("Home");
         break;
-
-      case "/UserFines":
-        setActiveMenuItem("Services");
-        break;
-
       case "/userService":
         setActiveMenuItem("Services");
         break;

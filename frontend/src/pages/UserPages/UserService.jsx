@@ -26,25 +26,30 @@ function UserService() {
         </section>
         <section className='card-group'>
           <section className='card-item'>
-            <Card className="card card-highlight">
-              <section className='card-content'>
-                <span className='card-heading'>Trip</span>
-              </section>
-              <section className='card-icon'>
-                <FontAwesomeIcon icon={faRoute} className='icon-large' />
-              </section>
+          <Link to="/userFind ">
+            <Card className="card card-highlight border-none">
+             
+                <section className='card-icon'>
+                  <FontAwesomeIcon icon={faRoute} className='icon-large' />
+                </section>
+                <section className='card-content'>
+                  <span className='card-heading'>Trip</span>
+                </section>
             </Card>
+            </Link>
           </section>
        
           <section className="card-item">
-            <Card className="card card-highlight">
-              <section className='card-content'>
-                <span className='card-heading'>Nearby Rental Stations</span>
-              </section>
+          <Link to={"/UserMap"} className="card-link w-full">
+            <Card className="card card-highlight border-none">
               <section className='card-icon'>
                 <FontAwesomeIcon icon={faMapMarkerAlt} className='icon-large' />
               </section>
+              <section className='card-content'>
+                <span className='card-heading'>Nearby Rental Stations</span>
+              </section>
             </Card>
+            </Link>
           </section>
         </section>
       </section>
@@ -61,11 +66,12 @@ function UserService() {
             </section>
           </Card>
           <Card className="action-card">
-            <h2 className="card-heading">Bus Schedule</h2>
-            <section className='card-icon'>
-              <FontAwesomeIcon icon={faClipboardList} className='icon-medium' />
-           
-            </section>
+            <Link to={"/UserBuses"} className='Link'>
+              <h2 className="card-heading">Bus Schedule</h2>
+              <section className='card-icon'>
+                <FontAwesomeIcon icon={faClipboardList} className='icon-medium' />
+              </section>
+            </Link>
           </Card>
           <Card className="action-card">
             <h2 className="card-heading">Reserve</h2>
@@ -75,7 +81,7 @@ function UserService() {
           </Card>
 
           <Card className="action-card">
-            <Link to={'/UserFines'}  className="w-full h-full">
+            <Link to={'/UserFines'}  className="Link w-full h-full">
               <h2 className="card-heading">Fines</h2>
               <section className='card-icon'>
                 <FontAwesomeIcon icon={faTicket} className='icon-medium' />
@@ -83,7 +89,7 @@ function UserService() {
             </Link>
           </Card>
           <Card className="action-card">
-          <Link to={'/Returns'}  className="w-full h-full">
+          <Link to={'/Returns'}  className="Link w-full h-full">
             <h2 className="card-heading">Returns</h2>
             <section className='card-icon'>
               <FontAwesomeIcon icon={faRotateLeft} className='icon-medium' />
@@ -91,13 +97,16 @@ function UserService() {
             </Link>
           </Card>
           <Card className="action-card">
+          <Link to={"/UserMap"} className="Link">
             <section className='card-content'>
               <span className='card-heading'>Campus Map</span>
             </section>
             <section className='card-icon'>
               <FontAwesomeIcon icon={faLocationDot} className='icon-medium' />
             </section>
+            </Link>
           </Card>
+
         </section>
       </section>
     </main>

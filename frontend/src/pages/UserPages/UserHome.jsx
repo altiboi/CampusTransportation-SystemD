@@ -6,9 +6,9 @@ import {
   faTruck,
   faLocationDot,
   faRoute,
+  faTicket,
   faBicycle,
   faClipboardList,
-  faMap,
 } from "@fortawesome/free-solid-svg-icons";
 import "./UserHome.css"; // Import custom CSS
 
@@ -16,14 +16,14 @@ function UserHome() {
   return (
     <main className="main-container">
       <section className="upper-part">
-        <section className="w-1/2">
+        <section className="w-1/2 ">
           <Link to="/userRental">
-            <Card className="card upper-card">
-              <section className="card-content">
-                <span className="card-title">Rent</span>
-              </section>
+            <Card className="card upper-card border-none">
               <section className="card-icon">
                 <FontAwesomeIcon icon={faTruck} className="icon" />
+              </section>
+              <section className="card-content">
+                <span className="card-title">Rent</span>
               </section>
             </Card>
           </Link>
@@ -31,12 +31,12 @@ function UserHome() {
 
         <section className="w-1/2">
           <Link to="/userFind">
-            <Card className="card upper-card">
-              <section className="card-content">
-                <span className="card-title">Find</span>
-              </section>
+            <Card className="card upper-card border-none">
               <section className="card-icon">
                 <FontAwesomeIcon icon={faLocationDot} className="icon" />
+              </section>
+              <section className="card-content">
+                <span className="card-title">Find</span>
               </section>
             </Card>
           </Link>
@@ -45,43 +45,43 @@ function UserHome() {
 
       <section className="middle-apart">
         <Card className="middle-card w-full">
-          <Link to={"/userFind"} className="LINK w-full">
-            <section className="card-description">
-              <p>Navigate Wits, Your Way!</p>
-            </section>
+          <Link to={"/UserMap"} className="LINK w-full">
             <section className="card-icon">
               <FontAwesomeIcon icon={faRoute} className="icon" />
+            </section>
+            <section className="card-description">
+              <p>Campus Map</p>
             </section>
           </Link>
         </Card>
       </section>
 
-      <section className="lower-part ">
+      <section className="lower-part">
         <section className="w-full p-2">
           <h2 className="card-title title">Suggestions</h2>
         </section>
-        <section className="lower-card-section  w-full flex flex-row justify-around">
-          <Card className="lower-card">
-            <h2 className="card-title">Rent Bike</h2>
+        <section className="lower-card-section w-full flex flex-row ">
+          <Card className="lower-card  w-1/2">
             <section className="card-icon">
               <FontAwesomeIcon icon={faBicycle} className="icon" />
             </section>
+            <h2 className="card-title">Rent Bike</h2>
           </Card>
-          <Card className="lower-card">
+          <Card className="lower-card w-1/2">
             <Link to={"/UserBuses"}>
-              <h2 className="card-title">Bus Schedule</h2>
               <section className="card-icon">
                 <FontAwesomeIcon icon={faClipboardList} className="icon" />
               </section>
+              <h2 className="card-title">Bus Schedule</h2>
             </Link>
           </Card>
-          <Card className="lower-card">
-            <section className="card-content">
-            <Link to={'/UserMap'}><span className="card-title">Campus Map</span></Link>
-            </section>
-            <section className="card-icon">
-              <FontAwesomeIcon icon={faLocationDot} className="icon" />
-            </section>
+          <Card className="lower-card w-1/2">
+            <Link to={'/UserFines'}>
+              <h2 className="card-title">Fines</h2>
+              <section className='card-icon'>
+                <FontAwesomeIcon icon={faTicket} className='icon' />
+              </section>
+            </Link>
           </Card>
         </section>
       </section>
