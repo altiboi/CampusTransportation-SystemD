@@ -1,17 +1,17 @@
-// UserWhereTo.test.js
+// UserFrom.test.js
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { AppProvider } from '../../src/contexts/AppContext';
-import UserWhereTo from '../../src/pages/UserPages/UserWherTo';
+import UserFrom from  '../../src/pages/UserPages/UserFrom';
 
-describe('UserWhereTo Component', () => {
-  // Function to render the component with context
+describe('UserFrom Component', () => {
+
   const renderComponent = () => {
     render(
       <AppProvider>
         <Router>
-          <UserWhereTo />
+          <UserFrom />
         </Router>
       </AppProvider>
     );
@@ -20,12 +20,13 @@ describe('UserWhereTo Component', () => {
   it('should render the title and back button', () => {
     renderComponent();
 
-    expect(screen.getByText('Where To')).not.toBeNull();
+    expect(screen.getByText('Current Location')).not.toBeNull();
     expect(screen.getByRole('button')).not.toBeNull(); 
   });
 
-  it('should allow selection of predefined destinations', () => {
+  it('should allow selection of predefined locations', () => {
     renderComponent();
+
 
     const dropdown = screen.getByRole('combobox'); 
     fireEvent.change(dropdown, { target: { value: 'the-matrix' } });
@@ -33,13 +34,13 @@ describe('UserWhereTo Component', () => {
     expect(dropdown.value).toBe('the-matrix');
   });
 
-  it('should allow custom destination input', () => {
+  it('should allow custom location input', () => {
     renderComponent();
 
-    const input = screen.getByPlaceholderText('Enter custom destination');
-    fireEvent.change(input, { target: { value: 'My Custom Destination' } });
+    const input = screen.getByPlaceholderText('Enter custom Location');
+    fireEvent.change(input, { target: { value: 'My Custom Location' } });
 
-    expect(input.value).toBe('My Custom Destination');
+    expect(input.value).toBe('My Custom Location');
   });
 
   it('should update the destination when selecting "Other"', () => {
@@ -48,7 +49,8 @@ describe('UserWhereTo Component', () => {
     const dropdown = screen.getByRole('combobox');
     fireEvent.change(dropdown, { target: { value: 'other' } });
 
-    expect(screen.getByPlaceholderText('Enter custom destination').value).toBe('');
+
+    expect(screen.getByPlaceholderText('Enter custom Location').value).toBe('');
   });
 
   it('should go back to the previous page when back button is clicked', () => {
@@ -56,6 +58,7 @@ describe('UserWhereTo Component', () => {
 
     const backButton = screen.getByRole('button');
     fireEvent.click(backButton);
+
     expect(window.history.length).toBeGreaterThan(0); 
   });
 });

@@ -47,7 +47,7 @@ function Find() {
     <APIProvider apiKey="AIzaSyBxWXlgW0k0aTUwyanFnudRdqdNp8y413o">
       <main className="Userfind-container">
         <section className="find-upper-part">
-          <section className="find-Map">
+          <section className="find-Map" data-testid="find-Map">
             {currentLocation ? (
               <div style={{ height: "100%", width: "100%" }}>
                 <Map

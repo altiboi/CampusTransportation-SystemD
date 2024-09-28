@@ -20,7 +20,7 @@ function UserHome() {
           <Link to="/userRental" className="Links">
             <Card className="card ">
               <section className="card-icon">
-                <FontAwesomeIcon icon={faTruck} className="icon" />
+              <FontAwesomeIcon icon={faTruck} className="icon" data-testid="icon-truck" />
               </section>
               <section className="card-content">
                 <span className="card-title">Rent</span>
@@ -33,7 +33,7 @@ function UserHome() {
           <Link to="/userFind" className="Links">
             <Card className="card">
               <section className="card-icon">
-                <FontAwesomeIcon icon={faLocationDot} className="icon" />
+              <FontAwesomeIcon icon={faLocationDot} className="icon" data-testid="icon-location-dot" />
               </section>
               <section className="card-content">
                 <span className="card-title">Find</span>
@@ -47,7 +47,7 @@ function UserHome() {
         <Link to={"/UserMap"} className="link">
           <Card className="middle-card">
               <section className="card-icon">
-                <FontAwesomeIcon icon={faRoute} className="icon" />
+              <FontAwesomeIcon icon={faRoute} className="icon" data-testid="icon-route" />
               </section>
               <section className="card-description">
                 <p>Campus Map</p>
@@ -64,7 +64,7 @@ function UserHome() {
           <Link to={"/UserBuses"} className="link">
             <Card className="lower-card ">
               <section className="card-icon">
-                <FontAwesomeIcon icon={faBicycle} className="icon" />
+              <FontAwesomeIcon icon={faBicycle} className="icon" data-testid="icon-bicycle" />
               </section>
               <h2 className="card-title">Rent Bike</h2>
             </Card>
@@ -72,7 +72,7 @@ function UserHome() {
           <Link to={"/UserBuses"} className="link">
             <Card className="lower-card">
                 <section className="card-icon">
-                  <FontAwesomeIcon icon={faClipboardList} className="icon" />
+                <FontAwesomeIcon icon={faClipboardList} className="icon" data-testid="icon-clipboard-list" />
                 </section>
                 <h2 className="card-title">Bus Schedule</h2>
             </Card>
@@ -80,7 +80,8 @@ function UserHome() {
           <Link to={'/UserFines'} className="link">
             <Card className="lower-card">
                 <section className='card-icon'>
-                  <FontAwesomeIcon icon={faTicket} className='icon' />
+                <FontAwesomeIcon icon={faTicket} className="icon" data-testid="icon-ticket" />
+
                 </section>
                 <h2 className="card-title">Fines</h2>
             </Card>
