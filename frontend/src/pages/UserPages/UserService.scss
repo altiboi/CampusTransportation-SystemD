@@ -1,0 +1,201 @@
+.user-service-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
+    .header-section {
+        display: flex;
+        justify-content: flex-end;
+        align-items: flex-end;
+        flex-direction: column;
+        margin-top: 3rem;
+        width: 100%;
+        height: 30%;
+        box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;
+        .title-main {
+            font-size: 2rem;
+            font-weight: bold;
+            height: 20%;
+        }
+
+        .card-group {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 80%;
+            box-sizing: border-box;
+            padding: 0 .2rem;
+            gap: .2rem;
+           
+            .card-item {
+                width: 50%;
+                height: 60%;
+                .link {
+                    width: 100%;
+                    height:100% ;
+                    .card{
+                        display: flex;
+                        flex-direction: row;
+                        border-radius: 8px;
+                        width: 100%;
+                        height:100% ;
+                        box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px,
+                                    rgba(0, 0, 0, 0.3) 0px 30px 60px -30px,
+                                    rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
+                        .card-icon{
+                            flex: 1;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            .icon-large{
+                                font-size:5rem;
+                            }
+                        }
+                        .card-content{
+                            flex: 3;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            .card-heading{
+                                font-size:3rem;
+                                font-weight: 900;
+                                color: black;
+                            }
+                          
+                        } 
+                        &:hover{
+                            box-shadow: rgba(6, 24, 44, 0.4) 0px 0px 0px 2px, 
+                            rgba(6, 24, 44, 0.65) 0px 4px 6px -1px,
+                             rgba(255, 255, 255, 0.08) 0px 1px 0px inset;
+                          }
+                        @media (max-width: 768px) {
+                            .card-content{
+                              display: none; 
+                            }            
+                        }
+                    }
+                    @media (max-width: 768px) {
+                        .card{
+                          width: 100%;
+                          height:100% ;
+                       
+                          .card-icon{
+                            width: 100%;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                          }
+                        }
+                      }
+                }
+            }
+
+        }
+    }
+    
+    .actions-section {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+        width: 100%;
+        height: 60%;
+        margin-bottom: 25%;
+        .actions-title {
+            width: 100%;
+            padding: 2rem 1rem;
+            height: 10%;
+            .title-main{
+                font-size:2rem;
+                font-weight: 900;
+                color: black;
+            }
+            @media (max-width: 768px) {
+                .title-main{
+                    font-size:1.5rem;
+                    font-weight: 900;
+                    color: black;
+                }
+              }
+        }
+        .actions-group {
+            width: 100%;
+            height: 90%;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 1rem;
+            .action-card {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                border-radius: 15px;
+                height: 30%;
+                flex: 1 1 calc(33.333% - 16px);
+                max-width: calc(33.333% - 16px);
+                box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset, 
+                rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset;
+                border: 2px solid silver;
+                &:hover{
+                    scale: 0.9;
+                }
+                .Link {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    justify-content: center;
+                    width: 100%;
+                    height:100% ;
+                    .headings{
+           
+                        .card-heading{
+                            font-size:1.5rem;
+                            font-weight: 900;
+                            color: black;
+                        }
+                    }
+                    .card-icon {
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        flex: 1;
+                        text-align: center;
+                        .icon-medium{
+                            font-size:3rem;
+                            font-weight: 900;
+                            color: black;
+                        }
+                    }
+                }
+
+            }
+            @media (max-width: 412px) {
+                .action-card {
+                    flex: 1 1 calc(50% - 16px);
+                    max-width: calc(50% - 16px);
+                    height: 30%;
+                    font-size: 0.875rem;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    justify-content: center;
+                }
+            
+                .title-main {
+                    font-size: 1rem;
+                }
+            
+                .icon-medium {
+                    font-size: 1.5rem;
+                }
+
+            }
+        }
+
+    }
+}

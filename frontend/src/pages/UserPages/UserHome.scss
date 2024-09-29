@@ -26,6 +26,7 @@ $hover-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
     height: 25%;
     box-sizing: border-box;
     padding-right: 0.5rem;
+    gap: 1rem;
     .upper-cards{
       width: 50%;
       height: 70%;
@@ -36,6 +37,10 @@ $hover-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
         gap: 1rem;
       
         .card {
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          justify-content: center;
           border:none;
           width: 100%;
           background-color: transparent;
@@ -44,8 +49,13 @@ $hover-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
                       rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
           @media (max-width: 768px) {
             section.card-content {
-              display: none; // Hide the h2 title on small screens
+              display: none; 
             }
+          }
+          &:hover{
+            box-shadow: rgba(6, 24, 44, 0.4) 0px 0px 0px 2px, 
+            rgba(6, 24, 44, 0.65) 0px 4px 6px -1px,
+             rgba(255, 255, 255, 0.08) 0px 1px 0px inset;
           }
           .icon{
             font-size:5rem;
@@ -57,6 +67,14 @@ $hover-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
           }
           .icon{
             font-size:3rem;
+          }
+        }
+        @media (max-width: 768px) {
+          .card {
+            height: 80%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
           }
         }
 
@@ -87,10 +105,20 @@ $hover-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
         display: flex;
         justify-content: center;
         align-items: center;
+        box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, 
+        rgba(0, 0, 0, 0.12) 0px -12px 30px, 
+        rgba(0, 0, 0, 0.12) 0px 4px 6px, 
+        rgba(0, 0, 0, 0.17) 0px 12px 13px,
+         rgba(0, 0, 0, 0.09) 0px -3px 5px;
         .card-icon{
           flex:1;
           font-size: xx-large;
     
+        }
+        &:hover{
+          box-shadow: rgba(6, 24, 44, 0.4) 0px 0px 0px 2px, 
+          rgba(6, 24, 44, 0.65) 0px 4px 6px -1px,
+           rgba(255, 255, 255, 0.08) 0px 1px 0px inset;
         }
         .card-description{
           flex:2;
@@ -148,7 +176,8 @@ $hover-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
           justify-content: center;
           border-radius: 12px;
           cursor: pointer;
-          box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset;
+          box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset, 
+          rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset;
           @media (max-width: 768px) {
               h2.card-title {
                 display: none; 

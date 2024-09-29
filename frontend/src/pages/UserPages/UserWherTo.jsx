@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Card from "../../components/Card";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {faArrowLeft } from '@fortawesome/free-solid-svg-icons'; // Import the back icon
+import {faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import { faLocationDot } from "@fortawesome/free-solid-svg-icons";
 import "./UserWhereTo.scss";
 import { useAppContext } from "../../contexts/AppContext";
@@ -20,23 +20,19 @@ function UserWhereTo() {
     const value = e.target.value;
     setDestination(value);
     if (value === "other") {
-      // Keep the customDestination as it is for "other" option
-      setCustomDestination(customDestination || ""); // Set default if empty
+      setCustomDestination(customDestination || ""); 
     } else {
-      // For other options, clear the customDestination
       setCustomDestination(value);
     }
   };
 
   const handleCustomDestinationChange = (e) => {
     setCustomDestination(e.target.value);
-    // Update the destination to "other" if the custom input is being used
     if (e.target.value) {
       setDestination("other");
     }
   };
     const handleBackClick = () => {
-        // Go back to the previous page
         window.history.back();
     };
 
@@ -70,20 +66,20 @@ function UserWhereTo() {
           </section>
         </Card>
         <section className="user-where-to-select-section w-full">
-        <select
-          className="user-where-to-select-dropdown"
-          value={destination}
-          onChange={handleDropdownChange}
-        >
-          <option value="" disabled>Select Destination</option>
-          <option value="the-matrix">The Matrix</option>
-          <option value="flower-hall">Flower Hall</option>
-          <option value="wss3">WSS3</option>
-          <option value="umthombo-building">Umthombo Building</option>
-          <option value="bozoli">Bozoli</option>
-          <option value="other">Other</option>
-        </select>
-      </section>
+          <select
+            className="user-where-to-select-dropdown"
+            value={destination}
+            onChange={handleDropdownChange}
+          >
+            <option value="" disabled>Select Destination</option>
+            <option value="the-matrix">The Matrix</option>
+            <option value="flower-hall">Flower Hall</option>
+            <option value="wss3">WSS3</option>
+            <option value="umthombo-building">Umthombo Building</option>
+            <option value="bozoli">Bozoli</option>
+            <option value="other">Other</option>
+          </select>
+        </section>
       </section>
     </main>
   );

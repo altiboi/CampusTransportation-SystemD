@@ -61,7 +61,7 @@ function UserHome() {
           <h2 className="card-title title">Suggestions</h2>
         </section>
         <section className="lower-card">
-          <Link to={"/UserBuses"} className="link">
+          <Link to={""} className="link">
             <Card className="lower-card ">
               <section className="card-icon">
               <FontAwesomeIcon icon={faBicycle} className="icon" data-testid="icon-bicycle" />

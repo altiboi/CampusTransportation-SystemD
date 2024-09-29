@@ -1,140 +1,110 @@
 // General container styling
 .user-where-to-container {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 2rem;
-    min-height: 100vh;
-    background-color: #f9f9f9; // Light background for better contrast
-  }
-  
-  .find-upper-part {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem;
+  min-height: 100vh;
+  .find-upper-part{
     width: 100%;
     flex: 1;
-  }
-  
-  .title {
     display: flex;
-    margin-bottom: 1.5rem; // Add spacing below the title
-    h1 {
-      font-size: 3rem;
-      color: #333; // Darker title color for better visibility
-      text-align: center; // Center the title for better layout
-      font-weight: bold; // Make the title bold
-    }
+    align-items: center;
+    justify-content: center;
   }
-  
+  .title{
+    display: flex;
+    h1{
+        font-size: 2rem; 
+      }
+  }
   .user-where-to-input-section {
     width: 100%;
     flex: 3;
     margin-bottom: 1.5rem;
-  
     .user-where-to-card {
       display: flex;
+      flex-direction: row;
       align-items: center;
-      border-radius: 12px; // Slightly round corners
+      border-radius: 8px;
       background-color: #fff;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); // More pronounced shadow
+      box-shadow: rgba(0, 0, 0, 0.17) 0px -23px 25px 0px inset, 
+      rgba(0, 0, 0, 0.15) 0px -36px 30px 0px inset,
+      rgba(0, 0, 0, 0.1) 0px -79px 40px 0px inset,
+        rgba(0, 0, 0, 0.06) 0px 2px 1px,
+        rgba(0, 0, 0, 0.09) 0px 4px 2px, 
+        rgba(0, 0, 0, 0.09) 0px 8px 4px, 
+        rgba(0, 0, 0, 0.09) 0px 16px 8px, 
+        rgba(0, 0, 0, 0.09) 0px 32px 16px;
+    border:2px solid silver ;
       width: 100%;
       margin-bottom: 1.5rem;
-      padding: 1rem; // Padding for inner content
-      transition: box-shadow 0.3s ease; // Smooth transition on hover
-  
-      &:hover {
-        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); // Shadow on hover
-      }
-  
       .card-icon {
-        font-size: 1.8rem; // Larger icon
-        color: #4caf50; // Green color for the icon
+        font-size: 2rem;
         flex: 1;
-  
-        .icon {
-          color: orangered;
+        .icon{
+          color: black;
         }
       }
-  
+      
       .card-content {
-        flex: 5;
-  
+        flex: 4;
         .user-where-to-custom-input {
           width: 100%;
-          padding: 0.75rem; // Increased padding
-          border: 1px solid #ddd;
-          border-radius: 8px; // Rounded corners
+          padding: 0.5rem;
+          border: none;
+          border-radius: 4px;
           font-size: 1rem;
           outline: none;
-          transition: border-color 0.3s, box-shadow 0.3s; // Smooth transitions
-  
+          
           &:focus {
-            border-color: #4caf50;
-            box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.2); // Clear focus indicator
+            border-color: black;
+            box-shadow: rgba(0, 0, 0, 0.09) 0px 2px 1px,
+             rgba(0, 0, 0, 0.09) 0px 4px 2px,
+             rgba(0, 0, 0, 0.09) 0px 8px 4px, 
+             rgba(0, 0, 0, 0.09) 0px 16px 8px, 
+             rgba(0, 0, 0, 0.09) 0px 32px 16px;
           }
         }
       }
     }
   }
-  
-  // Select section styling
   .user-where-to-select-section {
     width: 100%;
-  
+    box-shadow: rgba(17, 17, 26, 0.1) 0px 4px 16px, 
+    rgba(17, 17, 26, 0.1) 0px 8px 24px, 
+    rgba(17, 17, 26, 0.1) 0px 16px 56px;
     .user-where-to-select-dropdown {
       width: 100%;
-      padding: 0.75rem; // Increased padding
+      padding: 0.5rem;
       border: 1px solid #ddd;
-      border-radius: 8px; // Rounded corners
+      border-radius: 4px;
       font-size: 1rem;
       outline: none;
+      box-shadow: rgba(255, 255, 255, 0.2) 0px 0px 0px 1px inset, rgba(0, 0, 0, 0.9) 0px 0px 0px 1px;
       cursor: pointer;
-      transition: border-color 0.3s, box-shadow 0.3s; // Smooth transitions
-  
+      
       &:focus {
-        border-color: #4caf50;
-        box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.2);
+        border-color:black;
       }
     }
-  
+    
     option {
-      padding: 0.75rem; // Increased padding for better touch targets
+      padding: 0.5rem;
     }
   }
-  
-  // Back button styling
-  .back-button {
-    position: absolute;
-    top: 1rem; // Adjusted positioning
-    left: 1rem; // Adjusted positioning
-    background: transparent; // Clear background
-    border: none; // No border
-    cursor: pointer; // Pointer on hover
-    font-size: 1.5rem; // Larger icon size
-    color: #4caf50; // Green color for consistency
-  
-    &:hover {
-      color: #333; // Darker color on hover
-    }
-  }
-  
-  // General responsive design adjustments
   @media (max-width: 768px) {
     .user-where-to-container {
       padding: 1rem;
     }
-  
-    .user-where-to-input-section,
-    .user-where-to-select-section {
+    
+    .user-where-to-input-section, .user-where-to-select-section {
       max-width: 100%;
-    }
-  
-    .title h1 {
-      font-size: 2.5rem; // Smaller title on mobile
-    }
-  
-    .user-where-to-card {
-      flex-direction: column; // Stack elements on mobile
-      align-items: flex-start; // Align to the left
     }
   }
   
+  
+}
+
+
