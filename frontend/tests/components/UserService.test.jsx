@@ -51,7 +51,7 @@ describe('UserService Component', () => {
   it('should render the nearby rental stations card', () => {
     renderComponent();
 
-    const rentalCard = screen.getByText('Nearby Rental Stations');
+    const rentalCard = screen.getByText('Rental Stations');
     expect(rentalCard).not.toBeNull();
     const rentalLink = rentalCard.closest('a');
     expect(rentalLink).not.toBeNull();
@@ -72,7 +72,7 @@ describe('UserService Component', () => {
     fireEvent.click(busCard.closest('a')); 
     expect(window.location.pathname).toBe('/UserBuses');
 
-    const StationsCard = screen.getByText('Nearby Rental Stations');
+    const StationsCard = screen.getByText('Rental Stations');
     fireEvent.click(StationsCard);
     expect(window.location.pathname).toBe('/UserMap');
 

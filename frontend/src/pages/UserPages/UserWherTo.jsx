@@ -42,7 +42,7 @@ function UserWhereTo() {
           <section className="find-Map find-w-1/2">The Map</section>
       </section>
       <section className="title w-full">
-        <button
+        <button data-testid="button"
               className=' top-5 left 4 p-2 text-gray-600 hover:text-gray-800'
               onClick={handleBackClick}
               >

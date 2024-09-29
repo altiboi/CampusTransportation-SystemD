@@ -20,6 +20,7 @@ function UserMap() {
   return (
     <main className="Map-container">
       <button
+        data-testid="button"
         className="back-button"
         onClick={handleBackClick}
       >

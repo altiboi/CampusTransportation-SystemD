@@ -21,7 +21,7 @@ describe('UserFrom Component', () => {
     renderComponent();
 
     expect(screen.getByText('Current Location')).not.toBeNull();
-    expect(screen.getByRole('button')).not.toBeNull(); 
+    expect(screen.getByTestId('button')).not.toBeNull(); 
   });
 
   it('should allow selection of predefined locations', () => {
@@ -56,7 +56,7 @@ describe('UserFrom Component', () => {
   it('should go back to the previous page when back button is clicked', () => {
     renderComponent();
 
-    const backButton = screen.getByRole('button');
+    const backButton = screen.getByTestId('button');
     fireEvent.click(backButton);
 
     expect(window.history.length).toBeGreaterThan(0); 
