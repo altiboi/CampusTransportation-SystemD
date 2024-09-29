@@ -163,7 +163,7 @@ export const getNotifications = async () => {
           id: doc.id,  
           ...doc.data() 
       }));
-      console.log(notifsList)
+     
 
       return notifsList;
   } catch (error) {
@@ -282,7 +282,7 @@ export const setNotificationAsRead = async (notificationId) => {
             //console.log(doc.id + " " +data)
             return {
                 name: doc.id,
-                category: data.Category || "Unknown",
+                category: data.Category,
                 coordinates: data.Coordinates ? {
                     latitude: data.Coordinates._lat|| null,
                     longitude: data.Coordinates._long || null,

@@ -2,8 +2,18 @@ import React, { useState, useEffect, useCallback } from "react";
 import { useLocation } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { getAllLocations } from "../../api/functions"; // Import your Firebase function
-
 import Card from "../../components/Card";
+import dininghall from "../../assets/dininghalls.png";
+import clubvenue from "../../assets/clubvenue.png"
+import home from "../../assets/home.png";
+import landmark from "../../assets/time.png";
+import sports from "../../assets/sport.png";
+import religion from "../../assets/church.png";
+import shopping from "../../assets/shopping.png";
+import community from "../../assets/community.png";
+
+
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faLocationDot,
@@ -119,6 +129,26 @@ function Find() {
                   <Marker position={destinationPosition} />
 
                   {markersVisible && pointsofinterest.map((poi, index) => {
+
+                  let iconUrl;
+                    if (poi.category.toLowerCase() === "dining hall") {
+                      iconUrl = dininghall;
+                    } else if (poi.category.toLowerCase() === "residence") {
+                      iconUrl = home;
+                    } else if (poi.category.toLowerCase() === "landmark") {
+                      iconUrl = landmark;
+                    }
+                    else if (poi.category.toLowerCase() === "sports venue") {
+                      iconUrl = sports;
+                    } else if (poi.category.toLowerCase() === "religious landmark") {
+                      iconUrl = religion;
+                    }else if (poi.category.toLowerCase() === "shopping centre") {
+                      iconUrl = shopping;
+                    }else if (poi.category.toLowerCase() === "community centre") {
+                      iconUrl = community;
+                    }else {
+                      iconUrl = clubvenue;
+                    }
                     
 
                     return (
@@ -126,7 +156,7 @@ function Find() {
                         key={index}
                         position={{ lat: poi.coordinates.latitude, lng: poi.coordinates.longitude }}
                         icon={{
-                          url: "https://img.icons8.com/restaurant",
+                          url:iconUrl,
                           scaledSize: new google.maps.Size(30, 30), // Adjust the size as needed
                         }}
                         title={poi.name}
@@ -194,7 +224,7 @@ function Find() {
 
             >
               <section className="find-card-content">
-                <span className="find-card-title">Alt. Route</span>
+                <span className="find-card-title">Points of Interest</span>
               </section>
               <section className="find-card-icon">
                 <FontAwesomeIcon icon={faRoute} />
