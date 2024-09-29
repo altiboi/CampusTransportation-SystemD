@@ -69,6 +69,9 @@ function UserFrom() {
               onChange={handleCustomDestinationChange}
             />
           </section>
+          <section className="button">
+           <button className="btn">Go</button>
+          </section>
         </Card>
         <section className="user-where-to-select-section w-full">
         <select
