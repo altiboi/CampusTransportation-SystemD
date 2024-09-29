@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import './Confirmation.css'; // Create a CSS file for styles
 
@@ -26,6 +26,18 @@ const ReturnConfirmation = () => {
   const handleViewFines = () => {
     navigate('/UserFines');
   };
+
+  // Redirect to the home page if the vehicle was returned on time after 1 second
+  useEffect(() => {
+    if (!isLate) {
+      const timeoutId = setTimeout(() => {
+        navigate('/');
+      }, 1000); // 1 second delay
+
+      // Clean up the timeout if the component unmounts before the timeout completes
+      return () => clearTimeout(timeoutId);
+    }
+  }, [isLate, navigate]);
 
   return (
     <main className="p-4 max-w-7xl mx-auto w-full">
@@ -61,7 +73,9 @@ const ReturnConfirmation = () => {
           </div>
         )}
         {!isLate && (
-          <p className="text-green-500 mt-4">Thank you for returning the vehicle on time!</p>
+          <p className="text-green-500 mt-4">
+            Thank you for returning the vehicle on time!
+          </p>
         )}
       </div>
     </main>

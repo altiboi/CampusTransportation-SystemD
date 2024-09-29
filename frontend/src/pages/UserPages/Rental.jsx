@@ -7,7 +7,6 @@ import './Rental.css';
 import { useAppContext } from "../../contexts/AppContext";
 import { fetchRentalStations, getAllVehicles } from '../../api/functions';
 
-// Component to display rental stations
 const RentalStations = ({ onSelectStation, stations }) => (
   <div className="rental-stations mb-6 p-4 border rounded-lg shadow">
     <h2 className="text-lg font-semibold mb-4">Rental Stations</h2>
@@ -57,7 +56,6 @@ export default function UserRental() {
   }, [setTitle, setTask]);
 
   useEffect(() => {
-    // Filter vehicles based on category, search text, and selected station
     const filteredItems = vehicles
       .filter(item => activeCategory === 'All' || item.type === activeCategory)
       .filter(item => item.make.toLowerCase().includes(searchText.toLowerCase()))
@@ -66,17 +64,23 @@ export default function UserRental() {
     setFilteredRentalItems(filteredItems);
   }, [activeCategory, searchText, selectedStation, vehicles]);
 
-  console.log(filteredRentalItems)
-
   return (
-    <main className="p-4 max-w-7xl mx-auto w-full">
+    <main 
+    className={`p-4 max-w-7xl mx-auto w-full ${selectedStation !== null ? 'selected-station-bg' : ''}`}  // Conditionally add class for background image
+    >
       <header className="desktop-header mb-4 flex items-center">
-        <Link to="/" className="mr-4">
-          <FontAwesomeIcon icon={faArrowLeft} className="text-xl" />
-        </Link>
+        {selectedStation ? (
+          <button onClick={() => setSelectedStation(null)} className="mr-4">
+            <FontAwesomeIcon icon={faArrowLeft} className="text-xl" />
+          </button>
+        ) : (
+          <Link to="/" className="mr-4">
+            <FontAwesomeIcon icon={faArrowLeft} className="text-xl" />
+          </Link>
+        )}
         <h1 className="text-xl font-bold">Rental</h1>
       </header>
-
+    
       {selectedStation === null ? (
         <RentalStations onSelectStation={setSelectedStation} stations={stations} />
       ) : (
@@ -91,7 +95,7 @@ export default function UserRental() {
               Select Another Station
             </button>
           </div>
-
+    
           <div className="desktop-search relative mb-4">
             <input
               type="text"
@@ -102,7 +106,7 @@ export default function UserRental() {
             />
             <FontAwesomeIcon icon={faSearch} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
           </div>
-
+    
           <div className="desktop-category-buttons flex space-x-4 mb-4 overflow-x-auto">
             {categories.map((category, index) => (
               <button
@@ -114,11 +118,11 @@ export default function UserRental() {
               </button>
             ))}
           </div>
-
+    
           <h2 className="text-lg font-semibold mb-4">
             {activeCategory === 'All' ? 'Most Rented Transport' : `Available ${activeCategory}s`}
           </h2>
-
+    
           {filteredRentalItems.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {filteredRentalItems.map((item, index) => (
@@ -129,14 +133,14 @@ export default function UserRental() {
                       <Link 
                         to={`/Book/${item.name}`} 
                         className="px-4 py-2 bg-black text-white rounded"
-                        state={{ item, rentalStationID: selectedStation.id}}  // Pass the vehicle details as state
+                        state={{ item, rentalStationID: selectedStation.id }}
                       >
                         Book now
                       </Link>
                       <Link 
                         to={`/Reserve/${item.name}`} 
                         className="px-4 py-2 bg-gray-200 text-black rounded"
-                        state={{ item, rentalStationID: selectedStation.id }}  // Pass the vehicle details as state
+                        state={{ item, rentalStationID: selectedStation.id }}
                       >
                         Reserve
                       </Link>
