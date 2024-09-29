@@ -6,37 +6,37 @@ import {
   faTruck,
   faLocationDot,
   faRoute,
+  faTicket,
   faBicycle,
   faClipboardList,
-  faMap,
 } from "@fortawesome/free-solid-svg-icons";
-import "./UserHome.css"; // Import custom CSS
+import "./UserHome.scss"; // Import custom CSS
 
 function UserHome() {
   return (
-    <main className="main-container">
+    <main className="Home-container">
       <section className="upper-part">
-        <section className="w-1/2">
-          <Link to="/userRental">
-            <Card className="card upper-card">
+        <section className="upper-cards">
+          <Link to="/userRental" className="Links">
+            <Card className="card ">
+              <section className="card-icon">
+              <FontAwesomeIcon icon={faTruck} className="icon" data-testid="icon-truck" />
+              </section>
               <section className="card-content">
                 <span className="card-title">Rent</span>
-              </section>
-              <section className="card-icon">
-                <FontAwesomeIcon icon={faTruck} className="icon" />
               </section>
             </Card>
           </Link>
         </section>
 
-        <section className="w-1/2">
-          <Link to="/userFind">
-            <Card className="card upper-card">
+        <section className="upper-cards">
+          <Link to="/userFind" className="Links">
+            <Card className="card">
+              <section className="card-icon">
+              <FontAwesomeIcon icon={faLocationDot} className="icon" data-testid="icon-location-dot" />
+              </section>
               <section className="card-content">
                 <span className="card-title">Find</span>
-              </section>
-              <section className="card-icon">
-                <FontAwesomeIcon icon={faLocationDot} className="icon" />
               </section>
             </Card>
           </Link>
@@ -44,45 +44,48 @@ function UserHome() {
       </section>
 
       <section className="middle-apart">
-        <Card className="middle-card w-full">
-          <Link to={"/userFind"} className="LINK w-full">
-            <section className="card-description">
-              <p>Navigate Wits, Your Way!</p>
-            </section>
-            <section className="card-icon">
-              <FontAwesomeIcon icon={faRoute} className="icon" />
-            </section>
-          </Link>
-        </Card>
+        <Link to={"/UserMap"} className="link">
+          <Card className="middle-card">
+              <section className="card-icon">
+              <FontAwesomeIcon icon={faRoute} className="icon" data-testid="icon-route" />
+              </section>
+              <section className="card-description">
+                <p>Campus Map</p>
+              </section>
+          </Card>
+        </Link>
       </section>
 
-      <section className="lower-part ">
-        <section className="w-full p-2">
+      <section className="lower-part">
+        <section className="lower-Title">
           <h2 className="card-title title">Suggestions</h2>
         </section>
-        <section className="lower-card-section  w-full flex flex-row justify-around">
-          <Card className="lower-card">
-            <h2 className="card-title">Rent Bike</h2>
-            <section className="card-icon">
-              <FontAwesomeIcon icon={faBicycle} className="icon" />
-            </section>
-          </Card>
-          <Card className="lower-card">
-            <Link to={"/UserBuses"}>
-              <h2 className="card-title">Bus Schedule</h2>
+        <section className="lower-card">
+          <Link to={""} className="link">
+            <Card className="lower-card ">
               <section className="card-icon">
-                <FontAwesomeIcon icon={faClipboardList} className="icon" />
+              <FontAwesomeIcon icon={faBicycle} className="icon" data-testid="icon-bicycle" />
               </section>
-            </Link>
-          </Card>
-          <Card className="lower-card">
-            <section className="card-content">
-            <Link to={'/UserMap'}><span className="card-title">Campus Map</span></Link>
-            </section>
-            <section className="card-icon">
-              <FontAwesomeIcon icon={faLocationDot} className="icon" />
-            </section>
-          </Card>
+              <h2 className="card-title">Rent Bike</h2>
+            </Card>
+          </Link>
+          <Link to={"/UserBuses"} className="link">
+            <Card className="lower-card">
+                <section className="card-icon">
+                <FontAwesomeIcon icon={faClipboardList} className="icon" data-testid="icon-clipboard-list" />
+                </section>
+                <h2 className="card-title">Bus Schedule</h2>
+            </Card>
+          </Link>
+          <Link to={'/UserFines'} className="link">
+            <Card className="lower-card">
+                <section className='card-icon'>
+                <FontAwesomeIcon icon={faTicket} className="icon" data-testid="icon-ticket" />
+
+                </section>
+                <h2 className="card-title">Fines</h2>
+            </Card>
+          </Link>
         </section>
       </section>
     </main>

@@ -1,17 +1,8 @@
-import React from "react";
-import {Link} from "react-router-dom"
-import Card from "../../components/Card";
+import React, { useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faLocationDot,
-  faRoute,
-  faPersonWalking,
-  faCar,
-  faCheckCircle,
-} from "@fortawesome/free-solid-svg-icons";
-import "./Find.scss"; // Import custom CSS
+import { faArrowLeft } from "@fortawesome/free-solid-svg-icons"; // Import the back icon
 import { useAppContext } from "../../contexts/AppContext";
-import { useEffect } from "react";
+import './UserMap.scss'; // Import the SCSS file
 
 function UserMap() {
   const { setTitle, setTask } = useAppContext();
@@ -20,11 +11,26 @@ function UserMap() {
     setTitle("Find");
     setTask(1);
   }, [setTitle, setTask]);
+
+  const handleBackClick = () => {
+    
+    window.history.back();
+  };
+
   return (
-    <main className="find-main-container">
-      <section className="find-upper-part">
-        <section className="find-Map find-w-1/2">The Map</section>
-      </section>
+    <main className="Map-container">
+      <button
+        data-testid="button"
+        className="back-button"
+        onClick={handleBackClick}
+      >
+        <FontAwesomeIcon icon={faArrowLeft} className="text-xl" />
+      </button>
+      <div className="relative">
+        <h2 className="title">The Map</h2>
+        <div className="find-map">
+        </div>
+      </div>
     </main>
   );
 }

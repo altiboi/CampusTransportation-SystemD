@@ -45,10 +45,9 @@ function Find() {
 
   return (
     <APIProvider apiKey="AIzaSyBxWXlgW0k0aTUwyanFnudRdqdNp8y413o">
-      <main className="find-main-container">
+      <main className="Userfind-container">
         <section className="find-upper-part">
-          {/* Map Section */}
-          <section className="find-Map find-w-1/2">
+          <section className="find-Map" data-testid="find-Map">
             {currentLocation ? (
               <div style={{ height: "100%", width: "100%" }}>
                 <Map
@@ -69,54 +68,54 @@ function Find() {
         </section>
 
         <section className="find-lower-part">
-          <section className="find-w-full p-2">
-            <h2 className="find-card-title find-title">Select Location</h2>
+          <section className="section-Title">
+            <h2 className="find-card-title">Select Location</h2>
           </section>
-          <section className="find-upper-section find-w-full find-flex find-justify-around">
+          <section className="find-upper-section ">
             <Card className="find-upper-card">
               <section className="find-card-icon">
                 <FontAwesomeIcon icon={faLocationDot} className="icon" />
               </section>
-              <section>
-                <h2 className="find-card-title">Location</h2>
-                <h2 className="find-place">Barnato Hall</h2>
+              <section className="find-card-content">
+                  <Link to={'/From'} className="link">
+                  <h2 className="find-card-title">Location</h2>
+                  </Link>
               </section>
             </Card>
             <Card className="find-upper-card">
               <section className="find-card-icon">
-                <FontAwesomeIcon icon={faCheckCircle} className="icon" />
+                <FontAwesomeIcon icon={faCheckCircle} className="icon " />
               </section>
-              <section>
-                <Link to={'/UserWhereTo'}>
+              <section className="find-card-content">
+                <Link to={'/UserWhereTo'} className="link">
                 <h2 className="find-card-title">Destination</h2>
-                <h2 className="find-place">Library Laws</h2>
                 </Link>
               </section>
             </Card>
           </section>
           <section className="find-lower-section">
-            <Card className="find-lower-card-section">
-              <section className="find-card-content">
-                <span className="find-card-title">Walk</span>
-              </section>
+            <Card className="find-lower-card">
               <section className="find-card-icon">
                 <FontAwesomeIcon icon={faPersonWalking} />
               </section>
-            </Card>
-            <Card className="find-lower-card-section">
               <section className="find-card-content">
-                <span className="find-card-title">View Routes</span>
+                <span className="find-card-title">Walk</span>
               </section>
+            </Card>
+            <Card className="find-lower-card">
               <section className="find-card-icon">
                 <FontAwesomeIcon icon={faRoute} />
               </section>
-            </Card>
-            <Card className="find-lower-card-section">
               <section className="find-card-content">
-                <span className="find-card-title">Vehicle</span>
+                <span className="find-card-title">View Routes</span>
               </section>
+            </Card>
+            <Card className="find-lower-card">
               <section className="find-card-icon">
                 <FontAwesomeIcon icon={faCar} />
+              </section>
+              <section className="find-card-content">
+                <span className="find-card-title">Vehicle</span>
               </section>
             </Card>
           </section>

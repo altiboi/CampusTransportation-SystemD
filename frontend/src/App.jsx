@@ -94,10 +94,6 @@ export function App() {
         setActiveMenuItem("Home");
         break;
 
-      case "/UserFines":
-        setActiveMenuItem("Services");
-        break;
-
       case "/userService":
         setActiveMenuItem("Services");
         break;
