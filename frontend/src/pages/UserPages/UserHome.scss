@@ -71,6 +71,9 @@ $hover-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
               color: black;
             }
           }
+          &:hover{
+            scale: 1.005;
+        }
         }
         @media (max-width: 768px) {
           .card {

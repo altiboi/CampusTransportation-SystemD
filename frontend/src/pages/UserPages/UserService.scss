@@ -76,7 +76,11 @@
                               display: none; 
                             }            
                         }
+                        &:hover{
+                            scale: 1.005;
+                        }
                     }
+
                     @media (max-width: 768px) {
                         .card{
                           width: 100%;
