@@ -78,9 +78,22 @@ export function App() {
       case "/staffanalytics":
         setActiveMenuItem("Analytics");
         break;
+        case "/confirmation":
+        setActiveMenuItem("Services");
+        break;
       case "/userRental":
         setActiveMenuItem("home");
         break;
+        case "/Reserve/undefined":
+        setActiveMenuItem("Services");
+        break;
+        case "/finalDetails":
+          setActiveMenuItem("Services");
+          break;
+          
+        case "/Book/undefined":
+          setActiveMenuItem("Services");
+          break;
       case "/stafftasks":
         setActiveMenuItem("Tasks");
         break;
@@ -105,11 +118,24 @@ export function App() {
       case "/userActivity":
         setActiveMenuItem("Activity");
         break;
+        case "/UserBuses":
+        setActiveMenuItem("Services");
+        break;
+        case "/UserBusSchedule":
+        setActiveMenuItem("Services");
+        break;
+
       case "/scheduledetails/:id":
         setActiveMenuItem("Update Bus Schedule");
         break;
       case "/vehicles":
         setActiveMenuItem("Vehicles");
+        break;
+        case "/Returns":
+        setActiveMenuItem("Services");
+        case "/ReturnConfirmation":
+        setActiveMenuItem("Vehicles");
+        break;
         break;
       default:
         setActiveMenuItem(""); // Clear active menu item if path doesn't match

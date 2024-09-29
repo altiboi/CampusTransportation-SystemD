@@ -60,12 +60,15 @@ function UserHome() {
         <section className="w-full p-2">
           <h2 className="card-title title">Suggestions</h2>
         </section>
+
         <section className="lower-card-section  w-full flex flex-row justify-around">
           <Card className="lower-card">
+          <Link to={"/userRental"}>
             <h2 className="card-title">Rent Bike</h2>
             <section className="card-icon">
               <FontAwesomeIcon icon={faBicycle} className="icon" />
             </section>
+            </Link>
           </Card>
           <Card className="lower-card">
             <Link to={"/UserBuses"}>

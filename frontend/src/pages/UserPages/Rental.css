@@ -7,6 +7,10 @@
   height: 100%;
   background-color: #333;
 }
+.rental-stations {
+  background-color: #333; /* Dark grey / charcoal color */
+  color: white; /* Make text color white for contrast */
+}
 
 /* Main content */
 .main-content {
@@ -92,3 +96,4 @@
 .desktop-card {
   margin-top: 10px;
 }
+/* Rental.css */

@@ -7,8 +7,23 @@
     overflow-y: auto;
     box-sizing: border-box;
     padding-top: 50px;
+    /* Add background image */
+    background-image: url('');
+    background-size: cover; /* Ensure the image covers the entire container */
+    background-position: center; /* Center the image */
+    background-repeat: no-repeat; /* Avoid repetition of the image */
+    position: relative; /* Ensures the overlay works */
 }
-
+.main-container::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.6); /* White overlay with transparency */
+    z-index: -1; /* Ensures the overlay doesn't block the content */
+}
 .upper-part {
     display: flex;
     justify-content: space-around;
