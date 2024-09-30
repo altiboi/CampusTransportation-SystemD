@@ -214,7 +214,7 @@ function Find() {
               <section className="find-card-icon">
                 <FontAwesomeIcon icon={faLocationDot} className="icon" />
               </section>
-              <section>
+              <section className="find-card-text">
                 <h2 className="find-card-title">Location</h2>
                 {/* <h2 className="find-place">Barnato Hall</h2> */}
               </section>
@@ -223,7 +223,7 @@ function Find() {
               <section className="find-card-icon">
                 <FontAwesomeIcon icon={faCheckCircle} className="icon" />
               </section>
-              <section>
+              <section className="find-card-text" >
                 <Link to={'/UserWhereTo'}>
                   <h2 className="find-card-title">Destination</h2>
                   <h2 className="find-place">{destinationName}</h2>
@@ -236,35 +236,37 @@ function Find() {
               className={`find-lower-card-section ${travelMode === "WALKING" ? 'selected' : ''}`}
               onClick={() => setTravelMode("WALKING")}
             >
+              <section className="find-card-icon">
+                <FontAwesomeIcon icon={faPersonWalking} className="icon" />
+              </section>
               <section className="find-card-content">
                 <span className="find-card-title">Walk</span>
-              </section>
-              <section className="find-card-icon">
-                <FontAwesomeIcon icon={faPersonWalking} />
               </section>
             </Card>
             <Card
               className={`find-lower-card-section ${travelMode === "DRIVING" ? 'selected' : ''}`}
-              onClick={toggleMarkers} // Toggle markers on click
+              onClick={toggleMarkers} 
 
             >
+              <section className="find-card-icon">
+                <FontAwesomeIcon icon={faRoute}  className="icon" />
+              </section>
               <section className="find-card-content">
                 <span className="find-card-title">Points of Interest</span>
               </section>
-              <section className="find-card-icon">
-                <FontAwesomeIcon icon={faRoute} />
-              </section>
+
             </Card>
             <Card
               className={`find-lower-card-section ${travelMode === "DRIVING" ? 'selected' : ''}`}
               onClick={() => setTravelMode("DRIVING")}
             >
+              <section className="find-card-icon">
+                <FontAwesomeIcon icon={faCar} className="icon" />
+              </section>
               <section className="find-card-content">
                 <span className="find-card-title">Vehicle</span>
               </section>
-              <section className="find-card-icon">
-                <FontAwesomeIcon icon={faCar} />
-              </section>
+
             </Card>
           </section>
         </section>
@@ -312,7 +314,7 @@ function Directions({ userPosition, destinationPosition, travelMode }) {
 
   useEffect(() => {
     if (userPosition && destinationPosition) {
-      updateRoute(); // Ensure this recalculates the route when travelMode changes
+      updateRoute();
     }
   }, [updateRoute, userPosition, destinationPosition, travelMode]); // Add travelMode as a dependency
 

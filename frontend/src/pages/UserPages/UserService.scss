@@ -13,14 +13,12 @@
         margin-top: 3rem;
         width: 100%;
         height: 30%;
-        box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;
         .title-main {
             padding-top: 1rem;
             font-size: 2rem;
             font-weight: bold;
             height: 20%;
         }
-
         .card-group {
             display: flex;
             justify-content: center;
@@ -29,13 +27,13 @@
             height: 80%;
             box-sizing: border-box;
             padding: 0 .2rem;
-            gap: .2rem;
+            gap: 1rem;
            
             .card-item {
-                width: 50%;
+                width: 48%;
                 height: 60%;
                 .link {
-                    width: 100%;
+                    width: 60%;
                     height:100% ;
                     .card{
                         display: flex;
@@ -43,16 +41,13 @@
                         border-radius: 8px;
                         width: 100%;
                         height:100% ;
-                        box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px,
-                                    rgba(0, 0, 0, 0.3) 0px 30px 60px -30px,
-                                    rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
                         .card-icon{
                             flex: 1;
                             display: flex;
                             align-items: center;
                             justify-content: center;
                             .icon-large{
-                                font-size:5rem;
+                                font-size:3rem;
                             }
                         }
                         .card-content{
@@ -61,7 +56,7 @@
                             align-items: center;
                             justify-content: center;
                             .card-heading{
-                                font-size:3rem;
+                                font-size:2rem;
                                 font-weight: 900;
                                 color: black;
                             }
@@ -74,8 +69,25 @@
                           }
                         @media (max-width: 768px) {
                             .card-content{
-                              display: none; 
-                            }            
+                                flex: 2;
+                                display: flex;
+                                align-items: center;
+                                justify-content: center;
+                                .card-heading{
+                                    font-size:1.5rem;
+                                    color: black;
+                                }
+                              
+                            }      
+                            .card-icon{
+                                flex: 1;
+                                display: flex;
+                                align-items: center;
+                                justify-content: center;
+                                .icon-large{
+                                    font-size:2rem;
+                                }
+                            }      
                         }
                         &:hover{
                             scale: 1.005;
@@ -111,7 +123,7 @@
         margin-bottom: 25%;
         .actions-title {
             width: 100%;
-            padding: 2rem 1rem;
+            padding: 2rem .5rem;
             height: 10%;
             .title-main{
                 font-size:2rem;
@@ -120,9 +132,10 @@
             }
             @media (max-width: 768px) {
                 .title-main{
-                    font-size:1.5rem;
+                    font-size:1rem;
                     font-weight: 900;
                     color: black;
+
                 }
               }
         }
@@ -143,8 +156,6 @@
                 height: 30%;
                 flex: 1 1 calc(33.333% - 16px);
                 max-width: calc(33.333% - 16px);
-                box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset, 
-                rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset;
                 border: 2px solid silver;
                 &:hover{
                     scale: 0.9;
@@ -176,7 +187,30 @@
                             color: black;
                         }
                     }
+                    @media (max-width: 768px) {
+                        .headings{
+                            .card-heading{
+                                font-size:1.5rem;
+                                font-weight: 900;
+                                color: black;
+                            }
+                        }
+                        .card-icon {
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            flex: 1;
+                            text-align: center;
+                            .icon-medium{
+                                font-size:1.5rem;
+                                font-weight: 900;
+                                color: black;
+                            }
+                        }
+    
+                    }
                 }
+
 
             }
             @media (max-width: 412px) {
@@ -192,11 +226,11 @@
                 }
             
                 .title-main {
-                    font-size: 1rem;
+                    font-size: .5rem;
                 }
             
                 .icon-medium {
-                    font-size: 1.5rem;
+                    font-size: 1rem;
                 }
 
             }

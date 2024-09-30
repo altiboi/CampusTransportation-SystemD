@@ -10,7 +10,7 @@ import {
   faBicycle,
   faClipboardList,
 } from "@fortawesome/free-solid-svg-icons";
-import "./UserHome.scss"; // Import custom CSS
+import "./UserHome.scss";
 
 function UserHome() {
   return (
