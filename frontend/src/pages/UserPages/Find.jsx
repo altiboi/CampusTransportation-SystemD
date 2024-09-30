@@ -24,7 +24,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import "./Find.scss";
 import { useAppContext } from "../../contexts/AppContext";
-import {  APIProvider, Map, Marker, useMap, useMapsLibrary } from "@vis.gl/react-google-maps";
+import {  APIProvider, Map, Marker, useMap, useMapsLibrary, InfoWindow } from "@vis.gl/react-google-maps";
 
 function Find() {
   const { setTitle, setTask } = useAppContext();
@@ -34,6 +34,7 @@ function Find() {
   const [destinationName, setDestinationName] = useState(""); // State for destination name
   const [pointsofinterest, setpointsofinterest] = useState([]);  // Store fetched locations
   const [markersVisible, setMarkersVisible] = useState(false); // State for marker visibility
+  const [activeMarker, setActiveMarker] = useState(null);
 
 
   const location = useLocation();
@@ -130,39 +131,63 @@ function Find() {
 
                   {markersVisible && pointsofinterest.map((poi, index) => {
 
-                  let iconUrl;
+                    let iconUrl;
                     if (poi.category.toLowerCase() === "dining hall") {
                       iconUrl = dininghall;
                     } else if (poi.category.toLowerCase() === "residence") {
                       iconUrl = home;
                     } else if (poi.category.toLowerCase() === "landmark") {
                       iconUrl = landmark;
-                    }
-                    else if (poi.category.toLowerCase() === "sports venue") {
+                    } else if (poi.category.toLowerCase() === "sports venue") {
                       iconUrl = sports;
                     } else if (poi.category.toLowerCase() === "religious landmark") {
                       iconUrl = religion;
-                    }else if (poi.category.toLowerCase() === "shopping centre") {
+                    } else if (poi.category.toLowerCase() === "shopping centre") {
                       iconUrl = shopping;
-                    }else if (poi.category.toLowerCase() === "community centre") {
+                    } else if (poi.category.toLowerCase() === "community centre") {
                       iconUrl = community;
-                    }else {
+                    } else {
                       iconUrl = clubvenue;
                     }
-                    
+
 
                     return (
                       <Marker
                         key={index}
                         position={{ lat: poi.coordinates.latitude, lng: poi.coordinates.longitude }}
                         icon={{
-                          url:iconUrl,
+                          url: iconUrl,
                           scaledSize: new google.maps.Size(30, 30), // Adjust the size as needed
                         }}
                         title={poi.name}
+                        label={{
+                          text: poi.name,  // Display POI name next to the icon
+                          color: "white",   // Adjust label color to stand out
+                          fontWeight: "bold",
+                          fontSize: "8px"
+                        }}
+                        onClick={() => setActiveMarker(poi)} // Set the active marker to this POI
+
                       />
                     );
-                  })}
+                    })}
+
+                    {activeMarker && (
+                      <InfoWindow
+                        position={{
+                          lat: activeMarker.coordinates.latitude,
+                          lng: activeMarker.coordinates.longitude,
+                        }}
+                        onCloseClick={() => setActiveMarker(null)} // Close the InfoWindow
+                      >
+                        <div>
+                          <h3>{activeMarker.name}</h3>
+                          <p>{activeMarker.category || "No description available"}</p>
+                        </div>
+                      </InfoWindow>
+                    )}
+
+
 
 
 

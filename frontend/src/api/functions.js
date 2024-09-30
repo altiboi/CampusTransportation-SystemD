@@ -305,3 +305,27 @@ export const setNotificationAsRead = async (notificationId) => {
     }
 };
 
+
+export const getAllRentalStations= async () => {
+  try {
+      const rentalCollection = collection(rentalservice_db, "RentalStation");
+      const rentalsSnapshot = await getDocs(rentalCollection);
+      const rentalList = rentalsSnapshot.docs.map(doc => {
+          const data = doc.data();
+          
+          return {
+              name: data.name,
+              coordinates: data.location ? {
+                  latitude: data.location._lat || null,
+                  longitude: data.location._long || null,
+              } : null,
+          };
+      });
+
+      return rentalList;
+  } catch (error) {
+      console.error("Error fetching rental stations:", error.message);
+      throw error;
+  }
+};
+
