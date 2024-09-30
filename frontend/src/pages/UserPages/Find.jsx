@@ -1,7 +1,19 @@
 import React, { useState, useEffect, useCallback } from "react";
-import {Link} from "react-router-dom"
-
+import { useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { getAllLocations } from "../../api/functions"; // Import your Firebase function
 import Card from "../../components/Card";
+import dininghall from "../../assets/dininghalls.png";
+import clubvenue from "../../assets/clubvenue.png"
+import home from "../../assets/home.png";
+import landmark from "../../assets/time.png";
+import sports from "../../assets/sport.png";
+import religion from "../../assets/church.png";
+import shopping from "../../assets/shopping.png";
+import community from "../../assets/community.png";
+
+
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faLocationDot,
@@ -12,21 +24,47 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import "./Find.scss";
 import { useAppContext } from "../../contexts/AppContext";
-import { APIProvider, Map, Marker, useMap, useMapsLibrary } from "@vis.gl/react-google-maps";
+import {  APIProvider, Map, Marker, useMap, useMapsLibrary, InfoWindow } from "@vis.gl/react-google-maps";
 
 function Find() {
   const { setTitle, setTask } = useAppContext();
-
   const [currentLocation, setCurrentLocation] = useState({ lat: -26.190424531742913, lng: 28.0259034605168 });
-  const [destinationPosition, setDestinationPosition] = useState({
-    lat: -26.19010710587139,
-    lng: 28.030646555352817,
-  });
+  const [destinationPosition, setDestinationPosition] = useState({ lat: -26.19010710587139, lng: 28.030646555352817 });
+  const [travelMode, setTravelMode] = useState("WALKING"); // Use string instead of google.maps.TravelMode
+  const [destinationName, setDestinationName] = useState(""); // State for destination name
+  const [pointsofinterest, setpointsofinterest] = useState([]);  // Store fetched locations
+  const [markersVisible, setMarkersVisible] = useState(false); // State for marker visibility
+  const [activeMarker, setActiveMarker] = useState(null);
+
+
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const destinationParam = queryParams.get("destination");
+  const apiKey = import.meta.env.REACT_APP_GOOGLE_MAPS_API_KEY;
+
+
+  const fetchPOIs = async () => {
+    try {
+      const allLocations = await getAllLocations();
+      // Filter out locations with null coordinates
+      const POIs = allLocations.filter(location => location.category);
+      console.log(POIs)
+      setpointsofinterest(POIs);
+    } catch (error) {
+      console.error("Error fetching locations:", error);
+    }
+  };
+
 
   useEffect(() => {
     setTitle("Find");
     setTask(1);
 
+    fetchPOIs()
+
+    
+
+    // Handle user location
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
@@ -43,11 +81,42 @@ function Find() {
     }
   }, [setTitle, setTask]);
 
+  useEffect(() => {
+    if (destinationParam) {
+      try {
+        // Parse the destination JSON
+        const destination = JSON.parse(decodeURIComponent(destinationParam));
+       
+        const { coordinates } = destination;
+
+        // Set destination position using the parsed coordinates
+        if (coordinates) {
+          setDestinationPosition({
+            lat: coordinates.latitude,
+            lng: coordinates.longitude
+          });
+        }
+
+        if (destination.name) {
+          setDestinationName(destination.name);
+        }
+      } catch (error) {
+        console.error("Error parsing destination:", error);
+      }
+    }
+  }, [destinationParam]);
+
+  const toggleMarkers = () => {
+    setMarkersVisible((prev) => !prev);
+  };
+
+
   return (
     <APIProvider apiKey="AIzaSyBxWXlgW0k0aTUwyanFnudRdqdNp8y413o">
-      <main className="Userfind-container">
+      <main className="find-main-container">
         <section className="find-upper-part">
-          <section className="find-Map" data-testid="find-Map">
+          {/* Map Section */}
+          <section className="find-Map find-w-1/2">
             {currentLocation ? (
               <div style={{ height: "100%", width: "100%" }}>
                 <Map
@@ -56,9 +125,78 @@ function Find() {
                   options={{ styles: nightModeMapStyles }}
                   style={{ width: "100%", height: "100%" }}
                 >
+                   
                   <Marker position={currentLocation} />
                   <Marker position={destinationPosition} />
-                  <Directions userPosition={currentLocation} destinationPosition={destinationPosition} />
+
+                  {markersVisible && pointsofinterest.map((poi, index) => {
+
+                    let iconUrl;
+                    if (poi.category.toLowerCase() === "dining hall") {
+                      iconUrl = dininghall;
+                    } else if (poi.category.toLowerCase() === "residence") {
+                      iconUrl = home;
+                    } else if (poi.category.toLowerCase() === "landmark") {
+                      iconUrl = landmark;
+                    } else if (poi.category.toLowerCase() === "sports venue") {
+                      iconUrl = sports;
+                    } else if (poi.category.toLowerCase() === "religious landmark") {
+                      iconUrl = religion;
+                    } else if (poi.category.toLowerCase() === "shopping centre") {
+                      iconUrl = shopping;
+                    } else if (poi.category.toLowerCase() === "community centre") {
+                      iconUrl = community;
+                    } else {
+                      iconUrl = clubvenue;
+                    }
+
+
+                    return (
+                      <Marker
+                        key={index}
+                        position={{ lat: poi.coordinates.latitude, lng: poi.coordinates.longitude }}
+                        icon={{
+                          url: iconUrl,
+                          scaledSize: new google.maps.Size(30, 30), // Adjust the size as needed
+                        }}
+                        title={poi.name}
+                        label={{
+                          text: poi.name,  // Display POI name next to the icon
+                          color: "white",   // Adjust label color to stand out
+                          fontWeight: "bold",
+                          fontSize: "8px"
+                        }}
+                        onClick={() => setActiveMarker(poi)} // Set the active marker to this POI
+
+                      />
+                    );
+                    })}
+
+                    {activeMarker && (
+                      <InfoWindow
+                        position={{
+                          lat: activeMarker.coordinates.latitude,
+                          lng: activeMarker.coordinates.longitude,
+                        }}
+                        onCloseClick={() => setActiveMarker(null)} // Close the InfoWindow
+                      >
+                        <div>
+                          <h3>{activeMarker.name}</h3>
+                          <p>{activeMarker.category || "No description available"}</p>
+                        </div>
+                      </InfoWindow>
+                    )}
+
+
+
+
+
+
+                  <Directions
+                    userPosition={currentLocation}
+                    destinationPosition={destinationPosition}
+                    travelMode={travelMode}
+                  />
                 </Map>
               </div>
             ) : (
@@ -68,54 +206,64 @@ function Find() {
         </section>
 
         <section className="find-lower-part">
-          <section className="section-Title">
-            <h2 className="find-card-title">Select Location</h2>
+          <section className="find-w-full p-2">
+            <h2 className="find-card-title find-title">Select Location</h2>
           </section>
-          <section className="find-upper-section ">
+          <section className="find-upper-section find-w-full find-flex find-justify-around">
             <Card className="find-upper-card">
               <section className="find-card-icon">
                 <FontAwesomeIcon icon={faLocationDot} className="icon" />
               </section>
-              <section className="find-card-content">
-                  <Link to={'/From'} className="link">
-                  <h2 className="find-card-title">Location</h2>
-                  </Link>
+              <section>
+                <h2 className="find-card-title">Location</h2>
+                {/* <h2 className="find-place">Barnato Hall</h2> */}
               </section>
             </Card>
             <Card className="find-upper-card">
               <section className="find-card-icon">
-                <FontAwesomeIcon icon={faCheckCircle} className="icon " />
+                <FontAwesomeIcon icon={faCheckCircle} className="icon" />
               </section>
-              <section className="find-card-content">
-                <Link to={'/UserWhereTo'} className="link">
-                <h2 className="find-card-title">Destination</h2>
+              <section>
+                <Link to={'/UserWhereTo'}>
+                  <h2 className="find-card-title">Destination</h2>
+                  <h2 className="find-place">{destinationName}</h2>
                 </Link>
               </section>
             </Card>
           </section>
           <section className="find-lower-section">
-            <Card className="find-lower-card">
-              <section className="find-card-icon">
-                <FontAwesomeIcon icon={faPersonWalking} />
-              </section>
+            <Card
+              className={`find-lower-card-section ${travelMode === "WALKING" ? 'selected' : ''}`}
+              onClick={() => setTravelMode("WALKING")}
+            >
               <section className="find-card-content">
                 <span className="find-card-title">Walk</span>
               </section>
+              <section className="find-card-icon">
+                <FontAwesomeIcon icon={faPersonWalking} />
+              </section>
             </Card>
-            <Card className="find-lower-card">
+            <Card
+              className={`find-lower-card-section ${travelMode === "DRIVING" ? 'selected' : ''}`}
+              onClick={toggleMarkers} // Toggle markers on click
+
+            >
+              <section className="find-card-content">
+                <span className="find-card-title">Points of Interest</span>
+              </section>
               <section className="find-card-icon">
                 <FontAwesomeIcon icon={faRoute} />
               </section>
-              <section className="find-card-content">
-                <span className="find-card-title">View Routes</span>
-              </section>
             </Card>
-            <Card className="find-lower-card">
-              <section className="find-card-icon">
-                <FontAwesomeIcon icon={faCar} />
-              </section>
+            <Card
+              className={`find-lower-card-section ${travelMode === "DRIVING" ? 'selected' : ''}`}
+              onClick={() => setTravelMode("DRIVING")}
+            >
               <section className="find-card-content">
                 <span className="find-card-title">Vehicle</span>
+              </section>
+              <section className="find-card-icon">
+                <FontAwesomeIcon icon={faCar} />
               </section>
             </Card>
           </section>
@@ -125,7 +273,7 @@ function Find() {
   );
 }
 
-function Directions({ userPosition, destinationPosition }) {
+function Directions({ userPosition, destinationPosition, travelMode }) {
   const map = useMap();
   const routesLibrary = useMapsLibrary("routes");
   const [directionsService, setDirectionsService] = useState();
@@ -137,22 +285,15 @@ function Directions({ userPosition, destinationPosition }) {
     directionsService
       .route({
         origin: new google.maps.LatLng(userPosition.lat, userPosition.lng),
-        destination: new google.maps.LatLng(
-          destinationPosition.lat,
-          destinationPosition.lng
-        ),
-        travelMode: google.maps.TravelMode.WALKING,
-        provideRouteAlternatives: true,
+        destination: new google.maps.LatLng(destinationPosition.lat, destinationPosition.lng),
+        travelMode: google.maps.TravelMode[travelMode], // Ensure travelMode is used here
+        provideRouteAlternatives: false,
       })
       .then((response) => {
         directionsRenderer.setDirections(response);
-      });
-  }, [
-    directionsService,
-    directionsRenderer,
-    userPosition,
-    destinationPosition,
-  ]);
+      })
+      .catch((error) => console.error("Error updating route:", error));
+  }, [directionsService, directionsRenderer, userPosition, destinationPosition, travelMode]);
 
   useEffect(() => {
     if (!routesLibrary || !map) return;
@@ -171,12 +312,13 @@ function Directions({ userPosition, destinationPosition }) {
 
   useEffect(() => {
     if (userPosition && destinationPosition) {
-      updateRoute();
+      updateRoute(); // Ensure this recalculates the route when travelMode changes
     }
-  }, [updateRoute, userPosition, destinationPosition]);
+  }, [updateRoute, userPosition, destinationPosition, travelMode]); // Add travelMode as a dependency
 
   return null;
 }
+
 
 const nightModeMapStyles = [
   { elementType: "geometry", stylers: [{ color: "#212121" }] },
@@ -189,12 +331,15 @@ const nightModeMapStyles = [
   { featureType: "poi", elementType: "labels.text.fill", stylers: [{ color: "#757575" }] },
   { featureType: "poi.park", elementType: "geometry", stylers: [{ color: "#181818" }] },
   { featureType: "poi.park", elementType: "labels.text.fill", stylers: [{ color: "#616161" }] },
-  { featureType: "road", elementType: "geometry.fill", stylers: [{ color: "#2c2c2c" }] },
+  { featureType: "road", elementType: "geometry", stylers: [{ color: "#2c2c2c" }] },
   { featureType: "road", elementType: "labels.text.fill", stylers: [{ color: "#8a8a8a" }] },
-  { featureType: "road.arterial", elementType: "geometry", stylers: [{ color: "#373737" }] },
-  { featureType: "road.highway", elementType: "geometry", stylers: [{ color: "#3c3c3c" }] },
-  { featureType: "road.highway.controlled_access", elementType: "geometry", stylers: [{ color: "#4e4e4e" }] },
+  { featureType: "road", elementType: "labels.text.stroke", stylers: [{ color: "#212121" }] },
+  { featureType: "road.highway", elementType: "geometry", stylers: [{ color: "#646464" }] },
+  { featureType: "road.highway", elementType: "labels.text.fill", stylers: [{ color: "#ffffff" }] },
+  { featureType: "transit", elementType: "geometry", stylers: [{ color: "#f2f2f2" }] },
+  { featureType: "transit.station", elementType: "labels.text.fill", stylers: [{ color: "#000000" }] },
   { featureType: "water", elementType: "geometry", stylers: [{ color: "#000000" }] },
+  { featureType: "water", elementType: "labels.text.fill", stylers: [{ color: "#3d3d3d" }] },
 ];
 
 export default Find;

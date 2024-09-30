@@ -44,7 +44,7 @@ function UserHome() {
       </section>
 
       <section className="middle-apart">
-        <Link to={"/UserMap"} className="link">
+        <Link to={"/UserFind"} className="link">
           <Card className="middle-card">
               <section className="card-icon">
               <FontAwesomeIcon icon={faRoute} className="icon" data-testid="icon-route" />

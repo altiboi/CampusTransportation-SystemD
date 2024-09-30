@@ -1,4 +1,4 @@
-import { auth, rentalservice_db , db } from "../firebase/firebase.js";
+import { auth, rentalservice_db,mapping_db , db } from "../firebase/firebase.js";
 import { collection, addDoc, doc, updateDoc, getDocs, query, where } from "firebase/firestore";
 
 
@@ -251,3 +251,80 @@ export const setNotificationAsRead = async (notificationId) => {
       console.error("Error fetching bus routes:", error);
     }
   };
+
+  export const getAllRentalStations= async () => {
+    try {
+        const rentalCollection = collection(rentalservice_db, "RentalStation");
+        const rentalsSnapshot = await getDocs(rentalCollection);
+        const rentalList = rentalsSnapshot.docs.map(doc => {
+            const data = doc.data();
+            
+            return {
+                name: data.name,
+                location: data.location ? {
+                    latitude: data.location._lat || null,
+                    longitude: data.location._long || null,
+                } : null,
+            };
+        });
+     
+        return rentalList;
+    } catch (error) {
+        console.error("Error fetching rental stations:", error.message);
+        throw error;
+    }
+  };
+
+  export const getAllLocations = async () => {
+    try {
+        const buildingsCollection = collection(mapping_db, "Buildings");
+        const poiCollection = collection(mapping_db, "Points of Interest");
+
+        // Get all buildings
+        const buildingsSnapshot = await getDocs(buildingsCollection);
+        const buildingsList = buildingsSnapshot.docs.map(doc => {
+            const data = doc.data();
+            
+            return {
+                name: doc.id,
+                coordinates: data.Coordinates ? {
+                    latitude: data.Coordinates._lat || null,
+                    longitude: data.Coordinates._long || null,
+                } : null,
+            };
+        });
+       
+
+        // Get all points of interest
+        const poiSnapshot = await getDocs(poiCollection);
+    
+        const poiList = poiSnapshot.docs.map(doc => {
+            const data = doc.data();
+            
+
+            //console.log(doc.id + " " +data)
+            return {
+                name: doc.id,
+                category: data.Category,
+                coordinates: data.Coordinates ? {
+                    latitude: data.Coordinates._lat|| null,
+                    longitude: data.Coordinates._long || null,
+                } : null,
+            };
+        });
+
+        console.log(poiList)
+        
+
+        // Combine buildings and POIs into a single list
+        const allLocations = [...buildingsList, ...poiList];
+   
+        
+
+        return allLocations;
+    } catch (error) {
+        console.error("Error fetching locations:", error.message);
+        throw error;
+    }
+};
+
