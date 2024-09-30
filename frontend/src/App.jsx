@@ -55,7 +55,7 @@ export function App() {
     const fetchNotifs = async () => {
       try {
         const notifData = await getNotifications();
-        console.log(notifData)
+        //console.log(notifData)
         setNotifs(notifData);
       } catch (error) {
         console.error("Error fetching notifications:", error.message);
@@ -123,7 +123,7 @@ export function App() {
 
   const renderRoutes = () => {
     if (role === "staff") {
-      return <StaffRoutes vehicles={vehicles} notifs = {notifs} currentUser = {currentUser?.name} />;
+      return <StaffRoutes vehicles={vehicles} notifs = {notifs} currentUser = {currentUser} />;
       
     } else if (role === "user") {
       return <UserRoutes />;
@@ -144,7 +144,7 @@ export function App() {
             handleMenuItemClick={handleMenuItemClick}
             role={role}
           />
-          <DesktopHeader />
+          <DesktopHeader currentUser={currentUser}/>
         </>
       )}
       <div className={`flex-1 flex flex-col ${userLoggedIn ? "ml-1/4" : ""}`}>

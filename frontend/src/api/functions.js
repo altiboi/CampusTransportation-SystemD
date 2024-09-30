@@ -1,5 +1,5 @@
 import { auth, rentalservice_db , db } from "../firebase/firebase.js";
-import { collection, addDoc, doc, updateDoc, getDocs, query, where } from "firebase/firestore";
+import { collection, addDoc, doc, updateDoc, getDocs, getDoc, query, where } from "firebase/firestore";
 
 
 export const getAllVehicles = async () => {
@@ -108,6 +108,23 @@ export const fetchRentalStations = async () => {
     return rentalStationsList;
 }
 
+export const getAllRentals = async () => {
+  try {
+      const rentalsCollection = collection(rentalservice_db, "VehicleRentals");
+
+      const rentalSnapshot = await getDocs(rentalsCollection);
+      const rentalsList = rentalSnapshot.docs.map(doc => ({
+          id: doc.id,  
+          ...doc.data() 
+      }));
+
+      return rentalsList;
+  } catch (error) {
+      console.error("Error fetching rentals:", error.message);
+      throw error;
+  }
+};
+
 export const getUserRentals = async (userID) => {
   try {
       const rentalsCollection = collection(rentalservice_db, "VehicleRentals");
@@ -163,7 +180,7 @@ export const getNotifications = async () => {
           id: doc.id,  
           ...doc.data() 
       }));
-      console.log(notifsList)
+      //console.log(notifsList)
 
       return notifsList;
   } catch (error) {
@@ -173,81 +190,186 @@ export const getNotifications = async () => {
 };
 
 export const createNotification = async (notification) => {
-    try {
-      const notificationData = {
-        Audience: notification.Audience,
-        Body: notification.Body,
-        Date: notification.Date,
-        Sender: notification.Sender,
-        Title: notification.Title
-      };
-  
-      // Add the notification to the Firestore 'Notifications' collection
-      const docRef = await addDoc(collection(db, 'Notifications'), notificationData);
-      console.log("Notification added with ID: ", docRef.id);
-  
-      // Fetch all user documents from the 'Users' collection
-      const usersSnapshot = await getDocs(collection(db, 'Users'));
-  
-      // Loop through each user and update their 'readNotification' property
-      usersSnapshot.forEach(async (userDoc) => {
-        const userData = userDoc.data();
-  
+  try {
+    const notificationData = {
+      Audience: notification.Audience,
+      Body: notification.Body,
+      Date: notification.Date,
+      Sender: notification.Sender,
+      Title: notification.Title
+    };
+
+    // Add the notification to the Firestore 'Notifications' collection
+    const docRef = await addDoc(collection(db, 'Notifications'), notificationData);
+    console.log("Notification added with ID: ", docRef.id);
+
+    // Fetch all user documents from the 'Users' collection
+    const usersSnapshot = await getDocs(collection(db, 'Users'));
+
+    // Loop through each user and filter based on the Audience type
+    usersSnapshot.forEach(async (userDoc) => {
+      const userData = userDoc.data();
+
+      // Check if the user should receive the notification based on their role and the audience
+      const userRole = userData.role; // Assuming 'role' field exists in the user document
+
+      // Determine whether to add the notification to the user
+      const isInAudience = (notification.Audience === "Everyone") ||
+                           (notification.Audience === "Staff" && userRole === "staff") ||
+                           (notification.Audience === "Users" && userRole === "user");
+
+      if (isInAudience) {
         // Ensure the user has a 'readNotification' field initialized as an array
-        const readNotifications = userData.readNotification || [];
-  
+        const readNotifications = userData.userNotifications || [];
+
         // Add the newly created notification object to the user's 'readNotification' array
         const updatedReadNotifications = [
-          ...readNotifications, 
-          { id: docRef.id, isRead: false }  // Add the notification ID and isRead:false
+          ...readNotifications,
+          { id: docRef.id, isRead: false } // Add the notification ID and isRead:false
         ];
-  
+
         // Update the user's document with the new 'readNotification' array
         await updateDoc(doc(db, 'Users', userDoc.id), {
-          userNotification: updatedReadNotifications
+          userNotifications: updatedReadNotifications
         });
+      }
+    });
+
+    return docRef.id;
+
+  } catch (error) {
+    console.error("Error creating notification or updating users:", error.message);
+    throw error;
+  }
+};
+
+export const setNotificationAsRead = async (userId, notificationId) => {
+  try {
+    // Fetch the user's document from the 'Users' collection
+    const userDocRef = doc(db, 'Users', userId);
+    const userDoc = await getDoc(userDocRef);
+
+    if (!userDoc.exists()) {
+      throw new Error("User not found");
+    }
+
+    // Get the user's notifications
+    const userData = userDoc.data();
+    const userNotifications = Array.isArray(userData.userNotifications) ? userData.userNotifications : [];
+
+    // Find the notification index to update
+    const notificationIndex = userNotifications.findIndex(n => n.id === notificationId);
+
+    if (notificationIndex === -1) {
+      throw new Error("Notification not found");
+    }
+
+    // Update the isRead status of the notification
+    userNotifications[notificationIndex].isRead = true;
+
+    // Write the updated notifications back to Firestore
+    await updateDoc(userDocRef, {
+      userNotifications: userNotifications,
+    });
+
+    console.log("Notification marked as read:", notificationId);
+  } catch (error) {
+    console.error("Error setting notification as read:", error.message);
+    throw error;
+  }
+};
+
+export const fetchUserNotifications = async (userId) => {
+    try {
+      // Fetch the user's document from the 'Users' collection
+      const userDocRef = doc(db, 'Users', userId);
+      const userDoc = await getDoc(userDocRef);
   
-        console.log(`Updated user ${userDoc.id} with new read notification: { id: ${docRef.id}, isRead: false }`);
-      });
+      if (!userDoc.exists()) {
+        throw new Error("User not found");
+      }
   
-      return docRef.id;
+      // Get the user's notifications (assumes 'userNotification' field exists)
+      const userData = userDoc.data();
+      const userNotifications = Array.isArray(userData.userNotifications) ? userData.userNotifications : []; // Ensure it's an array
+
+      //console.log(userNotifications)
+      // Prepare an array to hold the fetched notification objects
+      const notifications = [];
+  
+      // Loop through each notification in the 'userNotification' array and fetch the notification details
+      for (const notification of userNotifications) {
+        if (notification.id) { // Ensure that notification.id is defined
+          const notificationDocRef = doc(db, 'Notifications', notification.id);
+          const notificationDoc = await getDoc(notificationDocRef);
+  
+          if (notificationDoc.exists()) {
+            // Add the notification details along with the isRead field
+            notifications.push({
+              ...notificationDoc.data(),
+              isRead: notification.isRead,
+              id: notification.id
+            });
+          }
+        }
+      }
+
+      notifications.sort((a, b) => new Date(b.Date) - new Date(a.Date));
+  
+      // Return the list of notifications for the user
+      return notifications;
   
     } catch (error) {
-      console.error("Error creating notification or updating users:", error.message);
+      console.error("Error fetching user notifications:", error.message);
       throw error;
     }
-  };
-export const setNotificationAsRead = async (notificationId) => {
-    try {
-      const notificationRef = doc(db, "notifications", notificationId);
-      await updateDoc(notificationRef, {
-        isRead: true,
-      });
-    } catch (error) {
-      console.error("Error setting notification as read:", error);
-    }
-  };
+  };  
+  
 
-  //Bus Schedules
-  
-  export const fetchBusRoutes = async () => {
-    try {
-      const today = new Date().getDay();
-      const dayType = today === 0 || today === 6 ? "weekend" : "weekday";
-      const q = query(collection(db, "Bus-Schedules"), where("day_type", "==", dayType));
-      const querySnapshot = await getDocs(q);
-  
-      if (!querySnapshot.empty) {
-        const routes = querySnapshot.docs.map(doc => ({
-          id: doc.id,
-          ...doc.data()
-        }));
-        return routes;
-      } else {
-        console.log("No documents found for the specified day type.");
-        return [];
+//Bus Schedules
+
+export const fetchBusRoutes = async () => {
+  try {
+    const today = new Date().getDay();
+    const dayType = today === 0 || today === 6 ? "weekend" : "weekday"; // Check if today is a weekend
+
+    const q = query(collection(db, "Bus-Schedules"), where("day_type", "==", dayType));
+    const querySnapshot = await getDocs(q);
+
+    if (!querySnapshot.empty) {
+      let routes = querySnapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
+      }));
+
+      // If it's a weekend, filter the schedules for Saturday or Sunday
+      if (dayType === "weekend") {
+        const isSaturday = today === 6;
+        const isSunday = today === 0;
+
+        routes = routes.map(route => {
+          // For each route, filter the schedule if 'day' field exists (only for weekend days)
+          route.routes = route.routes.map(r => {
+            r.schedule = r.schedule.filter(schedule => {
+              // If schedule has a 'day' field, match it with today (Saturday/Sunday)
+              if (schedule.day) {
+                return (isSaturday && schedule.day === "Saturday") || (isSunday && schedule.day === "Sunday");
+              }
+              // If no 'day' field, it applies to the entire weekend
+              return true;
+            });
+            return r;
+          });
+          return route;
+        });
       }
-    } catch (error) {
-      console.error("Error fetching bus routes:", error);
+
+      return routes;
+    } else {
+      console.log("No documents found for the specified day type.");
+      return [];
     }
-  };
+  } catch (error) {
+    console.error("Error fetching bus routes:", error);
+  }
+};
