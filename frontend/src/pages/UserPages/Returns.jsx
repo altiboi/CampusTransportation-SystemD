@@ -1,54 +1,55 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import './Returns.css'; // Create a CSS file for styles
+import { useAppContext } from "../../contexts/AppContext";
 
 const Returns = () => {
+  const { setTitle, setTask } = useAppContext(); // Use context for title and task management
   const location = useLocation();
   const navigate = useNavigate();
 
+  // Set the title and task similar to UserBuses
+  useEffect(() => {
+    setTitle("Return Vehicle");
+    setTask(0);
+  }, [setTitle, setTask]);
+
   // Mock vehicle data setup
-  const currentTime = new Date().toISOString();
   const mockVehicle = {
     name: 'Bike 1',
     model: 'MT-07',
     registration: 'ABC123',
     year: '2022',
     image: '/images/bike1.jpeg',
-    bookingTime: currentTime, // Booked now
+    bookingTime: new Date().toISOString(), // Booked now
     reservedUntil: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString(), // Reserved until 24 hours later
   };
 
   const [returnDetails, setReturnDetails] = useState({
     vehicle: mockVehicle, // Mocked vehicle details
-    returnDateTime: '', // This will be set by user
-    condition: '',
+    returnDateTime: '', // This will be set on form submission
   });
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setReturnDetails((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
-
   const handleReturn = () => {
-    if (!returnDetails.returnDateTime) {
-      alert('Please select a return date and time.');
-      return;
-    }
-  
+    const currentDateTime = new Date().toISOString(); // Get the current time as the return time
+
     const bookingTime = new Date(returnDetails.vehicle.bookingTime); // Get booking time
-    const returnTime = new Date(returnDetails.returnDateTime); // Get user return time
+    const returnTime = new Date(currentDateTime); // Get the exact return time
     const timeDiff = (returnTime - bookingTime) / (1000 * 60 * 60); // Calculate hours difference
     const fine = timeDiff > 24 ? (timeDiff - 24) * 50 : 0; // Example fine: 50 Rands per hour late
-  
+
+    // Set the current time as return date time
+    setReturnDetails((prev) => ({
+      ...prev,
+      returnDateTime: currentDateTime,
+    }));
+
     // Navigate to the ReturnConfirmation page with return details and fine
-    navigate('/ReturnConfirmation', { state: { returnDetails, fine } });
+    navigate('/ReturnConfirmation', { state: { returnDetails: { ...returnDetails, returnDateTime: currentDateTime }, fine } });
   };
-  
+
   return (
     <main className="p-4 max-w-7xl mx-auto w-full">
       <header className="desktop-header mb-4 flex items-center">
@@ -72,34 +73,6 @@ const Returns = () => {
             <p>Registration: {returnDetails.vehicle.registration}</p>
             <p>Year: {returnDetails.vehicle.year}</p>
           </div>
-        </div>
-
-        <div className="mb-4">
-          <label htmlFor="returnDateTime" className="block text-sm font-medium mb-1">
-            Return Date and Time:
-          </label>
-          <input
-            type="datetime-local"
-            id="returnDateTime"
-            name="returnDateTime"
-            value={returnDetails.returnDateTime}
-            onChange={handleInputChange}
-            className="w-full p-2 border border-gray-300 rounded"
-          />
-        </div>
-
-        <div className="mb-4">
-          <label htmlFor="condition" className="block text-sm font-medium mb-1">
-            Condition:
-          </label>
-          <textarea
-            id="condition"
-            name="condition"
-            value={returnDetails.condition}
-            onChange={handleInputChange}
-            placeholder="Describe the condition of the vehicle"
-            className="w-full p-2 border border-gray-300 rounded"
-          />
         </div>
 
         <button

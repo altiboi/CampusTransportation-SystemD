@@ -16,7 +16,7 @@ function UserActivity() {
 
   useEffect(() => {
     setTitle("Activity");
-    setTask(1);
+    setTask(0);
   }, [setTitle, setTask]);
 
   useEffect(() => {

@@ -38,7 +38,7 @@ export default function UserRental() {
 
   useEffect(() => {
     setTitle("Rent Vehicle");
-    setTask(1);
+    setTask(0);
 
     const fetchData = async () => {
       try {

@@ -12,10 +12,11 @@ function Book() {
 
   useEffect(() => {
     setTitle("Booking");
-    setTask(1);
+    setTask(0);
   }, [setTitle, setTask]);
 
   return <RentalDetails item={item} itemName={`${item.make} ${item.model}`} action="book" />;
+  
 }
 
 export default Book;
