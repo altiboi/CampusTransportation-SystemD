@@ -1,18 +1,24 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { useAppContext } from "../../contexts/AppContext";
 import './UserMap.scss';
-import { APIProvider, Map, Marker, useMap, useMapsLibrary } from "@vis.gl/react-google-maps"; // Replace with actual map library
+import { APIProvider, Map, Marker, useMap, useMapsLibrary,InfoWindow } from "@vis.gl/react-google-maps"; // Replace with actual map library
 import rentalStationIcon from "../../assets/rental.png"; // Path to your rental station icon
+import danger from "../../assets/danger-point.png"; // Path to your rental station icon
 import { Link } from "react-router-dom"; // Import Link
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons"; // Import the back icon
 import { getAllRentalStations } from "../../api/functions";
+import axios from "axios"; // Import axios
+
 
 function UserMap() {
   const { setTitle, setTask } = useAppContext();
   const [currentLocation, setCurrentLocation] = useState({ lat: -26.190424531742913, lng: 28.0259034605168 });
   const [rentalStations, setRentalStations] = useState([]);
   const [showMessage, setShowMessage] = useState(true);
+  const [activeIncidents, setActiveIncidents] = useState([]); // State to hold active incidents
+  const [selectedIncident, setSelectedIncident] = useState(null); // State to track the selected incident
+
   const [destinationPosition, setDestinationPosition] = useState(null); // State to hold the selected destination
 
   // Fetch stations data
@@ -26,10 +32,24 @@ function UserMap() {
     }
   };
 
+  const fetchIncidents = async () => {
+    try {
+      const response = await axios.get('https://campussafetyapp.azurewebsites.net/incidents/all-incidents');
+      const activeIncidents = response.data.filter(incident => incident.active === 1);
+      console.log(activeIncidents)
+      setActiveIncidents(activeIncidents);
+    } catch (error) {
+      console.error("Error fetching incidents:", error);
+    }
+  };
+
   useEffect(() => {
     setTitle("Find Rental Stations");
     setTask(1);
     fetchStations();
+    fetchIncidents();
+
+   
 
     // Set user's current location
     if (navigator.geolocation) {
@@ -47,13 +67,29 @@ function UserMap() {
     } else {
       setCurrentLocation({ lat: -26.190424531742913, lng: 28.0259034605168 });
     }
+
+    const intervalId = setInterval(() => {
+      fetchIncidents();
+    }, 1800000); // 30 minutes in milliseconds
+
+    // Cleanup the interval on unmount
+    return () => clearInterval(intervalId);
   }, [setTitle, setTask]);
 
-  // Function to handle marker click
   const handleMarkerClick = (stationLocation) => {
     setShowMessage(false); // Hide the message when a rental station marker is clicked
     setDestinationPosition({ lat: stationLocation.latitude, lng: stationLocation.longitude }); // Set the destination position
   
+  };
+
+  function formatDate(incidentDate) {
+    const { day, month, year, time } = incidentDate;
+    const formattedTime = `${time.hour.toString().padStart(2, '0')}:${time.minute.toString().padStart(2, '0')}`;
+    return `${day.toString().padStart(2, '0')}/${month.toString().padStart(2, '0')}/${year} at ${formattedTime}`;
+  }
+
+  const handleIncidentClick = (incident) => {
+    setSelectedIncident(incident); // Set the selected incident
   };
 
   return (
@@ -101,6 +137,52 @@ function UserMap() {
                     onClick={() => handleMarkerClick(station.location)} // Handle click to set destination
                   />
                 ))}
+
+
+                 {/* Incident Markers */}
+                 {activeIncidents.map((incident, index) => (
+                  <Marker
+                    key={index}
+                    position={{
+                      lat: incident.latitude,
+                      lng: incident.longitude,
+                    }}
+                    icon={{
+                      url: danger,
+                      scaledSize: new google.maps.Size(40, 40), // Adjust size
+                    }}
+                    title={`Incident: ${incident.type}`}
+                    label={
+                      incident.building_name
+                        ? {
+                            text: incident.building_name,
+                            color: "grey",
+                            fontWeight: "bold",
+                            fontSize: "10px",
+                          }
+                        : null // Null safety: if building_name is absent, don't show the label
+                    }
+                    onClick={() => handleIncidentClick(incident)} // Handle click to show incident description
+                  />
+                ))}
+
+
+                {/* InfoWindow for selected incident */}
+                {selectedIncident && (
+                  <InfoWindow
+                    position={{ lat: selectedIncident.latitude, lng: selectedIncident.longitude }}
+                    onCloseClick={() => setSelectedIncident(null)} // Close InfoWindow
+                  >
+                    <div>
+                      {selectedIncident.photo && <img src={selectedIncident.photo} alt="Incident" style={{ width: "100px", height: "100px" }} />}
+
+                      <h3>Category: {selectedIncident.type}</h3>
+                      <p>{formatDate(selectedIncident.date)}</p>
+                      <p>Description: {selectedIncident.description}</p>
+
+                    </div>
+                  </InfoWindow>
+                )}
                 
                 {/* Render Directions component if a destination is selected */}
                 {destinationPosition && (
