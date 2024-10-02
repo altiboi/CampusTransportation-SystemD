@@ -1,5 +1,5 @@
-import { auth, rentalservice_db , db } from "../firebase/firebase.js";
-import { collection, addDoc, doc, updateDoc, getDocs, query, where } from "firebase/firestore";
+import { auth, rentalservice_db,mapping_db , preference_db, db } from "../firebase/firebase.js";
+import { Firestore,collection,getDoc, addDoc, setDoc,doc, updateDoc, getDocs, query, where } from "firebase/firestore";
 
 
 export const getAllVehicles = async () => {
@@ -163,7 +163,6 @@ export const getNotifications = async () => {
           id: doc.id,  
           ...doc.data() 
       }));
-      console.log(notifsList)
 
       return notifsList;
   } catch (error) {
@@ -251,3 +250,163 @@ export const setNotificationAsRead = async (notificationId) => {
       console.error("Error fetching bus routes:", error);
     }
   };
+
+  export const getAllRentalStations= async () => {
+    try {
+        const rentalCollection = collection(rentalservice_db, "RentalStation");
+        const rentalsSnapshot = await getDocs(rentalCollection);
+        const rentalList = rentalsSnapshot.docs.map(doc => {
+            const data = doc.data();
+            
+            return {
+                name: data.name,
+                location: data.location ? {
+                    latitude: data.location._lat || null,
+                    longitude: data.location._long || null,
+                } : null,
+            };
+        });
+     
+        return rentalList;
+    } catch (error) {
+        console.error("Error fetching rental stations:", error.message);
+        throw error;
+    }
+  };
+
+  export const getAllLocations = async () => {
+    try {
+        const buildingsCollection = collection(mapping_db, "Buildings");
+        const poiCollection = collection(mapping_db, "Points of Interest");
+
+        // Get all buildings
+        const buildingsSnapshot = await getDocs(buildingsCollection);
+        const buildingsList = buildingsSnapshot.docs.map(doc => {
+            const data = doc.data();
+
+            // Check if accessible_entrances is an array before mapping
+            const accessibleList = Array.isArray(data?.accessible_entrances)
+                ? data.accessible_entrances.map((entrance) => ({
+                    latitude: entrance?._lat ?? null,  
+                    longitude: entrance?._long ?? null, 
+                }))
+                : []; // If not an array, return an empty array
+
+            return {
+                name: doc.id,
+                coordinates: data?.Coordinates ? {
+                    latitude: data?.Coordinates?._lat ?? null,
+                    longitude: data?.Coordinates?._long ?? null,
+                } : null,
+                accessible_entrances: accessibleList.length > 0 ? accessibleList : null, // Only include if accessible entrances exist
+            };
+        });
+       
+        // Get all points of interest
+        const poiSnapshot = await getDocs(poiCollection);
+        const poiList = poiSnapshot.docs.map(doc => {
+            const data = doc.data();
+
+            // Check if accessible_entrances is an array before mapping
+            const accessibleListPOI = Array.isArray(data?.accessible_entrances)
+                ? data.accessible_entrances.map((entrance) => ({
+                    latitude: entrance?._lat ?? null,  
+                    longitude: entrance?._long ?? null, 
+                }))
+                : []; // If not an array, return an empty array
+
+            return {
+                name: doc.id,
+                category: data?.Category ?? "Unknown", // Provide fallback for category
+                coordinates: data?.Coordinates ? {
+                    latitude: data?.Coordinates?._lat ?? null,
+                    longitude: data?.Coordinates?._long ?? null,
+                } : null,
+                accessible_entrances: accessibleListPOI.length > 0 ? accessibleListPOI : null,
+            };
+        });
+
+        // Combine buildings and POIs into a single list
+        const allLocations = [...buildingsList, ...poiList];
+
+        return allLocations;
+    } catch (error) {
+        console.error("Error fetching locations:", error.message);
+        throw error;
+    }
+};
+
+export const addToFavourites = async (email, destinationName) => {
+  try {
+    // Reference the "users" collection to get the user document
+    const usersRef = collection(db, 'Users');
+    const q = query(usersRef, where('email', '==', email)); // Query where email matches
+    const querySnapshot = await getDocs(q);
+
+    if (querySnapshot.empty) {
+      throw new Error("User not found");
+    }
+
+    // Retrieve the user's ID from the document (assuming uid is stored there)
+    let userID;
+    querySnapshot.forEach((doc) => {
+      userID = doc.id; // Get the userID from the document ID
+    });
+
+    // Reference to the "preferences" collection in the database
+    const preferencesRef = doc(preference_db, 'preferences', userID);
+
+    // Check if the user's preferences document exists
+    const preferencesSnapshot = await getDoc(preferencesRef);
+    if (!preferencesSnapshot.exists()) {
+      // Create a new document in "preferences" with favorite destinations
+      await setDoc(preferencesRef, {
+        userID: userID,
+        favouriteDestinations: [destinationName],
+      });
+    } else {
+      // Update the existing document by appending the destination if it's not already present
+      const { favouriteDestinations } = preferencesSnapshot.data();
+      if (!favouriteDestinations.includes(destinationName)) {
+        await updateDoc(preferencesRef, {
+          favouriteDestinations: [...favouriteDestinations, destinationName],
+        });
+      }
+    }
+    console.log("Destination added to favourites.");
+  } catch (error) {
+    console.error("Error saving destination:", error);
+  }
+};
+
+export const getFavourites = async (email) => {
+  try {
+    const usersRef = collection(db, 'Users');
+    const q = query(usersRef, where('email', '==', email)); 
+    const querySnapshot = await getDocs(q);
+
+    if (querySnapshot.empty) {
+      throw new Error("User not found");
+    }
+
+    let userID;
+    querySnapshot.forEach((doc) => {
+      userID = doc.id; // Get the userID from the document ID
+    });
+    const preferencesRef = doc(preference_db, 'preferences', userID);
+    const preferencesSnapshot = await getDoc(preferencesRef);
+    if (!preferencesSnapshot.exists()) {
+      return [];
+    } else {
+      const { favouriteDestinations } = preferencesSnapshot.data();
+      // Parse the strings back into objects
+      const parsedDestinations = favouriteDestinations.map(dest => JSON.parse(dest));
+      
+      console.log(parsedDestinations);
+      return parsedDestinations;
+    }
+  } catch (error) {
+    console.error("Error getting destination:", error);
+  }
+};
+

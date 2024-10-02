@@ -6,130 +6,139 @@
   align-items: center;
   padding: 2rem;
   min-height: 100vh;
-  .find-upper-part{
-    width: 100%;
-    flex: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  .title{
-    display: flex;
-    h1{
-        font-size: 2rem; 
-      }
-  }
-  .user-where-to-input-section {
-    width: 100%;
-    flex: 3;
-    margin-bottom: 1.5rem;
-    .user-where-to-card {
-      display: flex;
-      justify-content: center;
-      flex-direction: row;
-      align-items: center;
-      border-radius: 8px;
-      background-color: #fff;
-      box-shadow: rgba(0, 0, 0, 0.17) 0px -23px 25px 0px inset, 
-      rgba(0, 0, 0, 0.15) 0px -36px 30px 0px inset,
-      rgba(0, 0, 0, 0.1) 0px -79px 40px 0px inset,
-        rgba(0, 0, 0, 0.06) 0px 2px 1px,
-        rgba(0, 0, 0, 0.09) 0px 4px 2px, 
-        rgba(0, 0, 0, 0.09) 0px 8px 4px, 
-        rgba(0, 0, 0, 0.09) 0px 16px 8px, 
-        rgba(0, 0, 0, 0.09) 0px 32px 16px;
-    border:2px solid silver ;
-      width: 100%;
-      margin-bottom: 1.5rem;
-      .card-icon {
-        font-size: 2rem;
-        flex: 1;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        .icon{
-          color: black;
-        }
-      }
-      
-      .card-content {
-        flex: 5;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        .user-where-to-custom-input {
-          width: 100%;
-          padding: 0.5rem;
-          border: 2px solid black;
-          border-radius: 15px;
-          font-size: 1rem;   
-          outline: none;       
-          &:focus {
-            border-color: black;
-            box-shadow: rgba(0, 0, 0, 0.09) 0px 2px 1px,
-             rgba(0, 0, 0, 0.09) 0px 4px 2px,
-             rgba(0, 0, 0, 0.09) 0px 8px 4px, 
-             rgba(0, 0, 0, 0.09) 0px 16px 8px, 
-             rgba(0, 0, 0, 0.09) 0px 32px 16px;
-          }
-        }
-      }
-      .button{
-        flex: 1;
-        display: flex;
-        align-self: center;
-        align-items: center;
-        justify-content: center;
-        height: 100%;
-        padding: 0.5rem .5rem;
-        margin: 1rem;
-        border-radius:15px ;
-        box-shadow: rgba(6, 24, 44, 0.4) 0px 0px 0px 2px, 
-        rgba(6, 24, 44, 0.65) 0px 4px 6px -1px, 
-        rgba(255, 255, 255, 0.08) 0px 1px 0px inset;
-        .btn{
-          width: 60%;
-          height: 100%;
-        
-        }
-      }
+}
+.find-upper-part{
+  width: 100%;
+  flex: 1;
+}
+.title{
+  h1{
+      font-size: 3rem; 
     }
-  }
-  .user-where-to-select-section {
-    width: 100%;
-    box-shadow: rgba(17, 17, 26, 0.1) 0px 4px 16px, 
-    rgba(17, 17, 26, 0.1) 0px 8px 24px, 
-    rgba(17, 17, 26, 0.1) 0px 16px 56px;
-    .user-where-to-select-dropdown {
-      width: 100%;
-      padding: 0.5rem;
-      border: 1px solid #ddd;
-      border-radius: 4px;
-      font-size: 1rem;
-      outline: none;
-      box-shadow: rgba(255, 255, 255, 0.2) 0px 0px 0px 1px inset, rgba(0, 0, 0, 0.9) 0px 0px 0px 1px;
-      cursor: pointer;
-      
-      &:focus {
-        border-color:black;
-      }
-    }
-    
-    option {
-      padding: 0.5rem;
-    }
-  }
-  @media (max-width: 768px) {
-    .user-where-to-container {
-      padding: 1rem;
-    }
-    
-    .user-where-to-input-section, .user-where-to-select-section {
-      max-width: 100%;
-    }
-  }
-  
-  
 }
 
+.user-where-to-input-section {
+  width: 100%;
+  flex: 3;
+  margin-bottom: 1.5rem;
+  
+  .user-where-to-card {
+    display: flex;
+    align-items: center;
+    border-radius: 8px;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    margin-bottom: 1.5rem;
+    
+    .card-icon {
+      font-size: 1.5rem;
+      color: #4caf50; // Green color for the icon
+      flex: 1;
+      .icon{
+        color: orangered;
+      }
+    }
+    
+    .card-content {
+      flex: 5;
+      
+      .user-where-to-custom-input {
+        width: 100%;
+        padding: 0.5rem;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 1rem;
+        outline: none;
+        
+        &:focus {
+          border-color: #4caf50;
+          box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.2);
+        }
+      }
+    }
+  }
+}
 
+// Select section styling
+.user-where-to-select-section {
+  width: 100%;
+  
+  .user-where-to-select-dropdown {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 1rem;
+    outline: none;
+    cursor: pointer;
+    
+    &:focus {
+      border-color: #4caf50;
+      box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.2);
+    }
+  }
+  
+  option {
+    padding: 0.5rem;
+  }
+}
+
+.confirm-button {
+  background-color: #000; // Black background
+  color: #fff; // White text
+  padding: 0.75rem 1.5rem; // Padding for the button
+  border: none;
+  border-radius: 4px; // Rounded corners
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  text-align: center;
+  margin-top: 1rem; // Space above the button
+  display: block; // Space above the button
+
+  &:hover {
+    background-color: #333; // Darker black on hover
+  }
+
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.2); // Optional focus ring
+  }
+}
+
+.user-where-to-card {
+  position: relative; /* Ensure the dropdown is positioned relative to the input */
+  display: flex;
+  align-items: center;
+  border-radius: 8px;
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  margin-bottom: 1.5rem;
+}
+
+.user-where-to-dropdown {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  max-height: 200px;
+  overflow-y: auto;
+  background-color: white;
+  width: 100%;
+  position: absolute; /* Ensure the dropdown is positioned beneath the input */
+  top: 100%; /* This makes the dropdown appear right below the input */
+  left: 0;
+  z-index: 10; /* Ensure it is above other elements */
+}
+
+.dropdown-item {
+  padding: 0.5rem;
+  cursor: pointer;
+}
+
+.dropdown-item:hover {
+  background-color: #f1f1f1; /* Light gray background on hover */
+}

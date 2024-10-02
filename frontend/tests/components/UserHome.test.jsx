@@ -1,92 +1,111 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
-import { BrowserRouter as Router } from 'react-router-dom';
+import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import UserHome from '../../src/pages/UserPages/UserHome';
 import { describe, it, expect } from 'vitest';
 
-// Test suite for UserHome component
+// Mock components for pages
+const RentalPage = () => <div>Rental Page</div>;
+const FindPage = () => <div>Find Page</div>;
+const CampusMapPage = () => <div>Campus Map Page</div>;
+const BusSchedulePage = () => <div>Bus Page</div>;
+const FinesPage = () => <div>Fine Page</div>;
+
 describe('UserHome Component', () => {
-  // Render the component in each test using the router context
-  const renderComponent = () => {
+  const renderComponent = (initialEntries = ['/']) => {
     render(
-      <Router>
-        <UserHome />
-      </Router>
+      <MemoryRouter initialEntries={initialEntries}>
+        <Routes>
+          <Route path="/" element={<UserHome />} />
+          <Route path="/userRental" element={<RentalPage />} />
+          <Route path="/userFind" element={<FindPage />} />
+          <Route path="/UserMap" element={<CampusMapPage />} />
+          <Route path="/UserFines" element={<FinesPage />} />
+          <Route path="/UserBuses" element={<BusSchedulePage />} />
+        </Routes>
+      </MemoryRouter>
     );
   };
 
-  it('should render the upper part with rent and find cards', () => {
+  it('should navigate to the Rental Stations page when the card is clicked', () => {
     renderComponent();
+    const rentalCard = screen.getByText('Rent');
+    expect(rentalCard).not.toBeNull();
 
+    const rentalLink = rentalCard.closest('a');
+    expect(rentalLink).not.toBeNull();
+    expect(rentalLink.getAttribute('href')).toBe('/userRental');
 
-    expect(screen.getByText('Rent')).not.toBeNull();
-    
-  
-    expect(screen.getByText('Find')).not.toBeNull();
+    fireEvent.click(rentalCard);
+    expect(screen.getByText('Rental Page')).not.toBeNull();
   });
 
-  it('should render the middle part with campus map card', () => {
+  it('should navigate to the Find page when Find card is clicked', () => {
     renderComponent();
-
-    // Check if Campus Map card is rendered
-    expect(screen.getByText('Campus Map')).not.toBeNull();
-  });
-
-  it('should render the lower part with suggestions', () => {
-    renderComponent();
-
-    // Check if Rent Bike, Bus Schedule, and Fines cards are rendered
-    expect(screen.getByText('Rent Bike')).not.toBeNull();
-    expect(screen.getByText('Bus Schedule')).not.toBeNull();
-    expect(screen.getByText('Fines')).not.toBeNull();
-  });
-
-  it('should render the correct icons', () => {
-    renderComponent();
-    expect(screen.getByTestId('icon-truck')).not.toBeNull();  
-    expect(screen.getByTestId('icon-location-dot')).not.toBeNull(); 
-    expect(screen.getByTestId('icon-route')).not.toBeNull();  
-    expect(screen.getByTestId('icon-bicycle')).not.toBeNull(); 
-    expect(screen.getByTestId('icon-clipboard-list')).not.toBeNull(); 
-    expect(screen.getByTestId('icon-ticket')).not.toBeNull(); 
-  });
-
-  it('should navigate to the correct route when a card is clicked', () => {
-    renderComponent();
-
-    const rentCard = screen.getByText('Rent');
-    fireEvent.click(rentCard);
-    
-
-    expect(window.location.pathname).toBe('/userRental');
-    
 
     const findCard = screen.getByText('Find');
-    fireEvent.click(findCard);
-    
+    expect(findCard).not.toBeNull();
 
-    expect(window.location.pathname).toBe('/userFind');
+    const findLink = findCard.closest('a');
+    expect(findLink).not.toBeNull();
+    expect(findLink.getAttribute('href')).toBe('/userFind');
 
-    const BusCard = screen.getByText('Bus Schedule');
-    fireEvent.click(BusCard);
-    expect(window.location.pathname).toBe('/UserBuses');
-
-
-    const FinesCard = screen.getByText('Fines');
-    fireEvent.click(FinesCard);
-    expect(window.location.pathname).toBe('/UserFines');
-
-
-    const CampusCard = screen.getByText('Campus Map');
-    fireEvent.click(CampusCard);
-    expect(window.location.pathname).toBe('/UserMap');
+    fireEvent.click(findCard );
+    expect(screen.getByText('Find Page')).not.toBeNull();
+   
   });
-
-  
-  it('should render a title for the suggestions section', () => {
+  it('should navigate to the map page when map card is clicked', () => {
     renderComponent();
 
+    const findCard = screen.getByText('Campus Map');
+    expect(findCard).not.toBeNull();
 
-    expect(screen.getByText('Suggestions')).not.toBeNull();
+    const findLink = findCard.closest('a');
+    expect(findLink).not.toBeNull();
+    expect(findLink.getAttribute('href')).toBe('/UserFind');
+
+    fireEvent.click(findCard);
+    expect(screen.getByText('Find Page')).not.toBeNull();
+
+   
+  });
+  it('should navigate to the Bus Schedule page when Bus Schedule card is clicked', () => {
+    renderComponent();
+
+    const findCard = screen.getByText('Bus Schedule');
+    expect(findCard).not.toBeNull();
+
+    const findLink = findCard.closest('a');
+    expect(findLink).not.toBeNull();
+    expect(findLink.getAttribute('href')).toBe('/UserBuses');
+
+    fireEvent.click(findCard);
+    expect(screen.getByText('Bus Page')).not.toBeNull();
+
+   
+  });
+  it('should navigate to the fine page when fines card is clicked', () => {
+    renderComponent();
+
+    const findCard = screen.getByText('Fines');
+    expect(findCard).not.toBeNull();
+
+    const findLink = findCard.closest('a');
+    expect(findLink).not.toBeNull();
+    expect(findLink.getAttribute('href')).toBe('/UserFines');
+
+    fireEvent.click(findCard);
+    expect(screen.getByText('Fine Page')).not.toBeNull();
+
+   
+  });
+  it('should render images correctly', () => {
+    renderComponent();
+    expect(screen.getByAltText('Car icon for rental')).not.toBeNull();
+    expect(screen.getByAltText('Find icon')).not.toBeNull();
+    expect(screen.getByAltText('Campus map icon')).not.toBeNull();
+    expect(screen.getByAltText('Bicycle rental icon')).not.toBeNull();
+    expect(screen.getByAltText('Bus schedule icon')).not.toBeNull();
+    expect(screen.getByAltText('Fines icon')).not.toBeNull();
   });
 });

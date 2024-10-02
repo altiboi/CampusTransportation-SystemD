@@ -55,7 +55,6 @@ export function App() {
     const fetchNotifs = async () => {
       try {
         const notifData = await getNotifications();
-        console.log(notifData)
         setNotifs(notifData);
       } catch (error) {
         console.error("Error fetching notifications:", error.message);
