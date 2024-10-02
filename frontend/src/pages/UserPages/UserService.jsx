@@ -8,6 +8,14 @@ import { faMapMarkerAlt } from '@fortawesome/free-solid-svg-icons';
 import './UserService.scss'; 
 import { useAppContext } from "../../contexts/AppContext";
 import { useEffect } from "react";
+import Trip from '../../assets/Trip.png';
+import rental from '../../assets/rental.png'
+import car from '../../assets/car.webp';
+import schedule from '../../assets/schedule.webp';
+import Reserve from '../../assets/reserve.avif';
+import fine from '../../assets/fine.avif';
+import returns from '../../assets/return.webp'
+import map from '../../assets/map.webp';
 
 
 function UserService() {
@@ -28,7 +36,7 @@ function UserService() {
             <Link to="/userFind " className='link'>
               <Card className="card  border-none">
                   <section className='card-icon'>
-                    <FontAwesomeIcon icon={faRoute} className='icon-large' />
+                    <img src={Trip} alt="" className='icon-large' />
                   </section>
                   <section className='card-content'>
                     <span className='card-heading'>Trip</span>
@@ -41,7 +49,7 @@ function UserService() {
             <Link to={"/UserMap"} className='link'>
               <Card className="card  border-none">
                 <section className='card-icon'>
-                  <FontAwesomeIcon icon={faMapMarkerAlt} className='icon-large' />
+                  <img src={rental} alt="" className='icon-large' />
                 </section>
                 <section className='card-content'>
                   <span className='card-heading'>Rental Stations</span>
@@ -63,7 +71,7 @@ function UserService() {
                   <h2 className="card-heading">Rent</h2>
                 </section>
                 <section className='card-icon'>
-                  <FontAwesomeIcon icon={faBicycle} className='icon-medium' />
+                <img src={car} alt="" className='icon-large' />
                 </section>
                 </Link>
             </Card>
@@ -73,7 +81,7 @@ function UserService() {
                     <h2 className="card-heading">Bus Schedule</h2>
                 </section>
                 <section className='card-icon'>
-                  <FontAwesomeIcon icon={faClipboardList} className='icon-medium' />
+                <img src={schedule} alt="" className='icon-large' />
                 </section>
               </Link>
             </Card>
@@ -83,7 +91,7 @@ function UserService() {
                     <h2 className="card-heading">Reserve</h2>
                 </section>
                 <section className='card-icon'>
-                  <FontAwesomeIcon icon={faCalendarCheck} className='icon-medium' />
+                <img src={Reserve} alt="" className='icon-large' />
                 </section>
               </Link>
             </Card>
@@ -94,7 +102,7 @@ function UserService() {
                   <h2 className="card-heading">Fines</h2>
                 </section>
                 <section className='card-icon'>
-                  <FontAwesomeIcon icon={faTicket} className='icon-medium' />
+                <img src={fine} alt="" className='icon-large' />
                 </section>
               </Link>
             </Card>
@@ -104,7 +112,7 @@ function UserService() {
                 <h2 className="card-heading">Returns</h2>
               </section>
               <section className='card-icon'>
-                <FontAwesomeIcon icon={faRotateLeft} className='icon-medium' />
+              <img src={returns} alt="" className='icon-large' />
               </section>
               </Link>
             </Card>
@@ -114,7 +122,7 @@ function UserService() {
                 <span className='card-heading'>Campus Map</span>
               </section>
               <section className='card-icon'>
-                <FontAwesomeIcon icon={faLocationDot} className='icon-medium' />
+              <img src={map} alt="" className='icon-large' />
               </section>
               </Link>
             </Card>

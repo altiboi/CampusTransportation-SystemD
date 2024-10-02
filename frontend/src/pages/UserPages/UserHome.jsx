@@ -1,16 +1,13 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import Card from "../../components/Card";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faTruck,
-  faLocationDot,
-  faRoute,
-  faTicket,
-  faBicycle,
-  faClipboardList,
-} from "@fortawesome/free-solid-svg-icons";
-import "./UserHome.scss"; // Import custom CSS
+import car from '../../assets/car.webp';
+import find from '../../assets/find.jpg';
+import bicycle from '../../assets/bicycle.avif';
+import map from '../../assets/map.webp';
+import schedule from '../../assets/schedule.webp';
+import fine from '../../assets/fine.avif';
+import "./UserHome.scss";
 
 function UserHome() {
   return (
@@ -18,9 +15,9 @@ function UserHome() {
       <section className="upper-part">
         <section className="upper-cards">
           <Link to="/userRental" className="Links">
-            <Card className="card ">
+            <Card className="card">
               <section className="card-icon">
-              <FontAwesomeIcon icon={faTruck} className="icon" data-testid="icon-truck" />
+                <img src={car} alt="Car icon for rental" className="icon" />
               </section>
               <section className="card-content">
                 <span className="card-title">Rent</span>
@@ -33,7 +30,7 @@ function UserHome() {
           <Link to="/userFind" className="Links">
             <Card className="card">
               <section className="card-icon">
-              <FontAwesomeIcon icon={faLocationDot} className="icon" data-testid="icon-location-dot" />
+                <img src={find} alt="Find icon" className="icon" />
               </section>
               <section className="card-content">
                 <span className="card-title">Find</span>
@@ -44,14 +41,14 @@ function UserHome() {
       </section>
 
       <section className="middle-apart">
-        <Link to={"/UserFind"} className="link">
+        <Link to="/UserFind" className="link">
           <Card className="middle-card">
-              <section className="card-icon">
-              <FontAwesomeIcon icon={faRoute} className="icon" data-testid="icon-route" />
-              </section>
-              <section className="card-description">
-                <p>Campus Map</p>
-              </section>
+            <section className="card-icon">
+              <img src={map} alt="Campus map icon" className="icon" />
+            </section>
+            <section className="card-description">
+              <p>Campus Map</p>
+            </section>
           </Card>
         </Link>
       </section>
@@ -61,29 +58,28 @@ function UserHome() {
           <h2 className="card-title title">Suggestions</h2>
         </section>
         <section className="lower-card">
-          <Link to={""} className="link">
-            <Card className="lower-card ">
+          <Link to="" className="link">
+            <Card className="lower-card">
               <section className="card-icon">
-              <FontAwesomeIcon icon={faBicycle} className="icon" data-testid="icon-bicycle" />
+                <img src={bicycle} alt="Bicycle rental icon" className="icon" />
               </section>
               <h2 className="card-title">Rent Bike</h2>
             </Card>
           </Link>
-          <Link to={"/UserBuses"} className="link">
+          <Link to="/UserBuses" className="link">
             <Card className="lower-card">
-                <section className="card-icon">
-                <FontAwesomeIcon icon={faClipboardList} className="icon" data-testid="icon-clipboard-list" />
-                </section>
-                <h2 className="card-title">Bus Schedule</h2>
+              <section className="card-icon">
+                <img src={schedule} alt="Bus schedule icon" className="icon" />
+              </section>
+              <h2 className="card-title">Bus Schedule</h2>
             </Card>
           </Link>
-          <Link to={'/UserFines'} className="link">
+          <Link to="/UserFines" className="link">
             <Card className="lower-card">
-                <section className='card-icon'>
-                <FontAwesomeIcon icon={faTicket} className="icon" data-testid="icon-ticket" />
-
-                </section>
-                <h2 className="card-title">Fines</h2>
+              <section className="card-icon">
+                <img src={fine} alt="Fines icon" className="icon" />
+              </section>
+              <h2 className="card-title">Fines</h2>
             </Card>
           </Link>
         </section>
