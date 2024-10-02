@@ -7,15 +7,14 @@ import { useAuth } from "../../contexts/AuthProvider";
 
 const DesktopHeader = ({ currentUser }) => {
   const { title } = useAppContext();
-  const navigate = useNavigate();
+  const navigate = useNavigate(); 
   const [notificationCount, setNotificationCount] = useState(0); // Example count, adjust or connect to your notifications logic
 
   useEffect(() => {
     if (currentUser && currentUser.userNotifications) {
       const unreadCount = countUnreadNotifications(currentUser.userNotifications);
       setNotificationCount(unreadCount);
-      //console.log(currentUser)
-      //console.log("notification count updated  to " + unreadCount);
+      console.log("notification count updated  to " + unreadCount);
     }
   }, [currentUser]);
 

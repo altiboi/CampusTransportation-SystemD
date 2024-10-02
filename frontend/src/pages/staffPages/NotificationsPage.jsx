@@ -6,6 +6,7 @@ import CreateNotificationModal from "../../components/common/CreateNotificationM
 import { useAppContext } from "../../contexts/AppContext";
 import { createNotification, fetchUserNotifications } from "../../api/functions"; // Update the path
 import { setNotificationAsRead } from "../../api/functions"; // Import your function to mark notifications as read
+import { useAuth } from "../../contexts/AuthProvider";
 
 const NotificationsPage = ({ currentUser }) => {  
   const [notifications, setNotifications] = useState([]);
@@ -15,10 +16,11 @@ const NotificationsPage = ({ currentUser }) => {
   const [showUserNotifications, setShowUserNotifications] = useState(false);
 
   const { setTitle, setTask } = useAppContext();
+  const { refreshCurrentUser } = useAuth();
 
   const refreshNotifications = async () => {
     try {
-      console.log(currentUser)
+      //console.log(currentUser)
       const updatedNotifications = await fetchUserNotifications(currentUser.uid); // Fetch notifications for the current user
       setNotifications(updatedNotifications); 
     } catch (error) {
@@ -44,13 +46,15 @@ const NotificationsPage = ({ currentUser }) => {
   };
 
   const closeNotificationModal = async () => {
-    // Mark the notification as read when closing the modal
-    if(!selectedNotification.isRead) await setNotificationAsRead(currentUser.uid, selectedNotification.id);// Update the notification's isRead status
-    setNotifications((prevNotifications) =>
-      prevNotifications.map((n) =>
-        n.id === selectedNotification.id ? { ...n, isRead: true } : n
-      )
-    );
+    if (!selectedNotification.isRead) {
+      await setNotificationAsRead(currentUser.uid, selectedNotification.id); // Mark notification as read
+      setNotifications((prevNotifications) =>
+        prevNotifications.map((n) =>
+          n.id === selectedNotification.id ? { ...n, isRead: true } : n
+        )
+      );
+      await refreshCurrentUser();
+    }
     setIsNotificationModalOpen(false);
     setSelectedNotification(null);
   };
@@ -69,6 +73,7 @@ const NotificationsPage = ({ currentUser }) => {
       await createNotification(newNotification);
       closeCreateNotificationModal();
       await refreshNotifications();
+      await refreshCurrentUser();
     } catch (error) {
       console.error("Error creating notification:", error.message);
     }

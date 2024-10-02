@@ -126,7 +126,7 @@ export function App() {
       return <StaffRoutes vehicles={vehicles} notifs = {notifs} currentUser = {currentUser} />;
       
     } else if (role === "user") {
-      return <UserRoutes />;
+      return <UserRoutes currentUser={currentUser}/>;
     } else {
       return <AppRoutes />;
     }

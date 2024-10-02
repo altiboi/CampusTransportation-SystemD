@@ -8,7 +8,7 @@ const Confirmation = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { itemName, action, item } = location.state || {};
-  const { currentUser, loading } = useAuth();
+  const { currentUser, loading, refreshCurrentUser } = useAuth();
 
   const handleConfirm = async () => {
     if (!currentUser) {
@@ -20,7 +20,7 @@ const Confirmation = () => {
       console.log(currentUser);
       // Add rental to the database when confirmed
       await addNewRentalAndUpdateVehicle(item.rentalStationID, item.type, currentUser.uid, item.id, 2);
-
+      await refreshCurrentUser();
       // Navigate to the final details page after rental is added
       navigate('/finalDetails', { state: { itemName, action } });
     } catch (error) {

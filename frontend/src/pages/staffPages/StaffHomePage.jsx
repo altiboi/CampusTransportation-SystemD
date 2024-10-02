@@ -163,7 +163,7 @@ function StaffHomePage( {currentUser, vehicles} ) {
           </div>
           <div className="bg-gray-100 p-4 rounded shadow-md">
           <h2 className="text-lg font-semibold">Current Active Bus Routes</h2>
-          <p className="text-xl">Total: {activeRoutes.length}</p>
+          <p className="text-xl">{activeRoutes.length}</p>
           </div>
         </div>
 

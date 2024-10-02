@@ -50,6 +50,27 @@ export const addVehicle = async (vehicle) => {
 
 export const addNewRentalAndUpdateVehicle = async (rentalStationID, type, userID, vehicleID, rentalDurationInHours) => {
   try {
+      // Check if the user already has an active rental
+      const userDocRef = doc(db, "Users", userID);
+      const userDoc = await getDoc(userDocRef);
+
+      if (!userDoc.exists()) {
+          throw new Error("User not found");
+      }
+
+      const userData = userDoc.data();
+      
+      // Check if the user already has a current rental that is not yet returned
+      if (userData.currentRentalID) {
+          const currentRentalDocRef = doc(rentalservice_db, "VehicleRentals", userData.currentRentalID);
+          const currentRentalDoc = await getDoc(currentRentalDocRef);
+
+          if (currentRentalDoc.exists() && !currentRentalDoc.data().returnedAt) {
+              // User already has an active rental that hasn't been returned
+              throw new Error("User already has an active rental. Please return the current vehicle before making a new rental.");
+          }
+      }
+
       // Get the current time for rentedAt
       const rentedAt = new Date();
 
@@ -84,7 +105,12 @@ export const addNewRentalAndUpdateVehicle = async (rentalStationID, type, userID
           currentRentalID: rentalDocRef.id // Link the new rental to the vehicle
       });
 
-      console.log("Vehicle updated successfully!");
+      // Update the user document with the currentRentalID
+      await updateDoc(userDocRef, {
+          currentRentalID: rentalDocRef.id
+      });
+
+      console.log("User's current rental updated successfully!");
       
       return {
           rentalID: rentalDocRef.id,
@@ -93,6 +119,100 @@ export const addNewRentalAndUpdateVehicle = async (rentalStationID, type, userID
   } catch (error) {
       console.error("Error adding rental or updating vehicle:", error.message);
       throw error;
+  }
+};
+
+export const returnVehicleAndIssueFine = async (rentalID, vehicleID) => {
+  try {
+    // Get the current time for returnedAt
+    const returnedAt = new Date();
+
+    // Reference to the "VehicleRentals" collection and the specific rental
+    const rentalDocRef = doc(rentalservice_db, "VehicleRentals", rentalID);
+    const rentalDoc = await getDoc(rentalDocRef);
+
+    if (!rentalDoc.exists()) {
+      throw new Error("Rental not found");
+    }
+
+    const rentalData = rentalDoc.data();
+    const dueReturnAt = new Date(rentalData.dueReturnAt); // Convert dueReturnAt back to Date object
+
+    // Calculate the time difference between dueReturnAt and returnedAt in milliseconds
+    const timeDifference = returnedAt - dueReturnAt;
+    
+    // Convert the time difference to hours
+    const differenceInHours = timeDifference / (1000 * 60 * 60); 
+
+    // Initialize fine amount
+    let fineAmount = 0;
+
+    // If the return is late (more than 10 minutes after dueReturnAt)
+    if (differenceInHours > (10 / 60)) {
+      // Calculate fine: R50 for every hour late
+      fineAmount = Math.ceil(differenceInHours) * 50;
+    }
+
+    // Update the rental with returnedAt
+    await updateDoc(rentalDocRef, {
+      returnedAt: returnedAt.toUTCString(),
+    });
+
+    // Update the vehicle to mark it as available again
+    const vehicleDocRef = doc(rentalservice_db, "Vehicles", vehicleID);
+    await updateDoc(vehicleDocRef, {
+      available: true,
+      currentRentalID: null, // Remove the rental reference from the vehicle
+    });
+
+   // Update the user document to clear currentRentalID
+   const userDocRef = doc(db, "Users", rentalData.userID);
+   const userDoc = await getDoc(userDocRef);
+
+   if (userDoc.exists()) {
+     // Clear the user's currentRentalID
+     await updateDoc(userDocRef, {
+       currentRentalID: null
+     });
+   } else {
+     throw new Error("User not found");
+   }
+
+   console.log("User's current rental cleared successfully!");
+
+    // If there is a fine, create a fine document
+    let fineData = null;
+    if (fineAmount > 0) {
+      const finesCollection = collection(rentalservice_db, "Fines");
+
+      fineData = {
+        rentalID,
+        vehicleID,
+        userID: rentalData.userID,
+        amount: fineAmount,
+        issuedAt: returnedAt.toUTCString(),
+        paid: false, // Fine is unpaid by default
+      };
+
+      // Add the fine document to the "Fines" collection
+      const fineDocRef = await addDoc(finesCollection, fineData);
+      // Add the fine document ID to the fineData
+      fineData.id = fineDocRef.id;
+
+      console.log("Fine issued with ID:", fineDocRef.id);
+    }
+
+    return {
+      rentalDetails: {
+        ...rentalData,
+        returnedAt: returnedAt.toUTCString(),
+      },
+      fine: fineData, // Fine data or null
+    };
+
+  } catch (error) {
+    console.error("Error returning vehicle or issuing fine:", error.message);
+    throw error;
   }
 };
 
@@ -122,6 +242,57 @@ export const getAllRentals = async () => {
   } catch (error) {
       console.error("Error fetching rentals:", error.message);
       throw error;
+  }
+};
+
+export const getRentalDetails = async (rentalID) => {
+  try {
+    // Fetch the rental document
+    const rentalDocRef = doc(rentalservice_db, "VehicleRentals", rentalID);
+    const rentalDoc = await getDoc(rentalDocRef);
+
+    if (!rentalDoc.exists()) {
+      throw new Error("Rental not found");
+    }
+
+    const rentalData = rentalDoc.data();
+
+    // Fetch the vehicle document using vehicleID from rentalData
+    const vehicleDocRef = doc(rentalservice_db, "Vehicles", rentalData.vehicleID);
+    const vehicleDoc = await getDoc(vehicleDocRef);
+
+    if (!vehicleDoc.exists()) {
+      throw new Error("Vehicle not found");
+    }
+
+    const vehicleData = vehicleDoc.data();
+
+    // Fetch the rental station document using rentalStationID from rentalData
+    const rentalStationDocRef = doc(rentalservice_db, "RentalStation", rentalData.rentalStationID);
+    const rentalStationDoc = await getDoc(rentalStationDocRef);
+
+    if (!rentalStationDoc.exists()) {
+      throw new Error("Rental station not found");
+    }
+
+    const rentalStationData = rentalStationDoc.data();
+
+    // Return rental details along with vehicle and rental station data
+    return {
+      rentalID: rentalDocRef.id,
+      ...rentalData,  // Include all rental data
+      vehicle: {
+        vehicleID: vehicleDocRef.id,
+        ...vehicleData,  // Include all vehicle data
+      },
+      rentalStation: {
+        rentalStationID: rentalStationDocRef.id,
+        ...rentalStationData,  // Include all rental station data
+      }
+    };
+  } catch (error) {
+    console.error("Error fetching rental details:", error.message);
+    throw error;
   }
 };
 

@@ -26,7 +26,7 @@ import Returns from "../pages/UserPages/Returns";
 import ReturnConfirmation from "../pages/UserPages/ReturnConfirmation";
 import ScheduleDetailsPage from "../pages/staffPages/ScheduleDetailsPage";
 
-function UserRoutes() {
+function UserRoutes({ currentUser }) {
   const { userLoggedIn } = useAuth();
 
   return (
@@ -55,7 +55,7 @@ function UserRoutes() {
       />
       <Route
         path="/Returns"
-        element={<ProtectedRoute element={<Returns />} />}
+        element={<ProtectedRoute element={<Returns currentUser={currentUser}/>} />}
       />
          <Route
         path="/ReturnConfirmation"
