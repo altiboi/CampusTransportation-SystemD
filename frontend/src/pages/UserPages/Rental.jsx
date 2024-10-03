@@ -56,10 +56,12 @@ export default function UserRental() {
   }, [setTitle, setTask]);
 
   useEffect(() => {
+    // Filter and sort vehicles based on category, search text, availability, and selected station
     const filteredItems = vehicles
-      .filter(item => activeCategory === 'All' || item.type === activeCategory)
-      .filter(item => item.make.toLowerCase().includes(searchText.toLowerCase()))
-      .filter(item => !selectedStation || item.rentalStationID === selectedStation.id);
+      .filter(item => activeCategory === 'All' || item.type === activeCategory.toLowerCase())
+      .filter(item => item.make?.toLowerCase().includes(searchText.toLowerCase()) || item.model?.toLowerCase().includes(searchText.toLowerCase()))
+      .filter(item => !selectedStation || item.rentalStationID === selectedStation.id)
+      .sort((a, b) => b.available - a.available);  // Sort: available vehicles first
 
     setFilteredRentalItems(filteredItems);
   }, [activeCategory, searchText, selectedStation, vehicles]);
@@ -120,7 +122,7 @@ export default function UserRental() {
           </div>
     
           <h2 className="text-lg font-semibold mb-4">
-            {activeCategory === 'All' ? 'Most Rented Transport' : `Available ${activeCategory}s`}
+            {activeCategory === 'All' ? 'Available Vehicles' : `Available ${activeCategory}s`}
           </h2>
     
           {filteredRentalItems.length > 0 ? (
@@ -128,23 +130,27 @@ export default function UserRental() {
               {filteredRentalItems.map((item, index) => (
                 <Card key={index} className="desktop-card flex items-center justify-between p-4 rounded-lg shadow">
                   <div>
-                    <h3 className="font-semibold mb-2">{item.name}</h3>
-                    <div className="space-x-2">
-                      <Link 
-                        to={`/Book/${item.name}`} 
-                        className="px-4 py-2 bg-black text-white rounded"
-                        state={{ item, rentalStationID: selectedStation.id }}
-                      >
-                        Book now
-                      </Link>
-                      <Link 
-                        to={`/Reserve/${item.name}`} 
-                        className="px-4 py-2 bg-gray-200 text-black rounded"
-                        state={{ item, rentalStationID: selectedStation.id }}
-                      >
-                        Reserve
-                      </Link>
-                    </div>
+                    <h3 className="font-semibold mb-2">{item.make} {item.model} ({item.year})</h3>
+                    <p className="mb-2 text-sm text-gray-500">Available: {item.available ? "Yes" : "No"}</p>
+
+                    {item.available && (
+                      <div className="space-x-2">
+                        <Link 
+                          to={`/Book/${item.name}`} 
+                          className="px-4 py-2 bg-black text-white rounded"
+                          state={{ item, rentalStationID: selectedStation.id }}  // Pass vehicle details as state
+                        >
+                          Book now
+                        </Link>
+                        <Link 
+                          to={`/Reserve/${item.name}`} 
+                          className="px-4 py-2 bg-gray-200 text-black rounded"
+                          state={{ item, rentalStationID: selectedStation.id }}  // Pass vehicle details as state
+                        >
+                          Reserve
+                        </Link>
+                      </div>
+                    )}
                   </div>
                   <img src={item.image} alt={item.name} className="w-24 h-24 object-cover" />
                 </Card>

@@ -1,4 +1,3 @@
-// src/pages/VehiclesPage.jsx
 import React, { useState, useEffect } from "react";
 import TagsInput from "../../components/common/TagsInput";
 import SearchBar from "../../components/common/staffComponents/SearchBar";
@@ -8,9 +7,9 @@ import AddVehicleModal from "../../components/common/staffComponents/AddVehicleM
 import { useAppContext } from "../../contexts/AppContext";
 import { addVehicle, getAllVehicles, fetchRentalStations } from "../../api/functions";
 
-const VEHICLE_TAGS = ["bike", "scooter", "bus", "skateboard"];
+const VEHICLE_TAGS = ["bike", "scooter", "skateboard"];
 
-const VehiclesPage = ({ vehicles  }) => {
+const VehiclesPage = ({ vehicles }) => {
   const [selectedTags, setSelectedTags] = useState([]);
   const [localVehicles, setLocalVehicles] = useState(vehicles); // Local state for vehicles
   const [searchTerm, setSearchTerm] = useState("");
@@ -19,6 +18,7 @@ const VehiclesPage = ({ vehicles  }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isAddVehicleModalOpen, setIsAddVehicleModalOpen] = useState(false); // New state for add vehicle modal
   const [rentalStations, setRentalStations] = useState([]);
+  const [selectedStation, setSelectedStation] = useState(null); // New state for selected rental station
 
   const { setTitle, setTask } = useAppContext();
 
@@ -36,14 +36,18 @@ const VehiclesPage = ({ vehicles  }) => {
           vehicle.registration
             .toLowerCase()
             .includes(searchTerm.toLowerCase()) ||
-          vehicle.make.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          vehicle.model.toLowerCase().includes(searchTerm.toLowerCase());
-        return matchesTag && matchesSearch;
+          vehicle.make?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          vehicle.model?.toLowerCase().includes(searchTerm.toLowerCase());
+
+        const matchesStation =
+          !selectedStation || vehicle.rentalStationID === selectedStation.id;
+
+        return matchesTag && matchesSearch && matchesStation;
       });
     };
 
     setFilteredVehicles(filterVehicles());
-  }, [localVehicles, selectedTags, searchTerm]);
+  }, [localVehicles, selectedTags, searchTerm, selectedStation]);
 
   const handleTagClick = (tag) => {
     setSelectedTags((prevTags) =>
@@ -105,11 +109,17 @@ const VehiclesPage = ({ vehicles  }) => {
     return station ? station.name : "Unknown Station";
   };
 
+  const handleStationChange = (e) => {
+    const stationID = e.target.value;
+    const selected = rentalStations.find((station) => station.id === stationID);
+    setSelectedStation(selected || null);
+  };
+
   return (
     <div className="pt-20 p-8">
       <div className="bg-white p-6 rounded-lg shadow-lg mb-6">
         <div className="flex justify-between items-center mb-4">
-          <h1 className="text-2xl font-bold">Vehicles</h1>
+          <h1 className="text-2xl font-bold">Rental Vehicles</h1>
           <button
             onClick={openAddVehicleModal}
             className="px-4 py-2 text-white bg-black rounded hover:bg-gray-800"
@@ -120,11 +130,33 @@ const VehiclesPage = ({ vehicles  }) => {
 
         <div className="flex flex-col items-center">
           <SearchBar onSearch={handleSearch} />
+          
+          {/* Tags Input */}
           <TagsInput
             tags={VEHICLE_TAGS}
             selectedTags={selectedTags}
             onTagClick={handleTagClick}
           />
+
+          {/* Rental Station Dropdown */}
+          <div className="mt-4 w-full md:w-1/3">
+            <label htmlFor="stationFilter" className="block mb-2 text-sm font-medium">
+              Filter by Rental Station
+            </label>
+            <select
+              id="stationFilter"
+              className="w-full p-2 border border-gray-300 rounded"
+              onChange={handleStationChange}
+              value={selectedStation?.id || ""}
+            >
+              <option value="">All Stations</option>
+              {rentalStations.map((station) => (
+                <option key={station.id} value={station.id}>
+                  {station.name}
+                </option>
+              ))}
+            </select>
+          </div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
@@ -135,8 +167,7 @@ const VehiclesPage = ({ vehicles  }) => {
                 type={vehicle.type}
                 registration={vehicle.registration}
                 make={vehicle.make}
-                model ={vehicle.model}
-             
+                model={vehicle.model}
                 year={vehicle.year}
                 location={getStationName(vehicle.rentalStationID)}
                 onClick={() => openModal(vehicle)}

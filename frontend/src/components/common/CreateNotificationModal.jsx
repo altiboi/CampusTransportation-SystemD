@@ -4,19 +4,19 @@ import Modal from "./staffComponents/Modal";
 const CreateNotificationModal = ({ isOpen, onClose, onCreate ,currentUser}) => {
   const [Title, setTitle] = useState("");
   const [Body, setBody] = useState("");
-  const [Sender,setSender] = useState(currentUser);
+  const [Sender,setSender] = useState(currentUser.name + " " + currentUser.surname);
+  const [SenderID,setSenderID] = useState(currentUser.uid);
   
   const [Audience, setAudience] = useState("Everyone");
 
   const handleCreate = () => {
     const newNotification = {
-     
       Title,
       Body,
       isRead: false,
-  
       Audience,
       Sender,
+      SenderID,
       Date: new Date().toISOString(),
     };
     onCreate(newNotification);

@@ -7,21 +7,18 @@ const ReturnConfirmation = () => {
   const navigate = useNavigate();
   
   // Get the return details from the location state
-  const { returnDetails, fine } = location.state || {}; // Get fine from location state
+  const { returnDetails, fineDetails, vehicle } = location.state || {}; // Get fine from location state
   if (!returnDetails) {
     navigate('/'); // Redirect if no return details are found
     return null;
   }
 
-  const { vehicle, returnDateTime, condition } = returnDetails;
-  const reservedUntil = new Date(vehicle.reservedUntil);
-  const returnDate = new Date(returnDateTime);
+  const { returnedAt, dueReturnAt } = returnDetails;
+  const returnDate = new Date(returnedAt);
+  const returnDue = new Date(dueReturnAt);
 
   // Calculate if the vehicle was returned late
-  const isLate = returnDate > reservedUntil;
-  
-  // Use the fine passed from Returns component
-  const displayedFine = isLate ? fine : 0;
+  const isLate = fineDetails !== null && fineDetails?.amount > 0;
 
   const handleViewFines = () => {
     navigate('/UserFines');
@@ -48,22 +45,18 @@ const ReturnConfirmation = () => {
       <div className="mb-6 p-4 border rounded-lg shadow">
         <h2 className="text-lg font-semibold mb-4">Return Details</h2>
         <div className="flex mb-4">
-          <img src={vehicle.image} alt={vehicle.name} className="w-24 h-24 object-cover" />
+          {/* <img src={vehicle.model} alt={vehicle.make} className="w-24 h-24 object-cover" /> */}
           <div className="ml-4">
-            <h3 className="font-semibold">{vehicle.name}</h3>
-            <p>Model: {vehicle.model}</p>
-            <p>Registration: {vehicle.registration}</p>
-            <p>Year: {vehicle.year}</p>
-            <p>Reserved Until: {reservedUntil.toLocaleDateString()}</p>
-            <p>Return Date: {returnDate.toLocaleDateString()}</p>
-            <p>Condition: {condition}</p>
+            <h3 className="font-semibold">{vehicle.make} {vehicle.model}</h3>
+            <p>Return Due: {returnDue.toLocaleDateString()}</p>
+            <p>Returned At: {returnDate.toLocaleDateString()}</p>
           </div>
         </div>
 
         {isLate && (
           <div className="text-red-500 mt-4">
             <p>The vehicle was returned late.</p>
-            <p>Fine: R {displayedFine.toFixed(2)}</p>
+            <p>Fine: R {fineDetails.amount.toFixed(2)}</p>
             <button
               className="px-4 py-2 bg-red-500 text-white rounded mt-2"
               onClick={handleViewFines}

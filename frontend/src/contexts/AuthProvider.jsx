@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
-import { auth } from "../firebase/firebase";
+import { auth, db } from "../firebase/firebase";
 import { onAuthStateChanged } from "firebase/auth";
-
+import { doc, onSnapshot } from "firebase/firestore";
 import { getUserData } from "../firebase/auth";
 
 const AuthContext = React.createContext();
@@ -20,6 +20,13 @@ export function AuthProvider({ children }) {
     return unsubscribe;
   }, []);
 
+  async function refreshCurrentUser() {
+    if (currentUser && currentUser.uid) {
+      const userData = await getUserData(currentUser.uid);
+      setCurrentUser({ ...currentUser, ...userData });
+    }
+  }
+
   async function initializeUser(user) {
     if (user) {
       const userData = await getUserData(user.uid);
@@ -36,6 +43,7 @@ export function AuthProvider({ children }) {
     currentUser,
     userLoggedIn,
     loading,
+    refreshCurrentUser,
   };
 
   return (

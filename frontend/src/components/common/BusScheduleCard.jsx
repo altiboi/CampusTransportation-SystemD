@@ -29,7 +29,7 @@ const getTimeDifference = (startTime, endTime, frequency) => {
     return {
       minutes: NaN,
       seconds: NaN,
-      status: "Not in operation",
+      status: "Not yet in operation",
       color: "text-gray-500",
     };
   }
@@ -40,7 +40,7 @@ const getTimeDifference = (startTime, endTime, frequency) => {
     return {
       minutes: Math.floor(diff),
       seconds: Math.round((diff - Math.floor(diff)) * 60),
-      status: "Next bus arriving soon",
+      status: "First bus arriving soon",
       color: "text-yellow-500",
     };
   }
@@ -99,12 +99,20 @@ const BusScheduleCard = ({
               timeRemaining.status
             ) : (
               <>
-                Next bus in:{" "}
-                {`${timeRemaining.minutes
-                  .toString()
-                  .padStart(2, "0")}:${timeRemaining.seconds
-                  .toString()
-                  .padStart(2, "0")}`}
+                {timeRemaining.minutes < 1 ? (
+                  // If the next bus is less than 2 minutes away, show the special message
+                  "Next bus arriving soon"
+                ) : (
+                  // Otherwise, show the normal next bus time
+                  <>
+                    Next bus in:{" "}
+                    {`${timeRemaining.minutes
+                      .toString()
+                      .padStart(2, "0")}:${timeRemaining.seconds
+                      .toString()
+                      .padStart(2, "0")}`}
+                  </>
+                )}
               </>
             )}
           </p>

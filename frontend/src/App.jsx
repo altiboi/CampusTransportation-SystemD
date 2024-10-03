@@ -144,10 +144,10 @@ export function App() {
 
   const renderRoutes = () => {
     if (role === "staff") {
-      return <StaffRoutes vehicles={vehicles} notifs = {notifs} currentUser = {currentUser?.name} />;
+      return <StaffRoutes vehicles={vehicles} notifs = {notifs} currentUser = {currentUser} />;
       
     } else if (role === "user") {
-      return <UserRoutes />;
+      return <UserRoutes currentUser={currentUser}/>;
     } else {
       return <AppRoutes />;
     }
@@ -165,7 +165,7 @@ export function App() {
             handleMenuItemClick={handleMenuItemClick}
             role={role}
           />
-          <DesktopHeader />
+          <DesktopHeader currentUser={currentUser}/>
         </>
       )}
       <div className={`flex-1 flex flex-col ${userLoggedIn ? "ml-1/4" : ""}`}>

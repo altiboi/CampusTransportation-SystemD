@@ -9,14 +9,12 @@ import "./VehicleCard.css";
 
 const getVehicleImage = (type) => {
   switch (type) {
-    case "Bikes":
+    case "bike":
       return bike;
-    case "Scooters":
+    case "scooter":
       return scooter;
-    case "Skateboards":
+    case "skateboard":
       return skateBoard;
-    case "Buses":
-      return bus;
     default:
       return null;
   }
