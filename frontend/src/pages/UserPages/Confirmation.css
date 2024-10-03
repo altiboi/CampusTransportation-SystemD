@@ -1,10 +1,11 @@
 /* Tailwind CSS classes in JSX (used inline) */
 
 .confirmation-container {
-    @apply flex flex-col items-center justify-center min-h-screen bg-gray-100 p-6;
-    /* Move the entire structure down and to the left */
-    margin-top: 20px; /* Adjust as needed */
-    transform: translateX(-10%); /* Shift the container to the left */
+  @apply flex flex-col items-center bg-white p-6 rounded-lg shadow-md w-full max-w-3xl mx-auto transform translate-x-[-120px];
+  margin-top: 150px;
+  transform: translateX(-35%);
+  left:10%;
+  position: relative;
   }
   
   .confirmation-header h1 {

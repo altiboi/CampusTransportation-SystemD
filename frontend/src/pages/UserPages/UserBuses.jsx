@@ -1,15 +1,16 @@
 import React from 'react';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBus, faArrowLeft } from '@fortawesome/free-solid-svg-icons'; // Import the back icon
+import { faArrowLeft } from '@fortawesome/free-solid-svg-icons'; // Import the back icon
 import { useAppContext } from "../../contexts/AppContext";
 import { useEffect } from "react";
+import './UserBuses.css';
 
 function UserBuses() {
     const { setTitle, setTask } = useAppContext();
 
     useEffect(() => {
         setTitle("Bus Schedule");
-        setTask(1);
+        setTask(0);
     }, [setTitle, setTask]);
 
     const handleViewClick = () => {
@@ -36,37 +37,29 @@ function UserBuses() {
             <div className='relative w-full max-w-4xl px-4'>
                 {/* Back button */}
                 <button
-                    className='absolute top-5 left 6 p-2 text-gray-600 hover:text-gray-800'
+                    className='absolute top-5 left-6 p-2 text-gray-600 hover:text-gray-800'
                     onClick={handleBackClick}
                 >
                     <FontAwesomeIcon icon={faArrowLeft} className='text-xl' />
                 </button>
 
                 {/* Upper section with text */}
-                <section className='bus-upper-part text-center py-4'>
-                    <h2 className='text-2xl lg:text-4xl font-semibold'>Get the latest Bus Schedule!</h2>
-                </section>
-
-                {/* Middle section with bus icon */}
-                <section className='bus-middle-part flex justify-center items-center py-8'>
-                    <div className='bg-gray-200 p-4 rounded'>
-                        <FontAwesomeIcon 
-                            icon={faBus} 
-                            className='text-6xl lg:text-8xl text-gray-600' 
-                        />
-                    </div>
+                <section className='bus-upper-part text-center py-8 lg:py-12'> {/* Increased padding */}
+                    <h2 className='text-2xl lg:text-4xl font-semibold bounce-text'>
+                        Get the latest Bus Schedule!
+                    </h2>
                 </section>
 
                 {/* Lower section with buttons */}
-                <section className='bus-lower-part flex flex-col lg:flex-row justify-center items-center gap-4 py-4'>
+                <section className='bus-lower-part flex flex-col lg:flex-row justify-center items-center gap-8 py-18 lg:py-12'> {/* Increased padding */}
                     <button
-                        className='bus-button bg-gray-200 hover:bg-gray-300 text-black font-bold py-2 px-6 rounded'
+                        className='bus-button bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded shadow-lg transition duration-300 ease-in-out'
                         onClick={handleViewClick}
                     >
                         View
                     </button>
                     <button
-                        className='bus-button bg-gray-200 hover:bg-gray-300 text-black font-bold py-2 px-6 rounded'
+                        className='bus-button bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded shadow-lg transition duration-300 ease-in-out'
                         onClick={handleDownloadClick}
                     >
                         Download
@@ -78,3 +71,4 @@ function UserBuses() {
 }
 
 export default UserBuses;
+

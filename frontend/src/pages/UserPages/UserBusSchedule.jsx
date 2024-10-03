@@ -24,7 +24,7 @@ function UserBusSchedule() {
 
   useEffect(() => {
     setTitle("Update Bus Schedule");
-    setTask(1);
+    setTask(0);
 
     const fetchSchedules = async () => {
       try {

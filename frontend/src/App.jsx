@@ -55,7 +55,6 @@ export function App() {
     const fetchNotifs = async () => {
       try {
         const notifData = await getNotifications();
-        console.log(notifData)
         setNotifs(notifData);
       } catch (error) {
         console.error("Error fetching notifications:", error.message);
@@ -78,9 +77,22 @@ export function App() {
       case "/staffanalytics":
         setActiveMenuItem("Analytics");
         break;
+        case "/confirmation":
+        setActiveMenuItem("Services");
+        break;
       case "/userRental":
         setActiveMenuItem("home");
         break;
+        case "/Reserve/undefined":
+        setActiveMenuItem("Services");
+        break;
+        case "/finalDetails":
+          setActiveMenuItem("Services");
+          break;
+          
+        case "/Book/undefined":
+          setActiveMenuItem("Services");
+          break;
       case "/stafftasks":
         setActiveMenuItem("Tasks");
         break;
@@ -94,10 +106,6 @@ export function App() {
         setActiveMenuItem("Home");
         break;
 
-      case "/UserFines":
-        setActiveMenuItem("Services");
-        break;
-
       case "/userService":
         setActiveMenuItem("Services");
         break;
@@ -105,11 +113,24 @@ export function App() {
       case "/userActivity":
         setActiveMenuItem("Activity");
         break;
+        case "/UserBuses":
+        setActiveMenuItem("Services");
+        break;
+        case "/UserBusSchedule":
+        setActiveMenuItem("Services");
+        break;
+
       case "/scheduledetails/:id":
         setActiveMenuItem("Update Bus Schedule");
         break;
       case "/vehicles":
         setActiveMenuItem("Vehicles");
+        break;
+        case "/Returns":
+        setActiveMenuItem("Services");
+        case "/ReturnConfirmation":
+        setActiveMenuItem("Vehicles");
+        break;
         break;
       default:
         setActiveMenuItem(""); // Clear active menu item if path doesn't match
@@ -123,10 +144,10 @@ export function App() {
 
   const renderRoutes = () => {
     if (role === "staff") {
-      return <StaffRoutes vehicles={vehicles} notifs = {notifs} currentUser = {currentUser?.name} />;
+      return <StaffRoutes vehicles={vehicles} notifs = {notifs} currentUser = {currentUser} />;
       
     } else if (role === "user") {
-      return <UserRoutes />;
+      return <UserRoutes currentUser={currentUser}/>;
     } else {
       return <AppRoutes />;
     }
@@ -144,7 +165,7 @@ export function App() {
             handleMenuItemClick={handleMenuItemClick}
             role={role}
           />
-          <DesktopHeader />
+          <DesktopHeader currentUser={currentUser}/>
         </>
       )}
       <div className={`flex-1 flex flex-col ${userLoggedIn ? "ml-1/4" : ""}`}>

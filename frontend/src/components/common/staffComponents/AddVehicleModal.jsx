@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import Modal from "./Modal";
 import { fetchRentalStations } from "../../../api/functions";
 
-const VEHICLE_TYPES = ["Bike", "Scooter", "Bus", "Skateboard"];
+const VEHICLE_TYPES = ["Bike", "Scooter", "Skateboard"];
 
 const AddVehicleModal = ({ isOpen, onClose, onAdd, rentalStations }) => {
   const [type, setType] = useState(null);

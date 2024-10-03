@@ -5,18 +5,17 @@ import { useAppContext } from "../../contexts/AppContext";
 import { getUserRentals } from '../../api/functions'; // Import the function to fetch user rentals
 import { useAuth } from '../../contexts/AuthProvider';
 
-function UserActivity() {
+function UserActivity({ currentUser }) {
   const { setTitle, setTask } = useAppContext();
   const [activeTab, setActiveTab] = useState('upcoming'); // 'upcoming', 'history', or 'current'
   const [upcomingRentals, setUpcomingRentals] = useState([]);
   const [currentRentals, setCurrentRentals] = useState([]);
   const [historicalRentals, setHistoricalRentals] = useState([]);
   const [loading, setLoading] = useState(true);
-  const { currentUser } = useAuth();
 
   useEffect(() => {
     setTitle("Activity");
-    setTask(1);
+    setTask(0);
   }, [setTitle, setTask]);
 
   useEffect(() => {
@@ -24,6 +23,8 @@ function UserActivity() {
       try {
         const rentals = await getUserRentals(currentUser?.uid);
         const now = new Date();
+
+        console.log(rentals)
 
         // Filter rentals into upcoming, current, and history
         const upcoming = rentals.filter(rental => new Date(rental.rentedAt) > now);

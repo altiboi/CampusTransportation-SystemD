@@ -2,12 +2,28 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBell, faBars } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
 import { useAppContext } from "../../contexts/AppContext";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useAuth } from "../../contexts/AuthProvider";
 
-const DesktopHeader = () => {
+const DesktopHeader = ({ currentUser }) => {
   const { title } = useAppContext();
-  const navigate = useNavigate();
-  const [notificationCount, setNotificationCount] = useState(5); // Example count, adjust or connect to your notifications logic
+  const navigate = useNavigate(); 
+  const [notificationCount, setNotificationCount] = useState(0); // Example count, adjust or connect to your notifications logic
+
+  useEffect(() => {
+    if (currentUser && currentUser.userNotifications) {
+      const unreadCount = countUnreadNotifications(currentUser.userNotifications);
+      setNotificationCount(unreadCount);
+      console.log("notification count updated  to " + unreadCount);
+    }
+  }, [currentUser]);
+
+  // Function to count unread notifications
+  const countUnreadNotifications = (notifications) => {
+    return notifications.reduce((count, notification) => {
+      return !notification.isRead ? count + 1 : count;
+    }, 0);
+  };
 
   const handleBackClick = () => {
     navigate("/notifications");

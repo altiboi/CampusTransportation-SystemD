@@ -25,8 +25,9 @@ import UserMap from "../pages/UserPages/UserMap";
 import Returns from "../pages/UserPages/Returns";
 import ReturnConfirmation from "../pages/UserPages/ReturnConfirmation";
 import ScheduleDetailsPage from "../pages/staffPages/ScheduleDetailsPage";
+import UserFrom from "../pages/UserPages/UserFrom";
 
-function UserRoutes() {
+function UserRoutes({ currentUser }) {
   const { userLoggedIn } = useAuth();
 
   return (
@@ -55,7 +56,7 @@ function UserRoutes() {
       />
       <Route
         path="/Returns"
-        element={<ProtectedRoute element={<Returns />} />}
+        element={<ProtectedRoute element={<Returns currentUser={currentUser}/>} />}
       />
          <Route
         path="/ReturnConfirmation"
@@ -71,7 +72,7 @@ function UserRoutes() {
       />
       <Route
         path="/confirmation"
-        element={<ProtectedRoute element={<Confirmation />} />}
+        element={<ProtectedRoute element={<Confirmation currentUser={currentUser}/>} />}
       />
       <Route
         path="/finalDetails"
@@ -79,11 +80,11 @@ function UserRoutes() {
       />
       <Route
         path="/userActivity"
-        element={<ProtectedRoute element={<UserActivity />} />}
+        element={<ProtectedRoute element={<UserActivity currentUser={currentUser}/>} />}
       />
       <Route
         path="/userFines"
-        element={<ProtectedRoute element={<UserFines />} />}
+        element={<ProtectedRoute element={<UserFines currentUser={currentUser}/>} />}
       />
       <Route
         path="/userPayments"
@@ -95,7 +96,7 @@ function UserRoutes() {
       />
       <Route
         path="/notifications"
-        element={<ProtectedRoute element={<NotificationsPage/>} />}
+        element={<ProtectedRoute element={<NotificationsPage currentUser={currentUser}/>} />}
       />
       <Route
         path="/UserWhereTo"
@@ -112,6 +113,10 @@ function UserRoutes() {
       <Route
         path="/UserMap"
         element={<ProtectedRoute element={<UserMap/>} />}
+      />
+      <Route
+        path="/From"
+        element={<ProtectedRoute element={<UserFrom/>} />}
       />
       {/* Optional: Catch-all route for undefined paths */}
       <Route path="*" element={<NotFoundPage />} />

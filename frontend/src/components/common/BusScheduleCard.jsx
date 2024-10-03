@@ -20,22 +20,38 @@ const getTimeDifference = (startTime, endTime, frequency) => {
     end.setDate(end.getDate() + 1);
   }
 
-  // If current time is before start time, use start time
+  // Calculate the time 15 minutes before start time
+  const fifteenMinutesBeforeStart = new Date(start);
+  fifteenMinutesBeforeStart.setMinutes(start.getMinutes() - 15);
+
+  // If current time is before start time and not within 15 minutes before start time
+  if (now < fifteenMinutesBeforeStart) {
+    return {
+      minutes: NaN,
+      seconds: NaN,
+      status: "Not yet in operation",
+      color: "text-gray-500",
+    };
+  }
+
+  // If current time is before start time but within 15 minutes
   if (now < start) {
     const diff = (start - now) / (1000 * 60);
     return {
       minutes: Math.floor(diff),
       seconds: Math.round((diff - Math.floor(diff)) * 60),
+      status: "First bus arriving soon",
+      color: "text-yellow-500",
     };
   }
 
-  // If current time is after end time, calculate time until next day's start
+  // If current time is after end time, route is not in operation
   if (now > end) {
-    start.setDate(start.getDate() + 1);
-    const diff = (start - now) / (1000 * 60);
     return {
-      minutes: Math.floor(diff),
-      seconds: Math.round((diff - Math.floor(diff)) * 60),
+      minutes: NaN,
+      seconds: NaN,
+      status: "Route not in operation",
+      color: "text-red-500",
     };
   }
 
@@ -47,6 +63,8 @@ const getTimeDifference = (startTime, endTime, frequency) => {
   return {
     minutes: Math.floor(nextBusIn),
     seconds: Math.round((nextBusIn - Math.floor(nextBusIn)) * 60),
+    status: "In operation",
+    color: "text-green-500",
   };
 };
 
@@ -65,7 +83,8 @@ const BusScheduleCard = ({
   useEffect(() => {
     const intervalId = setInterval(() => {
       setTimeRemaining(getTimeDifference(startTime, endTime, frequency));
-    }, 60000); // Update every minute
+    }, 1000); // Update every second to keep the timer accurate
+
     return () => clearInterval(intervalId); // Clear interval on component unmount
   }, [startTime, endTime, frequency]);
 
@@ -75,20 +94,31 @@ const BusScheduleCard = ({
         <FontAwesomeIcon icon={faBus} className="text-black" />
         <div className="flex flex-col">
           <h3 className="text-lg font-semibold">{stopName}</h3>
-          <p>
-            Next bus in:{" "}
-            {isNaN(timeRemaining.minutes) || isNaN(timeRemaining.seconds)
-              ? "Calculating..."
-              : `${timeRemaining.minutes
-                  .toString()
-                  .padStart(2, "0")}:${timeRemaining.seconds
-                  .toString()
-                  .padStart(2, "0")}`}
+          <p className={`text-lg ${timeRemaining.color}`}>
+            {isNaN(timeRemaining.minutes) || isNaN(timeRemaining.seconds) ? (
+              timeRemaining.status
+            ) : (
+              <>
+                {timeRemaining.minutes < 1 ? (
+                  // If the next bus is less than 2 minutes away, show the special message
+                  "Next bus arriving soon"
+                ) : (
+                  // Otherwise, show the normal next bus time
+                  <>
+                    Next bus in:{" "}
+                    {`${timeRemaining.minutes
+                      .toString()
+                      .padStart(2, "0")}:${timeRemaining.seconds
+                      .toString()
+                      .padStart(2, "0")}`}
+                  </>
+                )}
+              </>
+            )}
           </p>
           <p>
             Operating hours: {startTime} - {endTime}
           </p>
-          <p>Direction: {direction}</p>
         </div>
       </div>
     </div>

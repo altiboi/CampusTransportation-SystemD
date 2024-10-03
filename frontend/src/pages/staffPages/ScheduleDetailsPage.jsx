@@ -45,6 +45,25 @@ const ScheduleDetailsPage = () => {
     setNewTrip({ destination: "", time: "" });
   };
 
+  const isInOperation = (startTime, endTime, now) => {
+    const [startHour, startMinute] = startTime.split(":").map(Number);
+    const [endHour, endMinute] = endTime.split(":").map(Number);
+  
+    // Create Date objects for start and end times
+    const start = new Date(now);
+    start.setHours(startHour, startMinute, 0, 0);
+  
+    const end = new Date(now);
+    end.setHours(endHour, endMinute, 0, 0);
+  
+    // Adjust end time if it crosses midnight
+    if (end < start) {
+      end.setDate(end.getDate() + 1);
+    }
+  
+    return now >= start && now <= end;
+  };
+  
   return (
     <div className="pt-20 p-8">
       {/* Back Button for Large Screens */}
@@ -96,18 +115,33 @@ const ScheduleDetailsPage = () => {
           <p>No routes available for {selectedDay}.</p>
         ) : (
           <div className="space-y-4">
-            {route.routes.map((route, routeIndex) =>
-              route.schedule.map((sched, schedIndex) => (
-                <BusScheduleCard
-                  key={`${routeIndex}-${schedIndex}`}
-                  stopName={route.stops.join(" -> ")} // Title based on stops
-                  startTime={sched.start_time}
-                  endTime={sched.end_time}
-                  frequency={sched.frequency}
-                />
-              ))
-            )}
-          </div>
+      {/* Flatten schedules from all routes into a single array, adding route information */}
+      {route.routes
+        .flatMap((route, routeIndex) =>
+          route.schedule.map((sched) => ({
+            ...sched,
+            routeIndex,
+            stops: route.stops,
+          }))
+        )
+        // Sort the flattened schedules by whether they are currently in operation
+        .sort((a, b) => {
+          const now = new Date();
+          const isAInOperation = isInOperation(a.start_time, a.end_time, now);
+          const isBInOperation = isInOperation(b.start_time, b.end_time, now);
+          return isBInOperation - isAInOperation; // Sort in operation first
+        })
+        // Render the sorted schedules
+        .map((sched, index) => (
+          <BusScheduleCard
+            key={`${sched.routeIndex}-${index}`}
+            stopName={sched.stops.join(" -> ")} // Title based on stops
+            startTime={sched.start_time}
+            endTime={sched.end_time}
+            frequency={sched.frequency}
+          />
+        ))}
+    </div>
         )}
       </div>
 

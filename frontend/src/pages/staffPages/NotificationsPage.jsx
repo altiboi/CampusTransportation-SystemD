@@ -4,45 +4,57 @@ import NotificationCard from "../../components/common/NotificationCard";
 import Modal from "../../components/common/staffComponents/Modal";
 import CreateNotificationModal from "../../components/common/CreateNotificationModal";
 import { useAppContext } from "../../contexts/AppContext";
-import { createNotification, getNotifications } from "../../api/functions"; // Update the path
+import { createNotification, fetchUserNotifications } from "../../api/functions"; // Update the path
+import { setNotificationAsRead } from "../../api/functions"; // Import your function to mark notifications as read
+import { useAuth } from "../../contexts/AuthProvider";
 
-
-const NotificationsPage = ({ notifs , currentUser}) => {  
-  const [notifications, setNotifications] = useState(notifs);
+const NotificationsPage = ({ currentUser }) => {  
+  const [notifications, setNotifications] = useState([]);
   const [selectedNotification, setSelectedNotification] = useState(null);
   const [isNotificationModalOpen, setIsNotificationModalOpen] = useState(false);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [showUserNotifications, setShowUserNotifications] = useState(false);
 
   const { setTitle, setTask } = useAppContext();
+  const { refreshCurrentUser } = useAuth();
 
   const refreshNotifications = async () => {
     try {
-      const updatedNotifications = await getNotifications(); 
+      //console.log(currentUser)
+      const updatedNotifications = await fetchUserNotifications(currentUser.uid);
       setNotifications(updatedNotifications); 
     } catch (error) {
       console.error("Failed to fetch notifications:", error);
     }
   };
 
-
   useEffect(() => {
     setTitle("Notifications");
     setTask(1);
+    refreshNotifications();
   }, [setTitle, setTask]);
+
+  const formatDate = (dateString) => {
+    const options = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit', hour12: true };
+    const date = new Date(dateString);
+    return date.toLocaleDateString(undefined, options);
+  };
 
   const openNotificationModal = (notification) => {
     setSelectedNotification(notification);
     setIsNotificationModalOpen(true);
   };
 
-  const closeNotificationModal = () => {
-    // Mark the notification as read when closing the modal
-    setNotifications((prevNotifications) =>
-      prevNotifications.map((n) =>
-        n.id === selectedNotification.id ? { ...n, isRead: true } : n
-      )
-    );
+  const closeNotificationModal = async () => {
+    if (!selectedNotification.isRead) {
+      await setNotificationAsRead(currentUser.uid, selectedNotification.id); // Mark notification as read
+      setNotifications((prevNotifications) =>
+        prevNotifications.map((n) =>
+          n.id === selectedNotification.id ? { ...n, isRead: true } : n
+        )
+      );
+      await refreshCurrentUser();
+    }
     setIsNotificationModalOpen(false);
     setSelectedNotification(null);
   };
@@ -57,17 +69,14 @@ const NotificationsPage = ({ notifs , currentUser}) => {
 
   const handleCreateNotification = async (newNotification) => {
     try {
-      createNotification(newNotification);
-      
+      console.log(newNotification)
+      await createNotification(newNotification);
       closeCreateNotificationModal();
       await refreshNotifications();
-
+      await refreshCurrentUser();
     } catch (error) {
-      setError("Failed to create notification."); // Set error state
       console.error("Error creating notification:", error.message);
-    } 
-
-
+    }
   };
 
   const handleDeleteNotification = (id) => {
@@ -91,14 +100,14 @@ const NotificationsPage = ({ notifs , currentUser}) => {
             Create Notification
           </button>
 
-          <button
+          {/* <button
             className="bg-gray-200 px-4 py-2 rounded hover:bg-gray-300"
             onClick={() => setShowUserNotifications(!showUserNotifications)}
           >
             {showUserNotifications
               ? "Show All Notifications"
               : "Show My Notifications"}
-          </button>
+          </button> */}
         </div>
 
         <div className="grid grid-cols-1 gap-4">
@@ -108,15 +117,17 @@ const NotificationsPage = ({ notifs , currentUser}) => {
                 key={notification.id}
                 notification={{
                   ...notification,
-                  // Truncate the body for display in the list
                   body:
                     notification.Body.length > 75
                       ? `${notification.Body.substring(0, 75)}...`
                       : notification.Body,
+                  style: {
+                    fontWeight: notification.isRead ? "normal" : "bold",
+                  }
                 }}
                 onClick={() => openNotificationModal(notification)}
                 onDelete={
-                  notification.Sender == currentUser.Name
+                  notification.Sender === currentUser.Name
                     ? () => handleDeleteNotification(notification.id)
                     : null
                 }
@@ -146,7 +157,7 @@ const NotificationsPage = ({ notifs , currentUser}) => {
           <div className="mb-4">
             <h3 className="text-lg font-semibold">Date:</h3>
             <p className="text-sm text-gray-500">
-              {selectedNotification.Date}
+              {formatDate(selectedNotification.Date)}
             </p>
           </div>
 
@@ -184,7 +195,7 @@ const NotificationsPage = ({ notifs , currentUser}) => {
           isOpen={isCreateModalOpen}
           onClose={closeCreateNotificationModal}
           onCreate={handleCreateNotification}
-          currentUser = {currentUser}
+          currentUser={currentUser}
         />
       )}
     </div>

@@ -34,7 +34,7 @@ function StaffRoutes({ vehicles , notifs ,currentUser}) {
       <Route path="/register" element={<Register />} />
       <Route
         path="/home"
-        element={<ProtectedRoute element={<StaffHomePage />} />}
+        element={<ProtectedRoute element={<StaffHomePage currentUser={currentUser} vehicles={vehicles}/>} />}
       />
       <Route
         path="/notifications"
@@ -42,7 +42,7 @@ function StaffRoutes({ vehicles , notifs ,currentUser}) {
       />
       <Route
         path="/staffanalytics"
-        element={<ProtectedRoute element={<StaffAnalyticsPage />} />}
+        element={<ProtectedRoute element={<StaffAnalyticsPage vehicles={vehicles}/>} />}
       />
       <Route
         path="/scheduledetails/:id"

@@ -3,8 +3,12 @@
 /* Custom styles */
 .rental-details-container {
   @apply flex flex-col items-center bg-white p-6 rounded-lg shadow-md w-full max-w-3xl mx-auto transform translate-x-[-120px];
-  margin-top: 90px;
+  margin-top: 150px;
+  transform: translateX(-35%);
+  left: 10%;
+  position: relative;
 }
+
 
 .rental-header {
   @apply w-full flex items-center justify-between mb-8;

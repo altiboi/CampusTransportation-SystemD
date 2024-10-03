@@ -4,11 +4,11 @@ import './Confirmation.css';
 import { useAuth } from '../../contexts/AuthProvider';
 import { addNewRentalAndUpdateVehicle } from '../../api/functions';
 
-const Confirmation = () => {
+const Confirmation = ({ currentUser }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const { itemName, action, item } = location.state || {};
-  const { currentUser, loading } = useAuth();
+  const { loading, refreshCurrentUser } = useAuth();
 
   const handleConfirm = async () => {
     if (!currentUser) {
@@ -20,7 +20,7 @@ const Confirmation = () => {
       console.log(currentUser);
       // Add rental to the database when confirmed
       await addNewRentalAndUpdateVehicle(item.rentalStationID, item.type, currentUser.uid, item.id, 2);
-
+      await refreshCurrentUser();
       // Navigate to the final details page after rental is added
       navigate('/finalDetails', { state: { itemName, action } });
     } catch (error) {
@@ -45,7 +45,7 @@ const Confirmation = () => {
         >
           &larr; Back
         </button>
-        <h1>Your {itemName} has been {action}ed...</h1>
+        <h1>Your {itemName} has been {action == 'book' ? 'booked' : action == 'reserve' ? 'reserved' : ''}...</h1>
       </header>
       <img 
         src={`/images/${itemName.toLowerCase().replace(/\s/g, '')}.jpeg`} 

@@ -1,0 +1,48 @@
+/* Ensure the main container covers the whole screen */
+.bus-main-container {
+  background-image: url('/b.png'); /* Replace with actual image path */
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed; /* Ensures it sticks to the background */
+  min-height: 100vh; /* Makes sure the container covers the whole viewport height */
+  width: 100%;
+}
+
+/* Optional: Make the text sections stand out */
+.bus-upper-part h2 {
+  color: white;
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5); /* Make text more visible */
+}
+
+/* Adjust buttons if necessary */
+.bus-button {
+  background-color: rgba(255, 255, 255, 0.8); /* Add transparency for a clean look */
+  padding: 10px 20px;
+  font-size: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.bus-button:hover {
+  background-color: rgba(255, 255, 255, 1); /* Fully opaque on hover */
+}
+
+/* Keyframes for the bounce effect */
+@keyframes bounceIn {
+  0%, 20%, 50%, 80%, 100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-30px);
+  }
+  60% {
+    transform: translateY(-15px);
+  }
+}
+
+.bounce-text {
+  animation: bounceIn 2s infinite; /* Adds bounce effect */
+  color: white; /* Ensures the text is visible on the background */
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5); /* Improves text visibility */
+}
