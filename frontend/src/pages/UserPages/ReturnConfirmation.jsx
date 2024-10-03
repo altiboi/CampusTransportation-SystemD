@@ -24,14 +24,12 @@ const ReturnConfirmation = () => {
     navigate('/UserFines');
   };
 
-  //console.log(returnDetails);
-
-  // Redirect to the home page if the vehicle was returned on time after 2 second
+  // Redirect to the home page if the vehicle was returned on time after 1 second
   useEffect(() => {
     if (!isLate) {
       const timeoutId = setTimeout(() => {
         navigate('/');
-      }, 2000); // 2 second delay
+      }, 1000); // 1 second delay
 
       // Clean up the timeout if the component unmounts before the timeout completes
       return () => clearTimeout(timeoutId);

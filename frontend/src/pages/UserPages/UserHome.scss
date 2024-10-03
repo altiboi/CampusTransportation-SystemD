@@ -1,0 +1,240 @@
+// UserHome.scss
+
+$background-color: #f3f4f6;
+$card-background: #ffffff;
+$card-title-color: #1f2937;
+$icon-color: #2563eb;
+$hover-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+
+.Home-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;
+  box-sizing: border-box;
+  padding-top: 50px;
+  background-color: $background-color; /* Softer background */
+  padding-bottom: 20px; /* Extra padding at the bottom */
+
+  .upper-part {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 25%;
+    box-sizing: border-box;
+    padding-right: 0.5rem;
+    gap: 1rem;
+    .upper-cards{
+      width: 50%;
+      height: 70%;
+      .Links{
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 1rem;
+      
+        .card {
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          justify-content: center;
+          border:none;
+          width: 95%;
+          background-color: white;
+          box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
+
+  
+          @media (max-width: 768px) {
+            section.card-content {
+              display: none; 
+            }
+          }
+          &:hover{
+            box-shadow: rgba(6, 24, 44, 0.4) 0px 0px 0px 2px, 
+            rgba(6, 24, 44, 0.65) 0px 4px 6px -1px,
+             rgba(255, 255, 255, 0.08) 0px 1px 0px inset;
+          }
+          .card-icon {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+
+            .icon {
+              width: 80px; // set fixed size for icons
+              height: 80px;
+              object-fit: cover;
+              color: $icon-color;
+            }
+          }
+          .card-content{
+            flex: 2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            span{
+              font-size:2rem;
+              font-weight: 900;
+              color: black;
+            }
+          }
+          &:hover{
+            scale: 1.005;
+        }
+        }
+        @media (max-width: 768px) {
+          .card {
+            height: 80%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            .card-icon{
+              width: 100%;
+              height: 100%;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              .icon{
+                font-size:5rem;
+              }
+            }
+          }
+        }
+
+        }
+
+
+    }
+  
+  }
+  .middle-apart {
+    width: 100%;
+    height: 20%;
+    display: flex;
+    align-items:center ;
+    justify-content: center;
+    padding: 0.5rem 0.5rem;
+    
+    box-sizing: border-box;
+    
+    .link{
+      width: 100%;
+      height: 100%;
+
+      
+      .middle-card {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        .card-icon {
+          flex: 1;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+  
+         
+          .icon{
+            width: 10rem;
+            height: 5rem;
+            object-fit: cover;
+            border-radius: 15px;
+            color: $icon-color;
+            background-color: #2563eb;
+          }
+        }
+
+        &:hover{
+          box-shadow: rgba(6, 24, 44, 0.4) 0px 0px 0px 2px, 
+          rgba(6, 24, 44, 0.65) 0px 4px 6px -1px,
+           rgba(255, 255, 255, 0.08) 0px 1px 0px inset;
+        }
+        .card-description{
+          flex:2;
+          font-weight: 900;
+          color: black;
+        
+          p{
+            font-size: 2rem;
+          }
+        }
+      }
+    }
+
+  }
+  .lower-part {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin-bottom: 16px;
+    background-color: $card-background;
+    align-items: center;
+    
+    .lower-Title {
+      height: 10%;
+      width: 100%;
+      
+      // Default h2 styles
+      h2.title {
+        font-size: 1.6rem;
+        font-weight: bold;
+        margin: 0;
+        color: $card-title-color;
+        text-transform: capitalize;
+      }
+    }
+    
+    // Responsive design - hide h2 on small screens
+
+  
+    .lower-card {
+      display: flex;
+      width: 100%;
+      height: 90%;
+      justify-content: center;
+      align-items: center;
+      
+      .link {
+        width: 33.33%;
+        height: 70%;
+        padding: 0.5rem 0.5rem;
+        gap: 0.5rem;
+
+        
+        .lower-card {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          border-radius: 12px;
+          cursor: pointer;
+          border: 2px solid silver;
+          @media (max-width: 768px) {
+              h2.card-title {
+                display: none; 
+              }
+          }
+          .icon {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+            color: $icon-color;
+          }
+          .card-title{
+            font-size: 2rem;
+          }
+        }
+      }
+    }
+  }
+  
+}
+
+
+

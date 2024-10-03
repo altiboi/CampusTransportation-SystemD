@@ -5,9 +5,17 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTruck, faLocationDot, faRoute, faBicycle, faClipboardList, faCalendarCheck, faTicket, faRotateLeft } from '@fortawesome/free-solid-svg-icons';
 import { faMapMarkerAlt } from '@fortawesome/free-solid-svg-icons'; 
 
-import './UserService.css'; 
+import './UserService.scss'; 
 import { useAppContext } from "../../contexts/AppContext";
 import { useEffect } from "react";
+import Trip from '../../assets/Trip.png';
+import rental from '../../assets/rental.png'
+import car from '../../assets/car.webp';
+import schedule from '../../assets/schedule.webp';
+import Reserve from '../../assets/reserve.avif';
+import fine from '../../assets/fine.avif';
+import returns from '../../assets/return.webp'
+import map from '../../assets/map.webp';
 
 
 function UserService() {
@@ -20,31 +28,34 @@ function UserService() {
   return (
     <main className='user-service-container'>
       <section className='header-section'>
-
-        <section className="header-title title-main w-full pl-2 pt-2 ">
+        <section className="title-main w-full pl-2 pt-2 ">
             Go Anywhere!
         </section>
         <section className='card-group'>
           <section className='card-item'>
-            <Card className="card card-highlight">
-              <section className='card-content'>
-                <span className='card-heading'>Trip</span>
-              </section>
-              <section className='card-icon'>
-                <FontAwesomeIcon icon={faRoute} className='icon-large' />
-              </section>
-            </Card>
+            <Link to="/userFind " className='link'>
+              <Card className="card  border-none">
+                  <section className='card-icon'>
+                    <img src={Trip} alt="" className='icon-large' />
+                  </section>
+                  <section className='card-content'>
+                    <span className='card-heading'>Trip</span>
+                  </section>
+              </Card>
+            </Link>
           </section>
        
           <section className="card-item">
-            <Card className="card card-highlight">
-              <section className='card-content'>
-                <span className='card-heading'>Nearby Rental Stations</span>
-              </section>
-              <section className='card-icon'>
-                <FontAwesomeIcon icon={faMapMarkerAlt} className='icon-large' />
-              </section>
-            </Card>
+            <Link to={"/UserMap"} className='link'>
+              <Card className="card  border-none">
+                <section className='card-icon'>
+                  <img src={rental} alt="" className='icon-large' />
+                </section>
+                <section className='card-content'>
+                  <span className='card-heading'>Rental Stations</span>
+                </section>
+              </Card>
+            </Link>
           </section>
         </section>
       </section>
@@ -54,50 +65,67 @@ function UserService() {
           <h2 className='title-main pl-2'>Get anything done with a click!</h2>
         </section>
         <section className='actions-group'>
-          <Card className="action-card">
-            <h2 className="card-heading">Rent</h2>
-            <section className='card-icon'>
-              <FontAwesomeIcon icon={faBicycle} className='icon-medium' />
-            </section>
-          </Card>
-          <Card className="action-card">
-            <h2 className="card-heading">Bus Schedule</h2>
-            <section className='card-icon'>
-              <FontAwesomeIcon icon={faClipboardList} className='icon-medium' />
-           
-            </section>
-          </Card>
-          <Card className="action-card">
-            <h2 className="card-heading">Reserve</h2>
-            <section className='card-icon'>
-              <FontAwesomeIcon icon={faCalendarCheck} className='icon-medium' />
-            </section>
-          </Card>
+            <Card className="action-card">
+              <Link to={""} className='Link'>
+                <section className='headings'>
+                  <h2 className="card-heading">Rent</h2>
+                </section>
+                <section className='card-icon'>
+                <img src={car} alt="" className='icon-large' />
+                </section>
+                </Link>
+            </Card>
+            <Card className="action-card">
+              <Link to={"/UserBuses"} className='Link'>
+                <section className='headings'>
+                    <h2 className="card-heading">Bus Schedule</h2>
+                </section>
+                <section className='card-icon'>
+                <img src={schedule} alt="" className='icon-large' />
+                </section>
+              </Link>
+            </Card>
+            <Card className="action-card">
+              <Link to={""} className='Link'>
+                <section className='headings'>
+                    <h2 className="card-heading">Reserve</h2>
+                </section>
+                <section className='card-icon'>
+                <img src={Reserve} alt="" className='icon-large' />
+                </section>
+              </Link>
+            </Card>
 
-          <Card className="action-card">
-            <Link to={'/UserFines'}  className="w-full h-full">
-              <h2 className="card-heading">Fines</h2>
-              <section className='card-icon'>
-                <FontAwesomeIcon icon={faTicket} className='icon-medium' />
+            <Card className="action-card">
+              <Link to={'/UserFines'}  className="Link w-full h-full">
+                <section className='headings'>
+                  <h2 className="card-heading">Fines</h2>
+                </section>
+                <section className='card-icon'>
+                <img src={fine} alt="" className='icon-large' />
+                </section>
+              </Link>
+            </Card>
+            <Card className="action-card">
+            <Link to={'/Returns'}  className="Link w-full h-full">
+              <section className='headings'>
+                <h2 className="card-heading">Returns</h2>
               </section>
-            </Link>
-          </Card>
-          <Card className="action-card">
-          <Link to={'/Returns'}  className="w-full h-full">
-            <h2 className="card-heading">Returns</h2>
-            <section className='card-icon'>
-              <FontAwesomeIcon icon={faRotateLeft} className='icon-medium' />
-            </section>
-            </Link>
-          </Card>
-          <Card className="action-card">
-            <section className='card-content'>
-              <span className='card-heading'>Campus Map</span>
-            </section>
-            <section className='card-icon'>
-              <FontAwesomeIcon icon={faLocationDot} className='icon-medium' />
-            </section>
-          </Card>
+              <section className='card-icon'>
+              <img src={returns} alt="" className='icon-large' />
+              </section>
+              </Link>
+            </Card>
+            <Card className="action-card">
+            <Link to={"/UserMap"} className="Link">
+              <section className='headings'>
+                <span className='card-heading'>Campus Map</span>
+              </section>
+              <section className='card-icon'>
+              <img src={map} alt="" className='icon-large' />
+              </section>
+              </Link>
+            </Card>
         </section>
       </section>
     </main>

@@ -2,8 +2,11 @@
 
 /* Move the container slightly to the left initially */
 .final-details-container {
-    @apply flex flex-col items-center justify-center min-h-screen bg-gray-100 text-center p-6;
-    transform: translateX(-10%); /* Initial left shift */
+    @apply flex flex-col items-center bg-white p-6 rounded-lg shadow-md w-full max-w-3xl mx-auto transform translate-x-[-120px];
+  margin-top: 150px;
+  transform: translateX(-20%);
+  left:1%;
+  position: relative;
     animation: fadeIn 1s ease-in-out forwards; /* Apply the fade-in animation */
 }
 

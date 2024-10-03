@@ -11,7 +11,7 @@ function Book() {
   const { item } = location.state || {};
 
   useEffect(() => {
-    setTitle("Services");
+    setTitle("Booking");
     setTask(1);
   }, [setTitle, setTask]);
 

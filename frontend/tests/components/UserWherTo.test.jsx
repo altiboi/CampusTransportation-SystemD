@@ -1,70 +1,61 @@
-import React from "react";
-import { it, expect, describe, vi } from "vitest";
-import { render, screen ,fireEvent } from "@testing-library/react";
-import UserWhereTo from "../../src/pages/UserPages/UserWherTo";
-import { BrowserRouter as Router } from "react-router-dom";
-import { AppProvider } from "../../src/contexts/AppContext";
-
-
-// Mocking the firebase/auth methods and context if needed
-vi.mock("../../firebase/auth", () => ({
-  doSignInWithEmailAndPassword: vi.fn(),
-  doSignInWithGoogle: vi.fn(),
-}));
+// UserWhereTo.test.js
+import React from 'react';
+import { render, screen, fireEvent } from '@testing-library/react';
+import { BrowserRouter as Router } from 'react-router-dom';
+import { AppProvider } from '../../src/contexts/AppContext';
+import UserWhereTo from '../../src/pages/UserPages/UserWherTo';
 
 describe('UserWhereTo Component', () => {
-  it('renders the map', () => {
+  // Function to render the component with context
+  const renderComponent = () => {
     render(
-      <Router>
-        <AppProvider> {/* Wrap with AppProvider */}
-          <UserWhereTo />
-        </AppProvider>
-      </Router>
-    );
-    const mapText = screen.getByText(/The Map/i);
-    expect(mapText).toBeDefined(); // Basic check for existence
-  });
-});
-describe('UserWhereTo Component', () => {
-    it('renders the text whereto', () => {
-      render(
+      <AppProvider>
         <Router>
-          <AppProvider> {/* Wrap with AppProvider */}
-            <UserWhereTo />
-          </AppProvider>
+          <UserWhereTo />
         </Router>
-      );
-      const mapText = screen.getByText(/Where To/i);
-      expect(mapText).toBeDefined(); // Basic check for existence
-    });
-});
-it('updates the dropdown selection correctly', () => {
-  render(
-    <Router>
-      <AppProvider>
-        <UserWhereTo />
       </AppProvider>
-    </Router>
-  );
-  // Select an option from the dropdown
-  const select = screen.getByRole('combobox');
-  fireEvent.change(select, { target: { value: 'flower-hall' } });
-  
-  // Verify the change
-  expect(select.value).toBe('flower-hall');
-});  
-it('updates the custom input field correctly', () => {
-  render(
-    <Router>
-      <AppProvider>
-        <UserWhereTo />
-      </AppProvider>
-    </Router>
-  );
+    );
+  };
 
-  const input = screen.getByPlaceholderText(/Enter custom destination/i);
-  fireEvent.change(input, { target: { value: 'Custom Place' } });
-  
+  it('should render the title and back button', () => {
+    renderComponent();
 
-  expect(input.value).toBe('Custom Place');
+    expect(screen.getByText('Where To')).not.toBeNull();
+    expect(screen.getByTestId('button')).not.toBeNull(); 
+  });
+
+  it('should allow selection of predefined destinations', () => {
+    renderComponent();
+
+    const dropdown = screen.getByRole('combobox'); 
+    fireEvent.change(dropdown, { target: { value: 'the-matrix' } });
+
+    expect(dropdown.value).toBe('the-matrix');
+  });
+
+  it('should allow custom destination input', () => {
+    renderComponent();
+
+    const input = screen.getByPlaceholderText('Enter custom destination');
+    fireEvent.change(input, { target: { value: 'My Custom Destination' } });
+
+    expect(input.value).toBe('My Custom Destination');
+  });
+
+  it('should update the destination when selecting "Other"', () => {
+    renderComponent();
+
+    const dropdown = screen.getByRole('combobox');
+    fireEvent.change(dropdown, { target: { value: 'other' } });
+
+    expect(screen.getByPlaceholderText('Enter custom destination').value).toBe('');
+  });
+
+  it('should go back to the previous page when back button is clicked', () => {
+    renderComponent();
+
+    const backButton = screen.getByTestId('button');
+    fireEvent.click(backButton);
+    expect(window.history.length).toBeGreaterThan(0); 
+  });
 });

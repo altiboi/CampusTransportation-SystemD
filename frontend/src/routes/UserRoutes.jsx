@@ -25,6 +25,7 @@ import UserMap from "../pages/UserPages/UserMap";
 import Returns from "../pages/UserPages/Returns";
 import ReturnConfirmation from "../pages/UserPages/ReturnConfirmation";
 import ScheduleDetailsPage from "../pages/staffPages/ScheduleDetailsPage";
+import UserFrom from "../pages/UserPages/UserFrom";
 
 function UserRoutes({ currentUser }) {
   const { userLoggedIn } = useAuth();
@@ -112,6 +113,10 @@ function UserRoutes({ currentUser }) {
       <Route
         path="/UserMap"
         element={<ProtectedRoute element={<UserMap/>} />}
+      />
+      <Route
+        path="/From"
+        element={<ProtectedRoute element={<UserFrom/>} />}
       />
       {/* Optional: Catch-all route for undefined paths */}
       <Route path="*" element={<NotFoundPage />} />

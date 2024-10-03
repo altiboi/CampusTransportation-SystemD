@@ -67,14 +67,22 @@ export default function UserRental() {
   }, [activeCategory, searchText, selectedStation, vehicles]);
 
   return (
-    <main className="p-4 max-w-7xl mx-auto w-full">
+    <main 
+    className={`p-4 max-w-7xl mx-auto w-full ${selectedStation !== null ? 'selected-station-bg' : ''}`}  // Conditionally add class for background image
+    >
       <header className="desktop-header mb-4 flex items-center">
-        <Link to="/" className="mr-4">
-          <FontAwesomeIcon icon={faArrowLeft} className="text-xl" />
-        </Link>
+        {selectedStation ? (
+          <button onClick={() => setSelectedStation(null)} className="mr-4">
+            <FontAwesomeIcon icon={faArrowLeft} className="text-xl" />
+          </button>
+        ) : (
+          <Link to="/" className="mr-4">
+            <FontAwesomeIcon icon={faArrowLeft} className="text-xl" />
+          </Link>
+        )}
         <h1 className="text-xl font-bold">Rental</h1>
       </header>
-
+    
       {selectedStation === null ? (
         <RentalStations onSelectStation={setSelectedStation} stations={stations} />
       ) : (
@@ -89,7 +97,7 @@ export default function UserRental() {
               Select Another Station
             </button>
           </div>
-
+    
           <div className="desktop-search relative mb-4">
             <input
               type="text"
@@ -100,7 +108,7 @@ export default function UserRental() {
             />
             <FontAwesomeIcon icon={faSearch} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
           </div>
-
+    
           <div className="desktop-category-buttons flex space-x-4 mb-4 overflow-x-auto">
             {categories.map((category, index) => (
               <button
@@ -112,11 +120,11 @@ export default function UserRental() {
               </button>
             ))}
           </div>
-
+    
           <h2 className="text-lg font-semibold mb-4">
             {activeCategory === 'All' ? 'Available Vehicles' : `Available ${activeCategory}s`}
           </h2>
-
+    
           {filteredRentalItems.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {filteredRentalItems.map((item, index) => (

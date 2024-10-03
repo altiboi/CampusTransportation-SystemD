@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import Card from '../../components/Card';
 import { Link } from 'react-router-dom';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faBus, faArrowLeft } from '@fortawesome/free-solid-svg-icons'; // Import the back icon
 import { fetchUserFines, handleFinePayment } from '../../api/functions'; // Import the above functions
 import './UserFines.scss'; 
 import { useAuth } from '../../contexts/AuthProvider';
@@ -17,13 +19,22 @@ function UserFines() {
     };
     loadFines();
   }, []);
-
+  const handleBackClick = () => {
+    // Go back to the previous page
+    window.history.back();
+};
   return (
     <main className='fines-main-container'>
       <section className='fines-upper-part'>
         <h2>Manage and Pay your Fines</h2>
       </section>
       <section className='fines-lower-part'>
+      <button
+                    className='absolute top-5 left 6 p-2 text-gray-600 hover:text-gray-800'
+                    onClick={handleBackClick}
+                >
+                    <FontAwesomeIcon icon={faArrowLeft} className='text-xl' />
+                </button>
         {fines.length > 0 ? (
           fines.map((fine) => (
             <section className='fines-upper-card' key={fine.id}>
@@ -50,7 +61,10 @@ function UserFines() {
             </section>
           ))
         ) : (
-          <p>No fines found</p>
+          <section className='fines-upper-part '>
+            <p>No fines found</p>
+          </section>
+       
         )}
       </section>    
     </main>

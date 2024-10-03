@@ -1,45 +1,80 @@
 import React, { useState, useEffect } from "react";
+import { getAllLocations } from "../../api/functions"; // Import your Firebase function
 import Card from "../../components/Card";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLocationDot } from "@fortawesome/free-solid-svg-icons";
 import "./UserWhereTo.scss";
 import { useAppContext } from "../../contexts/AppContext";
+import { useNavigate } from "react-router-dom"; // Import useNavigate
 
 function UserWhereTo() {
   const { setTitle, setTask } = useAppContext();
-  const [destination, setDestination] = useState("");
-  const [customDestination, setCustomDestination] = useState("");
+  const [locations, setLocations] = useState([]);  // Store fetched locations
+  const [searchQuery, setSearchQuery] = useState(""); // Store search input
+  const [filteredLocations, setFilteredLocations] = useState([]); // Store filtered locations
+  const [destination, setDestination] = useState(null); // Use null as initial state
+  const [customDestination, setCustomDestination] = useState({}); // Update to object
+
+  const navigate = useNavigate(); // Initialize navigate
 
   useEffect(() => {
-    setTitle("whereTo");
+    setTitle("Where To");
     setTask(1);
+
+    // Fetch all locations (buildings and POIs) from Firebase
+    const fetchLocations = async () => {
+      try {
+        const allLocations = await getAllLocations();
+        // Filter out locations with null coordinates
+        const validLocations = allLocations.filter(location => location.coordinates);
+        console.log(validLocations)
+        setLocations(validLocations);
+      } catch (error) {
+        console.error("Error fetching locations:", error);
+      }
+    };
+
+    fetchLocations();
   }, [setTitle, setTask]);
 
-  const handleDropdownChange = (e) => {
-    const value = e.target.value;
-    setDestination(value);
-    if (value === "other") {
-      // Keep the customDestination as it is for "other" option
-      setCustomDestination(customDestination || ""); // Set default if empty
-    } else {
-      // For other options, clear the customDestination
-      setCustomDestination(value);
-    }
+  // Update filtered locations based on search query
+  useEffect(() => {
+    setFilteredLocations(
+      locations?.filter(location => 
+        location.name.toLowerCase().includes(searchQuery.toLowerCase())
+      )
+    );
+  }, [searchQuery, locations]);
+
+  const handleSearchChange = (e) => {
+    setSearchQuery(e.target.value);
   };
 
-  const handleCustomDestinationChange = (e) => {
-    setCustomDestination(e.target.value);
-    // Update the destination to "other" if the custom input is being used
-    if (e.target.value) {
-      setDestination("other");
+  const handleDropdownSelect = (locationName) => {
+    // Find the selected location object from the list
+    const selectedLocation = locations.find(location => location.name === locationName);
+    if (selectedLocation) {
+      setSearchQuery(selectedLocation.name); // Update the input with selected location name
+      setDestination(selectedLocation);      // Update the destination state with the object
+    } else if (locationName === "Other") {
+      setDestination(customDestination);     // Set custom destination if "Other" is selected
+    }
+    setFilteredLocations([]);                // Hide the dropdown after selection
+  };
+
+  const handleConfirmClick = () => {
+    // Use JSON.stringify to serialize the destination object
+    if (destination) {
+      const destinationParam = encodeURIComponent(JSON.stringify(destination));
+      navigate(`/userFind?destination=${destinationParam}`);
     }
   };
 
   return (
     <main className="user-where-to-container">
-        <section className="find-upper-part">
-            <section className="find-Map find-w-1/2">The Map</section>
-        </section>
+      <section className="find-upper-part">
+        <section className="find-Map find-w-1/2">The Map</section>
+      </section>
       <section className="title w-full">
         <h1>Where To</h1>
       </section>
@@ -52,27 +87,36 @@ function UserWhereTo() {
             <input
               type="text"
               className="user-where-to-custom-input"
-              placeholder="Enter custom destination"
-              value={customDestination}
-              onChange={handleCustomDestinationChange}
+              placeholder="Enter or select destination"
+              value={searchQuery}
+              onChange={handleSearchChange}
             />
+            {filteredLocations.length > 0 && (
+              <ul className="user-where-to-dropdown">
+                {filteredLocations.map(location => (
+                  <li
+                    key={location.name}
+                    onClick={() => handleDropdownSelect(location.name)}
+                    className="dropdown-item"
+                  >
+                    {location.name}
+                  </li>
+                ))}
+                <li
+                  onClick={() => handleDropdownSelect("Other")}
+                  className="dropdown-item"
+                >
+                  Other
+                </li>
+              </ul>
+            )}
           </section>
         </Card>
-        <section className="user-where-to-select-section w-full">
-        <select
-          className="user-where-to-select-dropdown"
-          value={destination}
-          onChange={handleDropdownChange}
-        >
-          <option value="" disabled>Select Destination</option>
-          <option value="the-matrix">The Matrix</option>
-          <option value="flower-hall">Flower Hall</option>
-          <option value="wss3">WSS3</option>
-          <option value="umthombo-building">Umthombo Building</option>
-          <option value="bozoli">Bozoli</option>
-          <option value="other">Other</option>
-        </select>
       </section>
+      <section className="user-where-to-confirm-section w-full">
+        <button className="confirm-button" onClick={handleConfirmClick}>
+          Confirm Destination
+        </button>
       </section>
     </main>
   );
