@@ -72,7 +72,7 @@ function UserRoutes({ currentUser }) {
       />
       <Route
         path="/confirmation"
-        element={<ProtectedRoute element={<Confirmation />} />}
+        element={<ProtectedRoute element={<Confirmation currentUser={currentUser}/>} />}
       />
       <Route
         path="/finalDetails"
@@ -80,11 +80,11 @@ function UserRoutes({ currentUser }) {
       />
       <Route
         path="/userActivity"
-        element={<ProtectedRoute element={<UserActivity />} />}
+        element={<ProtectedRoute element={<UserActivity currentUser={currentUser}/>} />}
       />
       <Route
         path="/userFines"
-        element={<ProtectedRoute element={<UserFines />} />}
+        element={<ProtectedRoute element={<UserFines currentUser={currentUser}/>} />}
       />
       <Route
         path="/userPayments"
@@ -96,7 +96,7 @@ function UserRoutes({ currentUser }) {
       />
       <Route
         path="/notifications"
-        element={<ProtectedRoute element={<NotificationsPage/>} />}
+        element={<ProtectedRoute element={<NotificationsPage currentUser={currentUser}/>} />}
       />
       <Route
         path="/UserWhereTo"

@@ -45,6 +45,7 @@ const Returns = ({ currentUser }) => {
   const handleReturn = async () => {
     try {
       const returnData = await returnVehicleAndIssueFine(rentalDetails.rentalID, rentalDetails.vehicleID);
+      console.log(returnData.fine);
       setFineDetails(returnData.fine); 
       navigate('/ReturnConfirmation', { state: { returnDetails: returnData.rentalDetails, fineDetails: fineDetails, vehicle: rentalDetails.vehicle } });
     } catch (err) {

@@ -21,7 +21,7 @@ const NotificationsPage = ({ currentUser }) => {
   const refreshNotifications = async () => {
     try {
       //console.log(currentUser)
-      const updatedNotifications = await fetchUserNotifications(currentUser.uid); // Fetch notifications for the current user
+      const updatedNotifications = await fetchUserNotifications(currentUser.uid);
       setNotifications(updatedNotifications); 
     } catch (error) {
       console.error("Failed to fetch notifications:", error);
@@ -31,7 +31,7 @@ const NotificationsPage = ({ currentUser }) => {
   useEffect(() => {
     setTitle("Notifications");
     setTask(1);
-    refreshNotifications(); // Fetch notifications when component mounts
+    refreshNotifications();
   }, [setTitle, setTask]);
 
   const formatDate = (dateString) => {
@@ -100,14 +100,14 @@ const NotificationsPage = ({ currentUser }) => {
             Create Notification
           </button>
 
-          <button
+          {/* <button
             className="bg-gray-200 px-4 py-2 rounded hover:bg-gray-300"
             onClick={() => setShowUserNotifications(!showUserNotifications)}
           >
             {showUserNotifications
               ? "Show All Notifications"
               : "Show My Notifications"}
-          </button>
+          </button> */}
         </div>
 
         <div className="grid grid-cols-1 gap-4">

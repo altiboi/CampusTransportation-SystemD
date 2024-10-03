@@ -18,7 +18,7 @@ const ReturnConfirmation = () => {
   const returnDue = new Date(dueReturnAt);
 
   // Calculate if the vehicle was returned late
-  const isLate = fineDetails !== null && fineDetails?.amount > 0;
+  const isLate = fineDetails !== null;
 
   const handleViewFines = () => {
     navigate('/UserFines');

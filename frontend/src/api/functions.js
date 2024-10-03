@@ -1,5 +1,5 @@
 import { auth, rentalservice_db,mapping_db , preference_db, db } from "../firebase/firebase.js";
-import { Firestore,collection,getDoc, addDoc, setDoc,doc, updateDoc, getDocs, query, where } from "firebase/firestore";
+import { Firestore,collection,getDoc, addDoc, setDoc, doc, updateDoc, getDocs, query, where } from "firebase/firestore";
 
 
 export const getAllVehicles = async () => {
@@ -183,7 +183,7 @@ export const returnVehicleAndIssueFine = async (rentalID, vehicleID) => {
     // If there is a fine, create a fine document
     let fineData = null;
     if (fineAmount > 0) {
-      const finesCollection = collection(rentalservice_db, "Fines");
+      const finesCollection = collection(rentalservice_db, "RentalFines");
 
       fineData = {
         rentalID,
@@ -319,10 +319,34 @@ export const getUserRentals = async (userID) => {
 
 export const fetchUserFines = async (userID) => {
   try {
-    const finesQuery = query(collection(rentalservice_db, 'RentalFines'), where("userID", "==", userID));
+    // Query the RentalFines collection based on userID
+    const finesQuery = query(
+      collection(rentalservice_db, 'RentalFines'),
+      where("userID", "==", userID)
+    );
     const querySnapshot = await getDocs(finesQuery);
-    const fines = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-    return fines;
+    
+    // Map through the fines to fetch rental details
+    const finesWithRentalDetails = await Promise.all(
+      querySnapshot.docs.map(async (fineDoc) => {
+        const fineData = fineDoc.data();
+
+        // Fetch rental details using rentalID
+        const rentalDocRef = doc(rentalservice_db, 'VehicleRentals', fineData.rentalID); // Adjust collection name if necessary
+        const rentalDocSnap = await getDoc(rentalDocRef);
+
+        const rentalDetails = rentalDocSnap.exists() ? rentalDocSnap.data() : null;
+
+        // Return the fine details along with the rental details
+        return {
+          id: fineDoc.id,
+          ...fineData,
+          rentalDetails, // Include rental details in the response
+        };
+      })
+    );
+
+    return finesWithRentalDetails;
   } catch (error) {
     console.error("Error fetching fines: ", error);
     return [];

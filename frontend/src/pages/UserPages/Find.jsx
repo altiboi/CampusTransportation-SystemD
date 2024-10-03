@@ -504,7 +504,7 @@ const adjustToAccessibleEntrance = (building) => {
           <h2>My Favourite Locations</h2>
           <ul>
             {favourites.map((fav, index) => (
-              <li key={index}>{fav.name}</li> // Assuming fav has a 'name' property
+              <li key={index}>{fav?.name}</li> // Assuming fav has a 'name' property
             ))}
           </ul>
           <button onClick={toggleModal}>Close</button>

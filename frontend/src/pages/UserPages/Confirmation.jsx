@@ -4,11 +4,11 @@ import './Confirmation.css';
 import { useAuth } from '../../contexts/AuthProvider';
 import { addNewRentalAndUpdateVehicle } from '../../api/functions';
 
-const Confirmation = () => {
+const Confirmation = ({ currentUser }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const { itemName, action, item } = location.state || {};
-  const { currentUser, loading, refreshCurrentUser } = useAuth();
+  const { loading, refreshCurrentUser } = useAuth();
 
   const handleConfirm = async () => {
     if (!currentUser) {
@@ -45,7 +45,7 @@ const Confirmation = () => {
         >
           &larr; Back
         </button>
-        <h1>Your {itemName} has been {action}ed...</h1>
+        <h1>Your {itemName} has been {action == 'book' ? 'booked' : action == 'reserve' ? 'reserved' : ''}...</h1>
       </header>
       <img 
         src={`/images/${itemName.toLowerCase().replace(/\s/g, '')}.jpeg`} 

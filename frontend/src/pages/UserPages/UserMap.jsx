@@ -45,7 +45,7 @@ function UserMap() {
 
   useEffect(() => {
     setTitle("Find Rental Stations");
-    setTask(1);
+    setTask(0);
     fetchStations();
     fetchIncidents();
 

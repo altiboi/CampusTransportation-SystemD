@@ -19,7 +19,7 @@ function UserWhereTo() {
 
   useEffect(() => {
     setTitle("Where To");
-    setTask(1);
+    setTask(0);
 
     // Fetch all locations (buildings and POIs) from Firebase
     const fetchLocations = async () => {

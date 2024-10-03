@@ -10,7 +10,7 @@ function UserBuses() {
 
     useEffect(() => {
         setTitle("Bus Schedule");
-        setTask(1);
+        setTask(0);
     }, [setTitle, setTask]);
 
     const handleViewClick = () => {

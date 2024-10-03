@@ -7,7 +7,7 @@ function Book() {
   const location = useLocation();
   const { item } = location.state || {};
 
-  return <RentalDetails item={item} itemName={item.id} action="reserve" />;
+  return <RentalDetails item={item} itemName={`${item.make} ${item.model}`} action="reserve" />;
 }
 
 export default Book;

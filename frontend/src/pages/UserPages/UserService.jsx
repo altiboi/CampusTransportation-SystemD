@@ -23,7 +23,7 @@ function UserService() {
 
   useEffect(() => {
     setTitle("Services");
-    setTask(1);
+    setTask(0);
   }, [setTitle, setTask]);
   return (
     <main className='user-service-container'>
