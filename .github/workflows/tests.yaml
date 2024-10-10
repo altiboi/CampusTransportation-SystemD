@@ -16,12 +16,14 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: "16" # Use your project's required Node version
+          node-version: "16" # Use the Node.js version your project requires
 
       - name: Install dependencies
         run: npm ci
+        working-directory: ./frontend # Navigate to the 'frontend' folder
 
       - name: Run tests
         run: npm run test
+        working-directory: ./frontend # Navigate to the 'frontend' folder
         env:
-          CI: true # Ensures the tests run in CI mode to prevent interactive prompts
+          CI: true
