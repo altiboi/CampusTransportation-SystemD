@@ -91,6 +91,10 @@ export function App() {
     }
   }, [location.pathname]);
 
+  const handleMenuItemClick = (menuItem) => {
+    setActiveMenuItem(menuItem);
+  };
+
   const renderRoutes = () => {
     if (role === "staff") {
       return <StaffRoutes />;
