@@ -16,7 +16,7 @@ $hover-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
   padding: 5rem 2rem;
   background-image: url('../../assets/backround.jpeg');
   padding-bottom: 20px; 
-  overflow: hidden;
+  overflow-y: auto;
   .container{
     width: 100%;
     height: 100%;
@@ -25,6 +25,7 @@ $hover-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
     gap: 2rem;
     padding: 2rem 1rem;
     box-sizing: border-box;
+    flex-grow: 1;
     .upper{
       display: none;
     }
@@ -235,7 +236,7 @@ $hover-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
 
   
 }
-@media (max-width: 412px) {
+@media (max-width: 800px) {
   .Home-container {
     padding: 2rem 0;
     width: 100%;
@@ -402,7 +403,7 @@ $hover-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
           padding-top: 2rem;
           
           .title{
-            font-size: 1rem;
+            font-size: 1.5rem;
             font-weight: 500;
           }
         }

@@ -1,205 +1,309 @@
 .user-service-container {
     display: flex;
-    flex-wrap: wrap;
-    justify-content: space-around;
+    flex-direction: row;
     width: 100%;
-    height: 100%;
-    overflow-y: auto;
-    .header-section {
-        display: flex;
-        justify-content: flex-end;
-        align-items: flex-end;
-        flex-direction: column;
-        margin-top: 3rem;
-        width: 100%;
-        height: 30%;
-        .title-main {
-            padding-top: 1rem;
-            font-size: 2rem;
-            font-weight: bold;
-            height: 20%;
-        }
+    height: 100vh; 
+    overflow: hidden; 
 
-        .card-group {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            width: 100%;
-            height: 80%;
-            box-sizing: border-box;
-            padding: 0 .2rem;
-            gap: .2rem;
-           
-            .card-item {
-                width: 50%;
-                height: 70%;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                .link {
-                    width: 100%;
-                    height:100% ;
-                    .card{
-                        display: flex;
-                        flex-direction: column;
-                        border-radius: 8px;
-                        width: 100%;
-                        height:100% ;
-                        
-                        .card-icon{
-                            flex: 1;
-                            display: flex;
-                            align-items: center;
-                            justify-content: center;
-                            .icon-large{
-                                width: 5rem; 
-                                height: 5rem;
-                                object-fit: cover;
-                            }
-                        }
-                        .card-content{
-                            flex: 3;
-                            display: flex;
-                            align-items: center;
-                            justify-content: center;
-                            .card-heading{
-                                font-size:2rem;
-                                color: black;
-                            }
-                          
-                        } 
-                        &:hover{
-                            box-shadow: rgba(6, 24, 44, 0.4) 0px 0px 0px 2px, 
-                            rgba(6, 24, 44, 0.65) 0px 4px 6px -1px,
-                             rgba(255, 255, 255, 0.08) 0px 1px 0px inset;
-                          }
-                        @media (max-width: 768px) {
-                            .card-content{
-                              display: none; 
-                            }            
-                        }
-                        &:hover{
-                            scale: 1.005;
-                        }
-                    }
-
-                    @media (max-width: 768px) {
-                        .card{
-                          width: 100%;
-                          height:100% ;
-                       
-                          .card-icon{
-                            width: 100%;
-                            display: flex;
-                            align-items: center;
-                            justify-content: center;
-                          }
-                        }
-                      }
-                }
-            }
-
-        }
-    }
-    
     .actions-section {
+        width: 80%;
+        height: 100%;    
         display: flex;
         flex-direction: column;
-        justify-content: flex-start;
         align-items: center;
-        width: 100%;
-        height: 60%;
-        margin-bottom: 25%;
+        padding-top: 2.5rem;
+        overflow-y: auto; 
         .actions-title {
             width: 100%;
-            padding: 2rem 1rem;
-            height: 10%;
-            .title-main{
-                font-size:2rem;
-                font-weight: 900;
-                color: black;
+            padding: 2rem 0rem;
+            height: auto; 
+            margin: 0;
+            display: flex;
+            align-items: center;
+
+            .title-main {
+                font-size: 1.5rem;
+                font-weight: 500;
+                color: grey;
             }
-            @media (max-width: 768px) {
-                .title-main{
-                    font-size:1.5rem;
-                    font-weight: 900;
-                    color: black;
-                }
-              }
         }
+
         .actions-group {
             width: 100%;
-            height: 90%;
+            flex-grow: 1;
             display: flex;
             justify-content: center;
             flex-wrap: wrap;
-            align-items: center;
-            gap: 1rem;
+            gap: 2rem;
+
             .action-card {
                 display: flex;
                 flex-direction: column;
                 align-items: center;
                 justify-content: center;
-                border-radius: 15px;
+                border-radius: 0.5rem;
                 height: 30%;
-                flex: 1 1 calc(33.333% - 16px);
-                max-width: calc(33.333% - 16px);
+              
+                width: 30%;
                 border: 2px solid silver;
-                &:hover{
-                    scale: 0.9;
+
+                &:hover {
+                    scale: 1.01;
                 }
-                .Link {
+
+                .link {
                     display: flex;
                     flex-direction: column;
                     align-items: center;
                     justify-content: center;
                     width: 100%;
-                    height:100% ;
-                    .headings{
-           
-                        .card-heading{
-                            font-size:1.5rem;
+                    height: 100%;
+                    box-sizing: border-box;
+
+                    .headings {
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        width: 100%;
+                        height: 10%;
+                        .card-heading {
+                            font-size: 1.5rem;
                             font-weight: 900;
                             color: black;
                         }
                     }
+
                     .card-icon {
                         display: flex;
                         align-items: center;
                         justify-content: center;
-                        flex: 1;
+                        width: 100%;
+                        height: 80%;
                         text-align: center;
-                        .icon-large{
-                            width: 80px; 
-                            height: 80px;
+
+                        .icon-large {
+                            width: 80%; 
+                            height: 80%;
                             object-fit: cover;
                         }
                     }
                 }
-
             }
-            @media (max-width: 412px) {
+        }
+    }
+
+    .notification-section {
+        width: 50%;
+        height: 100%;
+        border: 2px solid silver;
+        padding: 0rem 1rem;
+        padding-top: 4rem;
+        overflow-y: auto; 
+        .notification-container {
+            width: 100%;
+            height: auto; 
+            border: 2px solid black;
+            border-radius: 0.5rem;
+            padding: 1rem;
+        }
+    }
+}
+@media (max-width: 800px) {
+    .user-service-container {
+        display: flex;
+        flex-direction: row;
+        width: 100%;
+        height: 100vh; 
+        overflow: hidden; 
+    
+        .actions-section {
+            width: 80%;
+            height: 100%;    
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-top: 2.5rem;
+            overflow-y: auto; 
+            .actions-title {
+                width: 100%;
+                padding: 2rem 0rem;
+                height: auto;
+                margin: 0;
+                display: flex;
+                align-items: center;
+    
+                .title-main {
+                    font-size: 1.5rem;
+                    font-weight: 500;
+                    color: grey;
+                }
+            }
+    
+            .actions-group {
+                width: 100%;
+                display: flex;
+                justify-content: center;
+                flex-wrap: wrap;
+                gap: 2rem;
+    
                 .action-card {
-                    flex: 1 1 calc(50% - 16px);
-                    max-width: calc(50% - 16px);
-                    height: 30%;
-                    font-size: 0.875rem;
                     display: flex;
                     flex-direction: column;
                     align-items: center;
                     justify-content: center;
+                    border-radius: 0.5rem;
+                    height: 25%;
+                    width: 45%;
+                    border: 2px solid silver;
+    
+                    &:hover {
+                        scale: 1.01;
+                    }
+    
+                    .link {
+                        display: flex;
+                        flex-direction: column;
+                        align-items: center;
+                        justify-content: center;
+                        width: 100%;
+                        height: 100%;
+                        box-sizing: border-box;
+    
+                        .headings {
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            width: 100%;
+                            height: 10%;
+                            .card-heading {
+                                font-size: 1.5rem;
+                                font-weight: 900;
+                                color: black;
+                            }
+                        }
+    
+                        .card-icon {
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            width: 100%;
+                            height: 80%;
+                            text-align: center;
+    
+                            .icon-large {
+                                width: 80%; 
+                                height: 80%;
+                                object-fit: cover;
+                            }
+                        }
+                    }
                 }
-            
-                .title-main {
-                    font-size: 1rem;
-                }
-            
-                .icon-medium {
-                    font-size: 1.5rem;
-                }
-
             }
         }
+    
+        .notification-section {
+            width: 50%;
+            height: 100%;
+            border: 2px solid silver;
+            padding: 0rem 1rem;
+            padding-top: 4rem;
+            overflow-y: auto; 
+    
+            .notification-container {
+                width: 100%;
+                height: auto; 
+                border: 2px solid black;
+                border-radius: 0.5rem;
+                padding: 1rem;
+            }
+        }
+    }
+    
+}
+@media (max-width: 412px) {
+    .user-service-container {
+        width: 100%;
+        height: 100vh; 
+        overflow: hidden; 
+        .actions-section {
+            width: 100%;
+            height: 100%;    
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            overflow-y: auto; 
+            .actions-title {
+              display: none;
 
+            }
+    
+            .actions-group {
+                width: 100%;
+                display: flex;
+                align-items: flex-start;
+                
+                flex-direction: column;
+                gap: 1rem;
+           
+                padding: 0% 1rem;
+             
+    
+                .action-card {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    justify-content: center;
+                    border-radius: 0.5rem;
+                    width:100%;
+                    height: 15%;
+                    border: 2px solid silver;
+    
+                    &:hover {
+                        scale: 1.01;
+                    }
+    
+                    .link {
+                        display: flex;
+                        flex-direction: column;
+                        align-items: center;
+                        justify-content: center;
+                        width: 100%;
+                        height: 100%;
+                        box-sizing: border-box;
+    
+                        .headings {
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            width: 100%;
+                            height: 10%;
+                            .card-heading {
+                                font-size: 1.5rem;
+                                font-weight: 900;
+                                color: black;
+                            }
+                        }
+    
+                        .card-icon {
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            width: 100%;
+                            height: 80%;
+                            text-align: center;
+    
+                            .icon-large {
+                                width: 80%; 
+                                height: 80%;
+                                object-fit: cover;
+                            }
+                        }
+                    }
+                }
+            }
+        }    
+        .notification-section{
+            display: none;
+        }
     }
 }

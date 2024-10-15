@@ -14,8 +14,13 @@ import shopping from "../../assets/shopping.png";
 import community from "../../assets/community.png";
 import danger from "../../assets/danger-point.png"; // Path to your rental station icon
 import axios from "axios"; // Import axios
-import Modal from 'react-modal'; // If using react-modal
-
+import car from "../../assets/car.jpg"; 
+import points from "../../assets/points.png";
+import favourite from "../../assets/favourite.avif"; 
+import Modal from 'react-modal'; 
+import destination from '../../assets/destination.webp'
+import loc from '../../assets/location.jpg'
+import walk from "../../assets/walk.jpeg";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faLocationDot,
@@ -277,7 +282,7 @@ const adjustToAccessibleEntrance = (building) => {
 
         <section className="find-upper-part">
           {/* Map Section */}
-          <section className="find-Map find-w-1/2">
+          <section className="find-Map">
             {currentLocation ? (
               <div style={{ height: "100%", width: "100%" }}>
                 <Map
@@ -427,27 +432,27 @@ const adjustToAccessibleEntrance = (building) => {
         </section>
 
         <section className="find-lower-part">
-          <section className="find-w-full p-2">
-            <h2 className="find-card-title find-title">Select Location</h2>
+          <section className="Title">
+            <h2 className="title">Select Location</h2>
           </section>
-          <section className="find-upper-section find-w-full find-flex find-justify-around">
+          <section className="find-upper-section">
             <Card className="find-upper-card">
               <section className="find-card-icon">
-                <FontAwesomeIcon icon={faLocationDot} className="icon" />
+                <img src={loc} alt="location.icon" className="icon" />
               </section>
-              <section>
+              <section className="card-content">
                 <h2 className="find-card-title">Location</h2>
                 {/* <h2 className="find-place">Barnato Hall</h2> */}
               </section>
             </Card>
             <Card className="find-upper-card">
               <section className="find-card-icon">
-                <FontAwesomeIcon icon={faCheckCircle} className="icon" />
+              <img src={destination} alt="loaction.icon" className="icon" />
               </section>
-              <section>
-                <Link to={'/UserWhereTo'}>
-                  <h2 className="find-card-title">Destination</h2>
-                  <h2 className="find-place">{destinationName}</h2>
+              <section className="card-contents">
+                <Link to={'/UserWhereTo'} className="cd">
+                  <h2 className="texts" >Destination</h2>
+                  <h2 className="texts">{destinationName}</h2>
                 </Link>
                 <button className={`save-button`}
                 onClick={() => handleSave(destinationParam)}
@@ -466,36 +471,41 @@ const adjustToAccessibleEntrance = (building) => {
           </section>
           <section className="find-lower-section">
           <Card className={`find-lower-card-section ${travelMode === "WALKING" ? 'selected' : ''}`} onClick={toggleTravelMode}>
+            <section className="find-card-icon">
+                {/*<FontAwesomeIcon icon={travelMode === "WALKING" ? faCar : travelMode === "DRIVING" ? faWheelchair : faPersonWalking} />*/}
+                <img src={travelMode === "WALKING" ? car : travelMode === "DRIVING" ? walk : car} alt="loaction.icon" className="icon" />
+              </section>
               <section className="find-card-content">
                 <span className="find-card-title">{travelMode === "WALKING" ? "Drive" : travelMode === "DRIVING" ? "Accessible" : "Walk"}</span>
               </section>
-              <section className="find-card-icon">
-                <FontAwesomeIcon icon={travelMode === "WALKING" ? faCar : travelMode === "DRIVING" ? faWheelchair : faPersonWalking} />
-              </section>
+              
             </Card>
             <Card
               className={`find-lower-card-section ${travelMode === "DRIVING" ? 'selected' : ''}`}
               onClick={toggleMarkers} // Toggle markers on click
 
             >
+              <section className="find-card-icon">
+              <img src={points} alt="loaction.icon" className="icon" />
+              
+              </section>
               <section className="find-card-content">
                 <span className="find-card-title">Points of Interest</span>
               </section>
-              <section className="find-card-icon">
-                <FontAwesomeIcon icon={faRoute} />
-              </section>
+              
             </Card>
 
             <Card
               className="find-lower-card-section"
               onClick={toggleModal}
             >
+               <section className="find-card-icon">
+               <img src={favourite} alt="loaction.icon" className="icon" />
+              </section>
               <section className="find-card-content">
                 <span className="find-card-title">View Favorites</span>
               </section>
-              <section className="find-card-icon">
-                <FontAwesomeIcon icon={faStar} />
-              </section>
+             
             </Card>
           </section>
         </section>

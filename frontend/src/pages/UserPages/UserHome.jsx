@@ -8,8 +8,16 @@ import schedule from '../../assets/schedule.webp';
 import rental from '../../assets/rental.png'
 import "./UserHome.scss";
 import bike from "../../assets/bicycle.avif";
+import { useAppContext } from "../../contexts/AppContext";
+import { useEffect } from "react";
 
 function UserHome() {
+  const { setTitle, setTask } = useAppContext();
+
+  useEffect(() => {
+    setTitle("Home");
+    setTask(0);
+  }, [setTitle, setTask]);
   return (
     <main className="Home-container">
       <section className="container">
@@ -35,8 +43,7 @@ function UserHome() {
                 </section>
               </Card>
             </Link>
-          </section>        width: 60%;
-          height: 100%;
+          </section>         
           <section className="lower-cards">
             <section className="Title">
               <h2 className="title">Suggestions</h2>
