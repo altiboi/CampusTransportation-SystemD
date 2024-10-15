@@ -1,10 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import Card from '../../components/Card';
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTruck, faLocationDot, faRoute, faBicycle, faClipboardList, faCalendarCheck, faTicket, faRotateLeft } from '@fortawesome/free-solid-svg-icons';
-import { faMapMarkerAlt } from '@fortawesome/free-solid-svg-icons'; 
-
 import './UserService.scss'; 
 import { useAppContext } from "../../contexts/AppContext";
 import { useEffect } from "react";
