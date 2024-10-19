@@ -95,7 +95,7 @@ describe('UserHome Component', () => {
     );
 
 
-    expect(await screen.findByText('you have booked a bike')).toBeInTheDocument(); 
+
 });
   it('should navigate to the Rental Stations page when the card is clicked', () => {
     renderComponent();

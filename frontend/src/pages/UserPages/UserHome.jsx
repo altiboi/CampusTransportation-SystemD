@@ -9,21 +9,43 @@ import rental from '../../assets/rental.png'
 import "./UserHome.scss";
 import bikeImage from "../../assets/bicycle.avif";
 import { useAppContext } from "../../contexts/AppContext";
-import {  getAllVehicles,addNewRentalAndUpdateVehicle } from '../../api/functions';
+import {  getAllVehicles,addNewRentalAndUpdateVehicle ,getUserRentals} from '../../api/functions';
 import { useAuth } from '../../contexts/AuthProvider';
+
 
 function UserHome() {
   const { setTitle, setTask } = useAppContext();
   const [vehicles, setVehicles] = useState([]);
   const { currentUser, refreshCurrentUser } = useAuth(); 
+  const [rentals,setRentals]=useState([]);
+  const [fetchRentalsTrigger, setFetchRentalsTrigger] = useState(false);
 
+
+  useEffect(()=>{
+    const fetchData = async () => {
+      try {
+        const vehiclesList = await getUserRentals( currentUser?.uid);
+
+        setRentals(vehiclesList||[])
+      } catch (error) {
+        console.error("Error fetching rental stations or vehicles:", error);
+      }
+    };
+    fetchData();
+  },[fetchRentalsTrigger,currentUser])
+  const now = new Date();
+  const current = rentals.filter(rental =>
+    new Date(rental.rentedAt) <= now &&
+    new Date(rental.dueReturnAt) > now &&
+    rental.returnedAt === null
+  ); 
+  console.log(current)
   useEffect(() => {
     setTitle("Home");
     setTask(0);
     const fetchData = async () => {
       try {
         const vehiclesList = await getAllVehicles();
-        console.log(vehiclesList)
         setVehicles(vehiclesList || []); 
       } catch (error) {
         console.error("Error fetching rental stations or vehicles:", error);
@@ -37,8 +59,8 @@ function UserHome() {
   const availableBike = vehicles.find(
     (vehicle) => vehicle.type === "bike" && vehicle.available
   );
-  console.log(availableBike);
   const Book= async (bike) => {
+    setFetchRentalsTrigger(prev => !prev);
     if (!currentUser) {
       console.error("User not authenticated.");
       return; // Prevent further action if currentUser is not available
@@ -120,56 +142,60 @@ function UserHome() {
         </section>
         <section className="upper-part middle-part">
           <section className="upper-cards ">
+            {!current.length>0 ?
             <Card className="cards">
-              <div className="lower_card_part">
-                <img
-                  src={bikeImage}
-                  alt="Bicycle_rental_icon"
-                  className="image"
-                />
-                {availableBike ? (
-                  <div className="vehicle-details">
-                  <span className="outer">
-                    <span className="inner">Registration:</span>
-                    <span className="inner">{availableBike.registration}</span>
-                  </span>
+            <div className="lower_card_part">
+              <img
+                src={bikeImage}
+                alt="Bicycle_rental_icon"
+                className="image"
+              />
+              {availableBike ? (
+                <div className="vehicle-details">
+                <span className="outer">
+                  <span className="inner">Registration:</span>
+                  <span className="inner">{availableBike.registration}</span>
+                </span>
 
-                  <span className="outer">
-                    <span className="inner">Make:</span>
-                    <span className="inner">{availableBike.make}</span>
-                  </span>
+                <span className="outer">
+                  <span className="inner">Make:</span>
+                  <span className="inner">{availableBike.make}</span>
+                </span>
 
-                  <span className="outer">
-                    <span className="inner">Model:</span>
-                    <span className="inner">{availableBike.model}</span>
-                  </span>
+                <span className="outer">
+                  <span className="inner">Model:</span>
+                  <span className="inner">{availableBike.model}</span>
+                </span>
 
-                  <span className="outer">
-                    <span className="inner">Year:</span>
-                    <span className="inner">{availableBike.year}</span>
-                  </span>
-                    <div className="option">
-                      <button
-                        className="px-4 py-2 bg-black text-white rounded"
-                        data-testid="book-button"
-                        onClick={() => Book(availableBike)}
-                        
-                      >
-                        Book now
-                      </button>
-                      <button
-                        className="px-4 py-2 bg-gray-200 text-black rounded"
-                        
-                      >
-                        Reserve
-                      </button>
-                    </div>
+                <span className="outer">
+                  <span className="inner">Year:</span>
+                  <span className="inner">{availableBike.year}</span>
+                </span>
+                  <div className="option">
+                    <button
+                      className="px-4 py-2 bg-black text-white rounded"
+                      data-testid="book-button"
+                      onClick={() => Book(availableBike)}
+                      
+                    >
+                      Book now
+                    </button>
+                    <button
+                      className="px-4 py-2 bg-gray-200 text-black rounded"
+                      
+                    >
+                      Reserve
+                    </button>
                   </div>
-                ) : (
-                  <p className="nobike">No available bikes at the moment :(</p>
-                )}
-              </div>
-            </Card>
+                </div>
+              ) : (
+                <p className="nobike">No available bikes at the moment :(</p>
+              )}
+            </div>
+          </Card>:
+          <p className="text">You have a booked vehicle :)</p>
+          }
+            
           </section>
         </section>
 
