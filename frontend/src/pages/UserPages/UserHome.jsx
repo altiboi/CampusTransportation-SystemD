@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Card from "../../components/Card";
 import car from '../../assets/car.webp';
-import find from '../../assets/location.webp';
+import find from '../../assets/find.avif';
 import fine from '../../assets/fine.avif';
 import schedule from '../../assets/schedule.webp';
 import rental from '../../assets/rental.png'
@@ -82,7 +82,7 @@ function UserHome() {
         <section className="upper">
           <section className="upper-cards">
             <Link to="/userRental" className="Links">
-              <Card className="card">
+              <Card className="card rent">
                 <section className="card-icon">
                   <img src={car} alt="Car_icon_for_rental" className="icon" />
                 </section>
@@ -94,7 +94,7 @@ function UserHome() {
             <Link to="/userFind" className="Links">
               <Card className="card">
                 <section className="card-icon">
-                  <img src={find} alt="Find_icon" className="icon" />
+                  <img src={find} alt="Find_icon" className="icon"  style={{ height: '4.5rem' }} />
                 </section>
                 <section className="card-content">
                   <span className="card-title">Find</span>
@@ -214,7 +214,7 @@ function UserHome() {
             <Link to="/userFind" className="Links">
               <Card className="card">
                 <section className="card-icon">
-                  <img src={find} alt="Find icon" className="icon" />
+                  <img src={find} alt="Find icon" className="icon" style={{ height: '4.5rem' }} />
                 </section>
                 <section className="card-content">
                   <span className="card-title">Find</span>
