@@ -23,9 +23,11 @@ function UserHome() {
     const fetchData = async () => {
       try {
         const vehiclesList = await getAllVehicles();
-        setVehicles(vehiclesList);
+        console.log(vehiclesList)
+        setVehicles(vehiclesList || []); 
       } catch (error) {
         console.error("Error fetching rental stations or vehicles:", error);
+        setVehicles([]);
       }
     };
 
@@ -35,7 +37,8 @@ function UserHome() {
   const availableBike = vehicles.find(
     (vehicle) => vehicle.type === "bike" && vehicle.available
   );
-  const Book= async () => {
+  console.log(availableBike);
+  const Book= async (bike) => {
     if (!currentUser) {
       console.error("User not authenticated.");
       return; // Prevent further action if currentUser is not available
@@ -43,7 +46,7 @@ function UserHome() {
 
     try {
       console.log(currentUser);
-      await addNewRentalAndUpdateVehicle(item.rentalStationID, item.type, currentUser.uid, item.id, 2);
+      await addNewRentalAndUpdateVehicle(bike.rentalStationID, bike.type, currentUser.uid, bike.id, 2);
       await refreshCurrentUser();
       console.log("you have booked a bike")
     } catch (error) {
@@ -59,7 +62,7 @@ function UserHome() {
             <Link to="/userRental" className="Links">
               <Card className="card">
                 <section className="card-icon">
-                  <img src={car} alt="Car icon for rental" className="icon" />
+                  <img src={car} alt="Car_icon_for_rental" className="icon" />
                 </section>
                 <section className="card-content">
                   <span className="card-title">Rent</span>
@@ -69,7 +72,7 @@ function UserHome() {
             <Link to="/userFind" className="Links">
               <Card className="card">
                 <section className="card-icon">
-                  <img src={find} alt="Find icon" className="icon" />
+                  <img src={find} alt="Find_icon" className="icon" />
                 </section>
                 <section className="card-content">
                   <span className="card-title">Find</span>
@@ -88,7 +91,7 @@ function UserHome() {
                     <span className='card-title'>Rental Stations</span>
                   </section>
                   <section className='card-icon'>
-                    <img src={rental} alt="" className='icon' />
+                    <img src={rental} alt="Rental_Station_icon" className='icon' />
                   </section>
                 </Card>
               </Link>
@@ -98,7 +101,7 @@ function UserHome() {
                     <h2 className="card-title">Bus Schedule</h2>
                   </section>
                   <section className="card-icon">
-                    <img src={schedule} alt="Bus schedule icon" className="icon" />
+                    <img src={schedule} alt="Bus_schedule_icon" className="icon" />
                   </section>
                 </Card>
               </Link>
@@ -115,15 +118,13 @@ function UserHome() {
             </section>
           </section>
         </section>
-
-        {/* Middle section to display bike details */}
         <section className="upper-part middle-part">
           <section className="upper-cards ">
             <Card className="cards">
               <div className="lower_card_part">
                 <img
                   src={bikeImage}
-                  alt="bike"
+                  alt="Bicycle_rental_icon"
                   className="image"
                 />
                 {availableBike ? (
@@ -150,7 +151,9 @@ function UserHome() {
                     <div className="option">
                       <button
                         className="px-4 py-2 bg-black text-white rounded"
-                        onClick={Book}
+                        data-testid="book-button"
+                        onClick={() => Book(availableBike)}
+                        
                       >
                         Book now
                       </button>
@@ -224,10 +227,11 @@ function UserHome() {
                     <h2 className="card-title">Fines</h2>
                   </section>
                   <section className='card-icon'>
-                    <img src={fine} alt="fines icon" className='icon' />
+                    <img src={fine} alt="Fines_icon" className='icon' />
                   </section>
                 </Card>
               </Link>
+            
             </section>
           </section>
         </section>
