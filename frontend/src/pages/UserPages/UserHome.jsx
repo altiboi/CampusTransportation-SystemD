@@ -7,10 +7,12 @@ import fine from '../../assets/fine.avif';
 import schedule from '../../assets/schedule.webp';
 import rental from '../../assets/rental.png'
 import "./UserHome.scss";
-import bikeImage from "../../assets/bicycle.avif";
+
+import bikeImage from "../../assets/bike.svg";
 import { useAppContext } from "../../contexts/AppContext";
-import {  getAllVehicles,addNewRentalAndUpdateVehicle ,getUserRentals} from '../../api/functions';
+import {  getAllVehicles,addNewRentalAndUpdateVehicle ,getUserRentals, fetchRentalStations } from '../../api/functions';
 import { useAuth } from '../../contexts/AuthProvider';
+
 
 
 function UserHome() {
@@ -19,6 +21,8 @@ function UserHome() {
   const { currentUser, refreshCurrentUser } = useAuth(); 
   const [rentals,setRentals]=useState([]);
   const [fetchRentalsTrigger, setFetchRentalsTrigger] = useState(false);
+  const [selectedStation, setSelectedStation] = useState(null);
+  const [rentalStations, setRentalStations] = useState([]);
 
 
   useEffect(()=>{
@@ -33,6 +37,18 @@ function UserHome() {
     };
     fetchData();
   },[fetchRentalsTrigger,currentUser])
+  useEffect(() => {
+    const getRentalStations = async () => {
+      try {
+        const stations = await fetchRentalStations();
+        setRentalStations(stations);
+      } catch (error) {
+        console.error("Error fetching rental stations:", error);
+      }
+    };
+
+    getRentalStations();
+  }, []);
   const now = new Date();
   const current = rentals.filter(rental =>
     new Date(rental.rentedAt) <= now &&
@@ -56,9 +72,13 @@ function UserHome() {
     fetchData();
   }, [setTitle, setTask]);
 
-  const availableBike = vehicles.find(
-    (vehicle) => vehicle.type === "bike" && vehicle.available
-  );
+
+  const availableBike = vehicles.find((vehicle) => {
+    const isBike = vehicle.type === "bike" && vehicle.available;
+    const matchesStation = selectedStation ? vehicle.rentalStationID === selectedStation.id : true;
+    return isBike && matchesStation;
+  });
+  
   const Book= async (bike) => {
     setFetchRentalsTrigger(prev => !prev);
     if (!currentUser) {
@@ -75,9 +95,19 @@ function UserHome() {
       console.error("Error confirming rental: ", error);
     }
   };
+  const handleStationChange = (e) => {
+    const stationID = e.target.value;
+    const selected = rentalStations.find((station) => station.id === stationID);
+    setSelectedStation(selected || null);
+  };
+
 
   return (
-    <main className="Home-container">
+    <main className="Home-container ">
+        <div className="text-2xl font-semibold mb-6">
+          Welcome, {currentUser.name}!
+        </div>
+
       <section className="container">
         <section className="upper">
           <section className="upper-cards">
@@ -152,6 +182,21 @@ function UserHome() {
               />
               {availableBike ? (
                 <div className="vehicle-details">
+                  <div className="selection">
+                    <select
+                      id="stationFilter"
+                      className="dropdown w-full p-2 border border-gray-300 rounded"
+                      onChange={handleStationChange}
+                      value={selectedStation?.id || ""}
+                    >
+                      <option value="">All Stations</option>
+                      {rentalStations.map((station) => (
+                        <option key={station.id} value={station.id}>
+                          {station.name}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
                 <span className="outer">
                   <span className="inner">Registration:</span>
                   <span className="inner">{availableBike.registration}</span>
@@ -161,16 +206,6 @@ function UserHome() {
                   <span className="inner">Make:</span>
                   <span className="inner">{availableBike.make}</span>
                 </span>
-
-                <span className="outer">
-                  <span className="inner">Model:</span>
-                  <span className="inner">{availableBike.model}</span>
-                </span>
-
-                <span className="outer">
-                  <span className="inner">Year:</span>
-                  <span className="inner">{availableBike.year}</span>
-                </span>
                   <div className="option">
                     <button
                       className="px-4 py-2 bg-black text-white rounded"
@@ -179,12 +214,6 @@ function UserHome() {
                       
                     >
                       Book now
-                    </button>
-                    <button
-                      className="px-4 py-2 bg-gray-200 text-black rounded"
-                      
-                    >
-                      Reserve
                     </button>
                   </div>
                 </div>

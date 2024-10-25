@@ -86,7 +86,18 @@
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     transition: all 0.3s ease;
     width: 100%;
-
+    display: flex;
+    .image{
+      width: 10%;
+      height: 10%;
+      border-radius:50%; 
+    }
+    .details{
+      width: 80%;
+    }
+    .time{
+      width: 10%;
+    }
     &:hover {
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
       transform: translateY(-5px);
