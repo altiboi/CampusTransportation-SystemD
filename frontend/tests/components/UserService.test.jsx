@@ -45,7 +45,7 @@ describe('UseService Component', () => {
             <Route path="/Returns" element={<ReturnsPage />} />
             <Route path="/UserReserve" element={<ReservePage/>} />
             <Route path="/UserMap" element={<CampusMapPage />} />
-            <Route path="/UserRent" element={<RentPage />} />
+            <Route path="/userRental" element={<RentPage />} />
             <Route path="/UserBuses" element={<BusSchedulePage />} />
             <Route path="/UserFines" element={<FinesPage />} />
           </Routes>
@@ -122,7 +122,7 @@ describe('UseService Component', () => {
         expect(RentCards).toBeInTheDocument();
         const findLink = RentCards.closest('a');
         expect(findLink).toBeInTheDocument();
-        expect(findLink.getAttribute('href')).toBe('/UserRent'); 
+        expect(findLink.getAttribute('href')).toBe('/userRental'); 
     
     
         fireEvent.click(findLink);

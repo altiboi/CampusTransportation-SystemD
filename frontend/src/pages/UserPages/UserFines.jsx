@@ -12,8 +12,9 @@ function UserFines({ currentUser }) {
 
   const loadFines = async () => {
     const userFines = await fetchUserFines(currentUser?.uid);
-    setFines(userFines);
+    setFines(userFines || []); // Fallback to an empty array if undefined
   };
+  
 
   useEffect(() => {
     loadFines();
@@ -50,6 +51,7 @@ function UserFines({ currentUser }) {
       <section className='fines-lower-part'>
         <button
           className='absolute top-5 left 6 p-2 text-gray-600 hover:text-gray-800'
+           aria-label="Back"
           onClick={handleBackClick}
         >
           <FontAwesomeIcon icon={faArrowLeft} className='text-xl' />

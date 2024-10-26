@@ -121,7 +121,7 @@ function UserService() {
             </Link>
           </Card>
           <Card className="action-card">
-            <Link to="/UserRent" className='link'>
+            <Link to="/userRental"  className='link'>
               <section className='headings'>
                 <h2 className="card-heading">Rent</h2>
               </section>
