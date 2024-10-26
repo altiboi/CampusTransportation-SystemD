@@ -62,74 +62,84 @@ export function App() {
   }, []);
 
   useEffect(() => {
-    switch (location.pathname) {
-      case "/home":
-        setActiveMenuItem("Home");
-        break;
-      case "/":
-        setActiveMenuItem("Home");
-        break;
-      case "/staffanalytics":
-        setActiveMenuItem("Analytics");
-        break;
-      case "/confirmation":
-        setActiveMenuItem("Services");
-        break;
-      case "/userRental":
-        setActiveMenuItem("home");
-        break;
-      case "/Reserve/undefined":
-        setActiveMenuItem("Services");
-        break;
-      case "/finalDetails":
-        setActiveMenuItem("Services");
-        break;
+    console.log("Current pathname:", location.pathname);
+    if (location.pathname.startsWith("/scheduledetails/")) {
+      console.log("Matched /scheduledetails/ route");
+      setActiveMenuItem("Update Bus Schedule");
+    } else {
+      switch (location.pathname) {
+        case "/home":
+        case "/":
+          setActiveMenuItem("Home");
+          break;
+        case "/staffanalytics":
+          setActiveMenuItem("Analytics");
+          break;
 
-      case "/Book/undefined":
-        setActiveMenuItem("Services");
-        break;
-      case "/stafftasks":
-        setActiveMenuItem("Tasks");
-        break;
-      case "/updatebusschedule":
-        setActiveMenuItem("Update Bus Schedule");
-        break;
-      case "/notifications":
-        setActiveMenuItem("Create Notification");
-        break;
-      case "/userFind":
-        setActiveMenuItem("Home");
-        break;
+        case "/confirmation":
+          setActiveMenuItem("Services");
+          break;
+        case "/profile":
+          setActiveMenuItem("Profile");
+          break;
+        case "/userRental":
+          setActiveMenuItem("home");
+          break;
+        case "/Reserve/undefined":
+          setActiveMenuItem("Services");
+          break;
+        case "/finalDetails":
+          setActiveMenuItem("Services");
+          break;
 
-      case "/userService":
-        setActiveMenuItem("Services");
-        break;
+        case "/Book/undefined":
+          setActiveMenuItem("Services");
+          break;
+        case "/stafftasks":
+          setActiveMenuItem("Tasks");
+          break;
+        case "/updatebusschedule":
+          setActiveMenuItem("Update Bus Schedule");
+          break;
+        case "/notifications":
+          setActiveMenuItem("Create Notification");
+          break;
+        case "/userFind":
+          setActiveMenuItem("Home");
+          break;
 
-      case "/userActivity":
-        setActiveMenuItem("Activity");
-        break;
-      case "/UserBuses":
-        setActiveMenuItem("Services");
-        break;
-      case "/UserBusSchedule":
-        setActiveMenuItem("Services");
-        break;
+        case "/userService":
+          setActiveMenuItem("Services");
+          break;
 
-      case "/scheduledetails/:id":
-        setActiveMenuItem("Update Bus Schedule");
-        break;
-      case "/vehicles":
-        setActiveMenuItem("Vehicles");
-        break;
-      case "/Returns":
-        setActiveMenuItem("Services");
-      case "/ReturnConfirmation":
-        setActiveMenuItem("Vehicles");
-        break;
-        break;
-      default:
-        setActiveMenuItem(""); // Clear active menu item if path doesn't match
-        break;
+        case "/userActivity":
+          setActiveMenuItem("Activity");
+          break;
+        case "/UserBuses":
+          setActiveMenuItem("Services");
+          break;
+        case "/UserBusSchedule":
+          setActiveMenuItem("Services");
+          break;
+
+        case "/scheduledetails/:id":
+          console.log("Matched /scheduledetails/:id route");
+          setActiveMenuItem("Update Bus Schedule");
+          break;
+        case "/vehicles":
+          setActiveMenuItem("Vehicles");
+          break;
+        case "/Returns":
+          setActiveMenuItem("Services");
+        case "/ReturnConfirmation":
+          setActiveMenuItem("Vehicles");
+          break;
+          break;
+        default:
+          console.log("No match found, clearing activeMenuItem");
+          setActiveMenuItem("");
+          break;
+      }
     }
   }, [location.pathname]);
 
@@ -179,7 +189,7 @@ export function App() {
           />
         )}
       </div>
-      {userLoggedIn && !isNotFoundRoute && <MobileHeader />}
+      {userLoggedIn && <MobileHeader />}
     </div>
   );
 }

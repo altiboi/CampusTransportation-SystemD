@@ -36,6 +36,10 @@ const DesktopHeader = ({ currentUser }) => {
     // Toggle sidebar or menu visibility if needed
   };
 
+  const handleAvatarClick = () => {
+    navigate("/profile");
+  };
+
   return (
     <header className="hidden lg:flex items-center justify-between bg-white p-4 fixed top-0 left-72 w-[calc(100%-18rem)] z-50 ">
       <button onClick={handleMenuClick} className="text-black">
@@ -53,7 +57,17 @@ const DesktopHeader = ({ currentUser }) => {
             </span>
           )}
         </button>
-        <Avatar name={currentUser?.name || ""} size={40} />
+        <button onClick={handleAvatarClick}>
+          {currentUser?.displayImage ? (
+            <img
+              src={currentUser.displayImage}
+              alt={currentUser.name}
+              className="w-10 h-10 rounded-full object-cover"
+            />
+          ) : (
+            <Avatar name={currentUser?.name || ""} size={40} />
+          )}
+        </button>
       </div>
     </header>
   );

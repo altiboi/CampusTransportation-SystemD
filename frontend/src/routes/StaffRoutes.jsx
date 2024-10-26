@@ -12,12 +12,11 @@ import Login from "../pages/Login";
 import Register from "../pages/Register";
 import ProtectedRoute from "./ProtectedRoute";
 import { useAuth } from "../contexts/AuthProvider";
+import ProfilePage from "../components/ProfilePage";
 import NotFoundPage from "../pages/NotFoundPage"; // Import the NotFoundPage component
 
-function StaffRoutes({ vehicles , notifs ,currentUser}) {
+function StaffRoutes({ vehicles, notifs, currentUser }) {
   const { userLoggedIn } = useAuth();
-
-
 
   return (
     <Routes>
@@ -34,15 +33,31 @@ function StaffRoutes({ vehicles , notifs ,currentUser}) {
       <Route path="/register" element={<Register />} />
       <Route
         path="/home"
-        element={<ProtectedRoute element={<StaffHomePage currentUser={currentUser} vehicles={vehicles}/>} />}
+        element={
+          <ProtectedRoute
+            element={
+              <StaffHomePage currentUser={currentUser} vehicles={vehicles} />
+            }
+          />
+        }
       />
       <Route
         path="/notifications"
-        element={<ProtectedRoute element={<NotificationsPage notifs = {notifs} currentUser = {currentUser}/>} />}
+        element={
+          <ProtectedRoute
+            element={
+              <NotificationsPage notifs={notifs} currentUser={currentUser} />
+            }
+          />
+        }
       />
       <Route
         path="/staffanalytics"
-        element={<ProtectedRoute element={<StaffAnalyticsPage vehicles={vehicles}/>} />}
+        element={
+          <ProtectedRoute
+            element={<StaffAnalyticsPage vehicles={vehicles} />}
+          />
+        }
       />
       <Route
         path="/scheduledetails/:id"
@@ -56,9 +71,13 @@ function StaffRoutes({ vehicles , notifs ,currentUser}) {
         path="/updatebusschedule"
         element={<ProtectedRoute element={<StaffUpdateBusSchedulePage />} />}
       />
+      <Route path="/profile" element={<ProfilePage />} />
+
       <Route
         path="/vehicles"
-        element={<ProtectedRoute element={<VehiclesPage vehicles={vehicles}/>} />}
+        element={
+          <ProtectedRoute element={<VehiclesPage vehicles={vehicles} />} />
+        }
       />
       {/* Catch-all route for undefined paths */}
       <Route path="*" element={<NotFoundPage />} />
