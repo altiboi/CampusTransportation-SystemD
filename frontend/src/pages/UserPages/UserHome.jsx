@@ -183,20 +183,20 @@ function UserHome() {
               {availableBike ? (
                 <div className="vehicle-details">
                   <div className="selection">
-                    <select
-                      id="stationFilter"
-                      className="dropdown w-full p-2 border border-gray-300 rounded"
-                      onChange={handleStationChange}
-                      value={selectedStation?.id || ""}
-                    >
-                      <option value="">All Stations</option>
-                      {rentalStations.map((station) => (
-                        <option key={station.id} value={station.id}>
-                          {station.name}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
+                  <select
+                    id="stationFilter"
+                    className="dropdown w-full p-2 border border-gray-300 rounded"
+                    onChange={handleStationChange}
+                    value={selectedStation?.id || ""}
+                  >
+                    <option value="">All Stations</option>
+                    {rentalStations.map((station) => (
+                      <option key={station.id} value={station.id}>
+                        {station.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
                 <span className="outer">
                   <span className="inner">Registration:</span>
                   <span className="inner">{availableBike.registration}</span>
@@ -211,14 +211,31 @@ function UserHome() {
                       className="px-4 py-2 bg-black text-white rounded"
                       data-testid="book-button"
                       onClick={() => Book(availableBike)}
-                      
+                      disabled={!selectedStation}
                     >
                       Book now
                     </button>
                   </div>
                 </div>
               ) : (
+                <>
+                <div className="selection">
+                <select
+                  id="stationFilter"
+                  className="dropdown w-full p-2 border border-gray-300 rounded"
+                  onChange={handleStationChange}
+                  value={selectedStation?.id || ""}
+                >
+                  <option value="">Select Rental Station</option>
+                  {rentalStations.map((station) => (
+                    <option key={station.id} value={station.id}>
+                      {station.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
                 <p className="nobike">No available bikes at the moment :(</p>
+                  </>
               )}
             </div>
           </Card>:
