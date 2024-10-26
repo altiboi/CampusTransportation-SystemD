@@ -5,7 +5,11 @@ import Modal from "../../components/common/staffComponents/Modal";
 import VehicleCard from "../../components/common/VehicleCard";
 import AddVehicleModal from "../../components/common/staffComponents/AddVehicleModal";
 import { useAppContext } from "../../contexts/AppContext";
-import { addVehicle, getAllVehicles, fetchRentalStations } from "../../api/functions";
+import {
+  addVehicle,
+  getAllVehicles,
+  fetchRentalStations,
+} from "../../api/functions";
 
 const VEHICLE_TAGS = ["bike", "scooter", "skateboard"];
 
@@ -82,13 +86,13 @@ const VehiclesPage = ({ vehicles }) => {
   const handleAddVehicle = async (newVehicle) => {
     try {
       await addVehicle(newVehicle);
-      const updatedVehicles = await getAllVehicles(); 
-      
-      setLocalVehicles(updatedVehicles); 
+      const updatedVehicles = await getAllVehicles();
+
+      setLocalVehicles(updatedVehicles);
     } catch (error) {
       console.error("Error adding vehicle:", error);
     }
-    closeAddVehicleModal(); 
+    closeAddVehicleModal();
   };
 
   useEffect(() => {
@@ -116,8 +120,8 @@ const VehiclesPage = ({ vehicles }) => {
   };
 
   return (
-    <div className="pt-20 p-8">
-      <div className="bg-white p-6 rounded-lg shadow-lg mb-6">
+    <div className="pt-10 mt-16 p-8">
+      <div className="bg-white p-6 rounded-xl shadow-lg mb-6">
         <div className="flex justify-between items-center mb-4">
           <h1 className="text-2xl font-bold">Rental Vehicles</h1>
           <button
@@ -130,7 +134,7 @@ const VehiclesPage = ({ vehicles }) => {
 
         <div className="flex flex-col items-center">
           <SearchBar onSearch={handleSearch} />
-          
+
           {/* Tags Input */}
           <TagsInput
             tags={VEHICLE_TAGS}
@@ -140,7 +144,10 @@ const VehiclesPage = ({ vehicles }) => {
 
           {/* Rental Station Dropdown */}
           <div className="mt-4 w-full md:w-1/3">
-            <label htmlFor="stationFilter" className="block mb-2 text-sm font-medium">
+            <label
+              htmlFor="stationFilter"
+              className="block mb-2 text-sm font-medium"
+            >
               Filter by Rental Station
             </label>
             <select
@@ -195,7 +202,7 @@ const VehiclesPage = ({ vehicles }) => {
             <h3 className="text-lg font-semibold">Model</h3>
             <p>{selectedVehicle.model}</p>
           </div>
-         
+
           <div className="mb-4">
             <h3 className="text-lg font-semibold">Year</h3>
             <p>{selectedVehicle.year}</p>

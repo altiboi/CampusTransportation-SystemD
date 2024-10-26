@@ -9,8 +9,7 @@ import { AppProvider, useAppContext } from "./contexts/AppContext";
 import MobileHeader from "./components/common/MobileHeader";
 import DesktopHeader from "./components/common/DesktopHeader";
 import { useAuth } from "./contexts/AuthProvider";
-import { getAllVehicles , getNotifications } from "./api/functions"; 
-
+import { getAllVehicles, getNotifications } from "./api/functions";
 
 export function App() {
   const [activeMenuItem, setActiveMenuItem] = useState("");
@@ -19,13 +18,11 @@ export function App() {
   const [vehicles, setVehicles] = useState([]); // Add state for vehicles
   const [notifs, setNotifs] = useState([]); // Add state for notifs
 
-
   const location = useLocation();
   const { task } = useAppContext();
 
   useEffect(() => {
     const fetchUserRole = async () => {
-   
       if (currentUser) {
         try {
           setRole(currentUser.role);
@@ -64,8 +61,6 @@ export function App() {
     fetchNotifs();
   }, []);
 
-
-
   useEffect(() => {
     switch (location.pathname) {
       case "/home":
@@ -77,22 +72,22 @@ export function App() {
       case "/staffanalytics":
         setActiveMenuItem("Analytics");
         break;
-        case "/confirmation":
+      case "/confirmation":
         setActiveMenuItem("Services");
         break;
       case "/userRental":
         setActiveMenuItem("home");
         break;
-        case "/Reserve/undefined":
+      case "/Reserve/undefined":
         setActiveMenuItem("Services");
         break;
-        case "/finalDetails":
-          setActiveMenuItem("Services");
-          break;
-          
-        case "/Book/undefined":
-          setActiveMenuItem("Services");
-          break;
+      case "/finalDetails":
+        setActiveMenuItem("Services");
+        break;
+
+      case "/Book/undefined":
+        setActiveMenuItem("Services");
+        break;
       case "/stafftasks":
         setActiveMenuItem("Tasks");
         break;
@@ -113,10 +108,10 @@ export function App() {
       case "/userActivity":
         setActiveMenuItem("Activity");
         break;
-        case "/UserBuses":
+      case "/UserBuses":
         setActiveMenuItem("Services");
         break;
-        case "/UserBusSchedule":
+      case "/UserBusSchedule":
         setActiveMenuItem("Services");
         break;
 
@@ -126,9 +121,9 @@ export function App() {
       case "/vehicles":
         setActiveMenuItem("Vehicles");
         break;
-        case "/Returns":
+      case "/Returns":
         setActiveMenuItem("Services");
-        case "/ReturnConfirmation":
+      case "/ReturnConfirmation":
         setActiveMenuItem("Vehicles");
         break;
         break;
@@ -144,10 +139,15 @@ export function App() {
 
   const renderRoutes = () => {
     if (role === "staff") {
-      return <StaffRoutes vehicles={vehicles} notifs = {notifs} currentUser = {currentUser} />;
-      
+      return (
+        <StaffRoutes
+          vehicles={vehicles}
+          notifs={notifs}
+          currentUser={currentUser}
+        />
+      );
     } else if (role === "user") {
-      return <UserRoutes currentUser={currentUser}/>;
+      return <UserRoutes currentUser={currentUser} />;
     } else {
       return <AppRoutes />;
     }
@@ -165,7 +165,7 @@ export function App() {
             handleMenuItemClick={handleMenuItemClick}
             role={role}
           />
-          <DesktopHeader currentUser={currentUser}/>
+          <DesktopHeader currentUser={currentUser}></DesktopHeader>
         </>
       )}
       <div className={`flex-1 flex flex-col ${userLoggedIn ? "ml-1/4" : ""}`}>
