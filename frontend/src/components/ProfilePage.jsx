@@ -5,8 +5,16 @@ import Avatar from "./common/staffComponents/Avatar";
 import { doSignOut } from "../firebase/auth";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPencil } from "@fortawesome/free-solid-svg-icons";
+import { useEffect } from "react";
+import { useAppContext } from "../contexts/AppContext";
 
 const ProfilePage = () => {
+  const { setTitle, setTask } = useAppContext();
+
+  useEffect(() => {
+    setTitle("Profile");
+    setTask(1);
+  }, [setTitle, setTask]);
   const { currentUser } = useAuth();
   const navigate = useNavigate();
   const [uploadedImage, setUploadedImage] = useState(null);
