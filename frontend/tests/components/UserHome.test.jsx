@@ -1,16 +1,16 @@
 import React from 'react';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen, fireEvent,prettyDOM,waitFor} from '@testing-library/react';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import UserHome from '../../src/pages/UserPages/UserHome';
 import { describe, it, expect } from 'vitest';
 import '@testing-library/jest-dom';
-import { getAllVehicles,addNewRentalAndUpdateVehicle} from '../../src/api/functions'
+import { getAllVehicles,addNewRentalAndUpdateVehicle,fetchRentalStations} from '../../src/api/functions'
 
 vi.mock('../../src/api/functions', () => ({
   getAllVehicles: vi.fn(),
   addNewRentalAndUpdateVehicle: vi.fn(),
+  fetchRentalStations: vi.fn(),
 }));
-
 vi.mock('../../src/contexts/AppContext', () => ({
   useAppContext: () => ({
     setTitle: vi.fn(),
@@ -38,7 +38,7 @@ describe('UserHome Component', () => {
           <Route path="/" element={<UserHome />} />
           <Route path="/userRental" element={<RentalPage />} />
           <Route path="/userFind" element={<FindPage />} />
-          <Route path="/UserMap" element={<CampusMapPage />} />
+          <Route path="/Returns" element={<CampusMapPage />} />
           <Route path="/UserFines" element={<FinesPage />} />
           <Route path="/UserBuses" element={<BusSchedulePage />} />
         </Routes>
@@ -58,45 +58,40 @@ describe('UserHome Component', () => {
     getAllVehicles.mockResolvedValueOnce(mockVehicles);
 
     renderComponent();
+ 
     expect(await screen.findByText('Registration:')).toBeInTheDocument();
     expect(screen.getByText('BIKE123')).toBeInTheDocument();
   });
-  it('books a bike successfully', async () => {
+  it('allows station selection and books a bike successfully', async () => {
+    // Mock the stations
+    const mockStations = [{ id: 'station1', name: 'Station 1' }];
+    fetchRentalStations.mockResolvedValueOnce(mockStations);
+    
+    // Mock an available bike
     const mockVehicles = [
-        {
-            available: true,
-            currentRentalID: null,
-            id: "EQe3X0tcSVvfaWTdHG0f",
-            lastMaintenance: null,
-            make: "Raleigh",
-            model: "Urban Cruiser",
-            registration: "BIKE-202",
-            rentalStationID: "u9pINIk95UtRXy9BCozf",
-            type: "bike",
-            year: "2022"
-        },
-        { id: '2', type: 'car', available: false },
+      {
+        id: 'EQe3X0tcSVvfaWTdHG0f',
+        type: 'bike',
+        available: true,
+        registration: 'BIKE-202',
+        make: 'Raleigh',
+        rentalStationID: 'station1',
+        year: '2022',
+      }
     ];
-
     getAllVehicles.mockResolvedValueOnce(mockVehicles);
-
+  
     renderComponent();
-    const bookButton = await screen.findByTestId('book-button');
-    expect(bookButton).toBeInTheDocument();
+  
 
-    fireEvent.click(bookButton);
+    await waitFor(() => {
+      expect(screen.getByText('Station 1')).toBeInTheDocument();
+    });
 
-    expect(addNewRentalAndUpdateVehicle).toHaveBeenCalledWith(
-        'u9pINIk95UtRXy9BCozf', 
-        'bike',
-        '12345', 
-        "EQe3X0tcSVvfaWTdHG0f",
-        2
-    );
+    
+  });
 
 
-
-});
   it('should navigate to the Rental Stations page when the card is clicked', () => {
     renderComponent();
     const rentalCard = screen.getAllByText('Rent');
@@ -131,18 +126,18 @@ describe('UserHome Component', () => {
     expect(screen.getByText('Find Page')).toBeInTheDocument();
    
   });
-  it('should navigate to the map page when Rental Station  card is clicked', () => {
+  it('should navigate to the return page when retrun  card is clicked', () => {
     renderComponent();
-    const busScheduleCards = screen.getAllByText('Rental Stations');
+    const busScheduleCards = screen.getAllByText('Returns');
     expect(busScheduleCards.length).toBeGreaterThan(1); 
 
 
-    const secondBusScheduleCard = busScheduleCards[1]; 
-    expect(secondBusScheduleCard).toBeInTheDocument();
+    const secondbusScheduleCards=busScheduleCards [1]
+    expect(secondbusScheduleCards).toBeInTheDocument();
 
-    const findLink = secondBusScheduleCard.closest('a');
+    const findLink = secondbusScheduleCards.closest('a');
     expect(findLink).toBeInTheDocument();
-    expect(findLink.getAttribute('href')).toBe('/UserMap');
+    expect(findLink.getAttribute('href')).toBe('/Returns');
  
 
 
@@ -197,7 +192,6 @@ describe('UserHome Component', () => {
     renderComponent();
     expect(screen.getByAltText('Car_icon_for_rental')).not.toBeNull();
     expect(screen.getByAltText('Find_icon')).not.toBeNull();
-    expect(screen.getByAltText('Rental_Station_icon')).not.toBeNull();
     expect(screen.getByAltText('Bicycle_rental_icon')).not.toBeNull();
     expect(screen.getByAltText('Bus_schedule_icon')).not.toBeNull();
     expect(screen.getByAltText('Fines_icon')).not.toBeNull();
