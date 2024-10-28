@@ -9,7 +9,8 @@ import returns from '../../assets/return-.jpg';
 import rental from '../../assets/rental.png'
 import "./UserHome.scss";
 
-import bikeImage from "../../assets/bike.svg";
+import bikeImage from "../../assets/vehicles.jpg"
+import hello from "../../assets/Hi.avif"
 import bike from "../../assets/bike.svg";
 import scooter from "../../assets/scooter.svg";
 import skateBoard from "../../assets/skateBoard.svg";
@@ -132,8 +133,18 @@ function UserHome() {
 
   return (
     <main className="Home-container ">
-        <div className="text-2xl font-semibold mb-6">
-          Welcome, {currentUser.name}!
+        <div className="greatings">
+        <Card className="greatings_card flex flex-row items-center justify-between text-black !bg-gray-100 p-6 mb-6 rounded shadow-md">
+          <div className="relative">
+            <h2 className="text-3xl font-semibold">
+              Hello, {currentUser.name}!
+            </h2>
+            <p className="text-lg mt-2">It's great to see you again</p>
+          </div>
+          <div>
+            <img src={hello} alt="Hello" className="w-32 h-32 text-white" />
+          </div>
+        </Card>
         </div>
 
       <section className="container">
