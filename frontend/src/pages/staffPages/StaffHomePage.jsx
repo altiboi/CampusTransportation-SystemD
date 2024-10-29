@@ -142,6 +142,7 @@ function StaffHomePage({ currentUser, vehicles }) {
     setIsLoadingNotifications(true);
     try {
       const allNotifications = await fetchUserNotifications(currentUser.uid);
+      console.log(allNotifications);
       const recent = allNotifications.slice(0, 3);
       setRecentNotifications(recent);
     } catch (error) {
@@ -231,7 +232,7 @@ function StaffHomePage({ currentUser, vehicles }) {
           )}
         </div>
 
-        <Card className="mb-12 bg-gray-100">
+        {/* <Card className="mb-12 bg-gray-100">
           <h2 className="text-xl font-semibold mb-4">Recent Notifications</h2>
           {isLoadingNotifications ? (
             <>
@@ -258,7 +259,7 @@ function StaffHomePage({ currentUser, vehicles }) {
           >
             View all notifications
           </Link>
-        </Card>
+        </Card> */}
       </div>
     </div>
   );
