@@ -134,43 +134,21 @@ function UserHome() {
   return (
     <main className="Home-container ">
         <div className="greatings">
-        <Card className="greatings_card flex flex-row items-center justify-between text-black !bg-gray-100 p-6 mb-6 rounded shadow-md">
-          <div className="relative">
-            <h2 className="text-3xl font-semibold">
-              Hello, {currentUser.name}!
-            </h2>
-            <p className="text-lg mt-2">It's great to see you again</p>
-          </div>
-          <div>
-            <img src={hello} alt="Hello" className="w-32 h-32 text-white" />
-          </div>
-        </Card>
+          <Card className="greatings_card">
+            <div className="relative">
+              <h2 className="text-3xl font-semibold">
+                Hello, {currentUser.name}!
+              </h2>
+              <p className="text-lg mt-2">It's great to see you again</p>
+            </div>
+            <div>
+              <img src={hello} alt="Hello" className="w-32 h-32 text-white" />
+            </div>
+          </Card>
         </div>
 
       <section className="container">
         <section className="upper">
-          <section className="upper-cards">
-            <Link to="/userRental" className="Links">
-              <Card className="card rent">
-                <section className="card-icon">
-                  <img src={car} alt="Car_icon_for_rental" className="icon" />
-                </section>
-                <section className="card-content">
-                  <span className="card-title">Rent</span>
-                </section>
-              </Card>
-            </Link>
-            <Link to="/userFind" className="Links">
-              <Card className="card">
-                <section className="card-icon">
-                  <img src={find} alt="Find_icon" className="icon"  style={{ height: '4.5rem' }} />
-                </section>
-                <section className="card-content">
-                  <span className="card-title">Find</span>
-                </section>
-              </Card>
-            </Link>
-          </section>         
           <section className="lower-cards">
             <section className="Title">
               <h2 className="title">Suggestions</h2>
@@ -391,6 +369,39 @@ function UserHome() {
                   </section>
                 </Card>
               </Link>
+            
+            </section>
+            <section className="cards-small">
+              <Link to="/Returns"  className='Links'>
+              <Card className="card">
+                  <section className='card-content'>
+                    <h2 className="card-heading">Returns</h2>
+                  </section>
+                  <section className='card-icon'>
+                    <img src={returns} alt="Returns" className="icon" />
+                  </section>
+              </Card>
+              </Link>
+              <Link to="/userRental" className="Links">
+              <Card className="card">
+                <section className="card-icon">
+                  <img src={car} alt="Car icon for rental" className="icon" style={{ height: '3.6rem' }} />
+                </section>
+                <section className="card-content">
+                  <span className="card-title">Rent</span>
+                </section>
+              </Card>
+            </Link>
+            <Link to="/userFind" className="Links">
+              <Card className="card">
+                <section className="card-icon">
+                  <img src={find} alt="Find icon" className="icon" style={{ height: '3.6rem' }} />
+                </section>
+                <section className="card-content">
+                  <span className="card-title">Find</span>
+                </section>
+              </Card>
+            </Link>
             
             </section>
           </section>

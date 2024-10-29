@@ -213,20 +213,8 @@
         }
     
         .notification-section {
-            width: 50%;
-            height: 100%;
-            border: 2px solid silver;
-            padding: 0rem 1rem;
-            padding-top: 4rem;
-            overflow-y: auto; 
-    
-            .notification-container {
-                width: 100%;
-                height: auto; 
-                border: 2px solid black;
-                border-radius: 0.5rem;
-                padding: 1rem;
-            }
+            display: none;
+
         }
     }
     
@@ -243,6 +231,7 @@
             flex-direction: column;
             align-items: center;
             overflow-y: auto; 
+            margin-top: -5rem;
             .actions-title {
               display: none;
 
