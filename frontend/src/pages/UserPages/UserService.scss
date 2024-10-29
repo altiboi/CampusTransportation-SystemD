@@ -221,7 +221,7 @@
     }
     
 }
-@media (max-width: 412px) {
+@media (max-width: 500px) {
     .user-service-container {
         width: 100%;
         height: 100vh; 
@@ -233,7 +233,7 @@
             flex-direction: column;
             align-items: center;
             overflow-y: auto; 
-            margin-top: -5rem;
+            margin-top: 1rem;
             .actions-title {
               display: none;
 
