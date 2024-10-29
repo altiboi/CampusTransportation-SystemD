@@ -5,10 +5,15 @@ import car from '../../assets/car.webp';
 import find from '../../assets/find.avif';
 import fine from '../../assets/fine.avif';
 import schedule from '../../assets/schedule.webp';
+import returns from '../../assets/return-.jpg';
 import rental from '../../assets/rental.png'
 import "./UserHome.scss";
 
-import bikeImage from "../../assets/bike.svg";
+import bikeImage from "../../assets/vehicles.jpg"
+import hello from "../../assets/Hi.avif"
+import bike from "../../assets/bike.svg";
+import scooter from "../../assets/scooter.svg";
+import skateBoard from "../../assets/skateBoard.svg";
 import { useAppContext } from "../../contexts/AppContext";
 import {  getAllVehicles,addNewRentalAndUpdateVehicle ,getUserRentals, fetchRentalStations } from '../../api/functions';
 import { useAuth } from '../../contexts/AuthProvider';
@@ -23,6 +28,7 @@ function UserHome() {
   const [fetchRentalsTrigger, setFetchRentalsTrigger] = useState(false);
   const [selectedStation, setSelectedStation] = useState(null);
   const [rentalStations, setRentalStations] = useState([]);
+  const [errorMessage, setErrorMessage] = useState(""); 
 
 
   useEffect(()=>{
@@ -41,7 +47,8 @@ function UserHome() {
     const getRentalStations = async () => {
       try {
         const stations = await fetchRentalStations();
-        setRentalStations(stations);
+        console.log(stations)
+        setRentalStations(stations||[]);
       } catch (error) {
         console.error("Error fetching rental stations:", error);
       }
@@ -55,7 +62,6 @@ function UserHome() {
     new Date(rental.dueReturnAt) > now &&
     rental.returnedAt === null
   ); 
-  console.log(current)
   useEffect(() => {
     setTitle("Home");
     setTask(0);
@@ -78,19 +84,27 @@ function UserHome() {
     const matchesStation = selectedStation ? vehicle.rentalStationID === selectedStation.id : true;
     return isBike && matchesStation;
   });
+
   
-  const Book= async (bike) => {
+  const Book = async (bike) => {
+    if (!selectedStation) {
+      setErrorMessage("Please select a rental station before booking."); // Set the error message
+      return; // Exit the function early
+    }
+    
+    setErrorMessage(""); // Clear any previous error message
+
     setFetchRentalsTrigger(prev => !prev);
+
     if (!currentUser) {
       console.error("User not authenticated.");
       return; // Prevent further action if currentUser is not available
     }
 
     try {
-      console.log(currentUser);
       await addNewRentalAndUpdateVehicle(bike.rentalStationID, bike.type, currentUser.uid, bike.id, 2);
       await refreshCurrentUser();
-      console.log("you have booked a bike")
+
     } catch (error) {
       console.error("Error confirming rental: ", error);
     }
@@ -100,52 +114,55 @@ function UserHome() {
     const selected = rentalStations.find((station) => station.id === stationID);
     setSelectedStation(selected || null);
   };
-
+  const getVehicleImage = (type) => {
+    switch (type) {
+      case "bike":
+        return bike;
+      case "scooter":
+        return scooter;
+      case "skateboard":
+        return skateBoard;
+      default:
+        return null;
+    }
+  };
+  const formatDueReturnAt = (dueReturnAt) => {
+    const date = new Date(dueReturnAt); // Convert string to Date object
+    return date.toLocaleString(); // Format it according to the user's locale
+  };
 
   return (
     <main className="Home-container ">
-        <div className="text-2xl font-semibold mb-6">
-          Welcome, {currentUser.name}!
+        <div className="greatings">
+          <Card className="greatings_card">
+            <div className="relative">
+              <h2 className="text-3xl font-semibold">
+                Hello, {currentUser.name}!
+              </h2>
+              <p className="text-lg mt-2">It's great to see you again</p>
+            </div>
+            <div>
+              <img src={hello} alt="Hello" className="w-32 h-32 text-white" />
+            </div>
+          </Card>
         </div>
 
       <section className="container">
         <section className="upper">
-          <section className="upper-cards">
-            <Link to="/userRental" className="Links">
-              <Card className="card rent">
-                <section className="card-icon">
-                  <img src={car} alt="Car_icon_for_rental" className="icon" />
-                </section>
-                <section className="card-content">
-                  <span className="card-title">Rent</span>
-                </section>
-              </Card>
-            </Link>
-            <Link to="/userFind" className="Links">
-              <Card className="card">
-                <section className="card-icon">
-                  <img src={find} alt="Find_icon" className="icon"  style={{ height: '4.5rem' }} />
-                </section>
-                <section className="card-content">
-                  <span className="card-title">Find</span>
-                </section>
-              </Card>
-            </Link>
-          </section>         
           <section className="lower-cards">
             <section className="Title">
               <h2 className="title">Suggestions</h2>
             </section>
             <section className="cards">
-              <Link to={"/UserMap"} className='Links'>
-                <Card className="card">
+            <Link to="/Returns"  className='Links'>
+              <Card className="card">
                   <section className='card-content'>
-                    <span className='card-title'>Rental Stations</span>
+                    <h2 className="card-heading">Returns</h2>
                   </section>
                   <section className='card-icon'>
-                    <img src={rental} alt="Rental_Station_icon" className='icon' />
+                    <img src={returns} alt="Returns" className="icons" />
                   </section>
-                </Card>
+              </Card>
               </Link>
               <Link to="/UserBuses" className="Links">
                 <Card className="card">
@@ -196,6 +213,7 @@ function UserHome() {
                       </option>
                     ))}
                   </select>
+                  {errorMessage && <p className="text-red-500 mt-1">{errorMessage}</p>} 
                 </div>
                 <span className="outer">
                   <span className="inner">Registration:</span>
@@ -207,14 +225,14 @@ function UserHome() {
                   <span className="inner">{availableBike.make}</span>
                 </span>
                   <div className="option">
-                    <button
-                      className="px-4 py-2 bg-black text-white rounded"
-                      data-testid="book-button"
-                      onClick={() => Book(availableBike)}
-                      disabled={!selectedStation}
-                    >
-                      Book now
-                    </button>
+                  <button
+                    className="px-4 py-2 bg-black text-white rounded"
+                    data-testid="book-button"
+                    aria-label="Book now"
+                    onClick={() => Book(availableBike)}
+                  >
+                    Book now
+                  </button>
                   </div>
                 </div>
               ) : (
@@ -239,7 +257,55 @@ function UserHome() {
               )}
             </div>
           </Card>:
-          <p className="text">You have a booked vehicle :)</p>
+                      <Card className="cards">
+                      <div className="lower_card_part">
+                        <img
+                          src={getVehicleImage(current[0].type)}
+                          alt="Bicycle_rental_icon"
+                          className="image"
+                        />
+                        {availableBike ? (
+                          <div className="vehicle-details">
+                          <span className="outer">
+                            <span className="inner">Rental time :</span>
+                            <span className="inner">{formatDueReturnAt(current[0].rentedAt)}</span>
+                          </span>
+                          <span className="outer">
+                            <span className="inner">Due Time:</span>
+                            <span className="inner">{formatDueReturnAt(current[0].dueReturnAt)}</span>
+                          </span>
+          
+                          <span className="outer">
+                            <span className="inner">Type:</span>
+                            <span className="inner">{current[0].type}</span>
+                          </span>
+                            <div className="option">
+                            <p className="text">You have a booked vehicle :)</p>
+                            </div>
+                          </div>
+                        ) : (
+                          <>
+                          <div className="selection">
+                          <select
+                            id="stationFilter"
+                            className="dropdown w-full p-2 border border-gray-300 rounded"
+                            onChange={handleStationChange}
+                            value={selectedStation?.id || ""}
+                          >
+                            <option value="">Select Rental Station</option>
+                            {rentalStations.map((station) => (
+                              <option key={station.id} value={station.id}>
+                                {station.name}
+                              </option>
+                            ))}
+                          </select>
+                        </div>
+                          <p className="nobike">No available bikes at the moment :(</p>
+                            </>
+                        )}
+                      </div>
+                    </Card>
+
           }
             
           </section>
@@ -273,15 +339,15 @@ function UserHome() {
               <h2 className="title">Suggestions</h2>
             </section>
             <section className="cards">
-              <Link to={"/UserMap"} className='Links'>
-                <Card className="card">
+              <Link to="/Returns"  className='Links'>
+              <Card className="card">
                   <section className='card-content'>
-                    <span className='card-title'>Rental Stations</span>
+                    <h2 className="card-heading">Returns</h2>
                   </section>
                   <section className='card-icon'>
-                    <img src={rental} alt="" className='icon' />
+                    <img src={returns} alt="Returns" className="icon" />
                   </section>
-                </Card>
+              </Card>
               </Link>
               <Link to="/UserBuses" className="Links">
                 <Card className="card">
@@ -303,6 +369,39 @@ function UserHome() {
                   </section>
                 </Card>
               </Link>
+            
+            </section>
+            <section className="cards-small">
+              <Link to="/Returns"  className='Links'>
+              <Card className="card">
+                  <section className='card-content'>
+                    <h2 className="card-heading">Returns</h2>
+                  </section>
+                  <section className='card-icon'>
+                    <img src={returns} alt="Returns" className="icon" />
+                  </section>
+              </Card>
+              </Link>
+              <Link to="/userRental" className="Links">
+              <Card className="card">
+                <section className="card-icon">
+                  <img src={car} alt="Car icon for rental" className="icon" style={{ height: '4.5rem' }} />
+                </section>
+                <section className="card-content">
+                  <span className="card-title">Rent</span>
+                </section>
+              </Card>
+            </Link>
+            <Link to="/userFind" className="Links">
+              <Card className="card">
+                <section className="card-icon">
+                  <img src={find} alt="Find icon" className="icon" style={{ height: '4.5rem' }} />
+                </section>
+                <section className="card-content">
+                  <span className="card-title">Find</span>
+                </section>
+              </Card>
+            </Link>
             
             </section>
           </section>

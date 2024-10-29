@@ -78,11 +78,14 @@ function UserService() {
   };
 
   const filteredNotifications = (notifications || []).filter((n) => !n.isRead);
+
   const formatDate = (dateString) => {
     const options = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit', hour12: true };
     const date = new Date(dateString);
     return date.toLocaleDateString(undefined, options);
   };
+
+  
   return (
     <main className='user-service-container'>
       <section className='actions-section'>
@@ -96,7 +99,7 @@ function UserService() {
                 <h2 className="card-heading">Returns</h2>
               </section>
               <section className='card-icon'>
-                <img src={returns} alt="Returns" className='icon-large' />
+                <img src={returns} alt="Returns" className='icon' />
               </section>
             </Link>
           </Card>
@@ -126,7 +129,7 @@ function UserService() {
                 <h2 className="card-heading">Rent</h2>
               </section>
               <section className='card-icon'>
-                <img src={car} alt="Rent" className='icon-large' />
+                <img src={car} alt="Rent" className='ico' />
               </section>
             </Link>
           </Card>
