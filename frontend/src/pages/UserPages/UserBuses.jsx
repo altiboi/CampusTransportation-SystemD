@@ -38,6 +38,7 @@ function UserBuses() {
                 {/* Back button */}
                 <button
                     className='absolute top-5 left-6 p-2 text-gray-600 hover:text-gray-800'
+                     aria-label="Back"
                     onClick={handleBackClick}
                 >
                     <FontAwesomeIcon icon={faArrowLeft} className='text-xl' />
