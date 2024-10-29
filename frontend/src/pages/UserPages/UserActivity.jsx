@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Card from '../../components/Card';
 import './UserActivity.scss';
 import { useAppContext } from "../../contexts/AppContext";
-import { getUserRentals } from '../../api/functions'; // Import the function to fetch user rentals
+import { getUserRentals } from '../../api/functions';
 import { useAuth } from '../../contexts/AuthProvider';
 import bike from "../../assets/bike.svg";
 import scooter from "../../assets/scooter.svg";
@@ -11,7 +11,7 @@ import bus from "../../assets/bus.png";
 
 function UserActivity({ currentUser }) {
   const { setTitle, setTask } = useAppContext();
-  const [activeTab, setActiveTab] = useState('upcoming'); // 'upcoming', 'history', or 'current'
+  const [activeTab, setActiveTab] = useState('upcoming');
   const [upcomingRentals, setUpcomingRentals] = useState([]);
   const [currentRentals, setCurrentRentals] = useState([]);
   const [historicalRentals, setHistoricalRentals] = useState([]);
@@ -28,8 +28,6 @@ function UserActivity({ currentUser }) {
         const rentals = await getUserRentals(currentUser?.uid);
         const now = new Date();
 
-        console.log(rentals)
-
         // Filter rentals into upcoming, current, and history
         const upcoming = rentals.filter(rental => new Date(rental.rentedAt) > now);
         const current = rentals.filter(rental =>
@@ -42,15 +40,15 @@ function UserActivity({ currentUser }) {
         setUpcomingRentals(upcoming);
         setCurrentRentals(current);
         setHistoricalRentals(historical);
-        setLoading(false); // Stop loading after data fetch
+        setLoading(false);
       } catch (error) {
         console.error("Error fetching rentals:", error);
-        setLoading(false); // Stop loading even in case of an error
+        setLoading(false);
       }
     };
 
     fetchRentals();
-  }, []);
+  }, [currentUser]);
 
   const handleTabChange = (tab) => {
     setActiveTab(tab);
@@ -60,19 +58,18 @@ function UserActivity({ currentUser }) {
     return <p>Loading rentals...</p>;
   }
 
-const getVehicleImage = (type) => {
-  switch (type) {
-    case "bike":
-      return bike;
-    case "scooter":
-      return scooter;
-    case "skateboard":
-      return skateBoard;
-    default:
-      return null;
-  }
-};
-
+  const getVehicleImage = (type) => {
+    switch (type) {
+      case "bike":
+        return bike;
+      case "scooter":
+        return scooter;
+      case "skateboard":
+        return skateBoard;
+      default:
+        return null;
+    }
+  };
 
   return (
     <main className='activity-main-container'>
@@ -83,7 +80,7 @@ const getVehicleImage = (type) => {
             className={`tab-button ${activeTab === 'current' ? 'active' : ''}`}
             onClick={() => handleTabChange('current')}
           >
-              Current
+            Current
           </button>
           <button
             className={`tab-button ${activeTab === 'upcoming' ? 'active' : ''}`}
@@ -110,10 +107,18 @@ const getVehicleImage = (type) => {
             upcomingRentals.map((rental) => (
               <section key={rental.id} className='activity-upper-card'>
                 <Card className="activity-card">
-                  <section>
+                  <section className='image'>
+                    <img src={getVehicleImage(rental.type)} alt={rental.type} className="vehicle-card-image" />
+                  </section>
+                  <section className='details'>
                     <h2 className="activity-card-title">{rental.type} reserved</h2>
+                    <h2 className='activity-time'>Rental Period: {new Date(rental.rentedAt).toLocaleTimeString()} - {new Date(rental.dueReturnAt).toLocaleTimeString()}</h2>
+                  </section>
+                  <section className='time'>
+                    <span>
+                      <h2 className='activity-place'>Date</h2>
+                    </span>
                     <h2 className='activity-place'>{new Date(rental.rentedAt).toLocaleDateString()}</h2>
-                    <h2 className='activity-time'>{new Date(rental.rentedAt).toLocaleTimeString()} - {new Date(rental.dueReturnAt).toLocaleTimeString()}</h2>
                   </section>
                 </Card>
               </section>
@@ -135,7 +140,7 @@ const getVehicleImage = (type) => {
               <section key={rental.id} className='activity-upper-card'>
                 <Card className="activity-card">
                   <section className='image'>
-                  <img src={ getVehicleImage(rental.type)} alt={rental.type} className="vehicle-card-image" />
+                    <img src={getVehicleImage(rental.type)} alt={rental.type} className="vehicle-card-image" />
                   </section>
                   <section className='details'>
                     <h2 className="activity-card-title">You are currently renting a {rental.type}</h2>
@@ -143,7 +148,7 @@ const getVehicleImage = (type) => {
                   </section>
                   <section className='time'>
                     <span>
-                    <h2 className='activity-place'>Date</h2>
+                      <h2 className='activity-place'>Date</h2>
                     </span>
                     <h2 className='activity-place'>{new Date(rental.rentedAt).toLocaleDateString()}</h2>
                   </section>
@@ -167,11 +172,11 @@ const getVehicleImage = (type) => {
               <section key={rental.id} className='activity-upper-card'>
                 <Card className="activity-card">
                   <section className='image'>
-                  <img src={ getVehicleImage(rental.type)} alt={rental.type} className="vehicle-card-image" />
+                    <img src={getVehicleImage(rental.type)} alt={rental.type} className="vehicle-card-image" />
                   </section>
                   <section className='details'>
                     <h2 className="activity-card-title">You booked {rental.type}</h2>
-                     <h2 className='activity-place'>{new Date(rental.rentedAt).toLocaleDateString()}</h2>
+                    <h2 className='activity-place'>{new Date(rental.rentedAt).toLocaleDateString()}</h2>
                   </section>
                   <section className='time'>
                     <h2 className='activity-time'>{new Date(rental.rentedAt).toLocaleTimeString()} - {new Date(rental.dueReturnAt).toLocaleTimeString()}</h2>

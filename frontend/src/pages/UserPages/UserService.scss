@@ -119,9 +119,11 @@
         }
     }
 }
-@media (max-width: 800px) {
+@media (max-width: 1440px) {
     .user-service-container {
         display: flex;
+        align-items: center;
+        justify-content: center;
         flex-direction: row;
         width: 100%;
         height: 100vh; 
@@ -187,7 +189,7 @@
                             width: 100%;
                             height: 10%;
                             .card-heading {
-                                font-size: 1.5rem;
+                                font-size: 1rem;
                                 font-weight: 900;
                                 color: black;
                             }

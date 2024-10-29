@@ -296,11 +296,14 @@ $hover-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
 
   
 }
-@media (max-width: 810px) {
+@media (max-width: 1025px) {
   .Home-container {
     padding: 4rem 0;
     width: 100%;
     height: screen;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     .greatings{
       width: 93%;
       box-shadow: none;
