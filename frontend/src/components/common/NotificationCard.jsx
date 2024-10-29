@@ -2,7 +2,7 @@ import React from "react";
 import Avatar from "./staffComponents/Avatar";
 import { formatTimeAgo } from "../../utils/dateUtils"; // Assume this utility function exists
 
-const NotificationCard = ({ notification, onClick, onDelete, isSelected }) => {
+const NotificationCard = ({ notification, onClick, onDelete, isSelected, currentUser }) => {
   if (!notification) {
     return null;
   }
@@ -12,12 +12,14 @@ const NotificationCard = ({ notification, onClick, onDelete, isSelected }) => {
     return body.length > 50 ? `${body.slice(0, 50)}...` : body;
   };
 
+  const isUserNotification = currentUser.uid === notification.SenderID;
+
   return (
     <div
       className={`p-4 cursor-pointer relative transition duration-300 ease-in-out hover:bg-gray-100 hover:scale-[1.02] ${
         isSelected
           ? "bg-gray-100"
-          : notification.isRead
+          : notification.isRead 
           ? "bg-white"
           : "bg-white"
       }`}
@@ -41,7 +43,7 @@ const NotificationCard = ({ notification, onClick, onDelete, isSelected }) => {
             {formatTimeAgo(notification.Date)}
           </p>
         </div>
-        {onDelete && (
+        {isUserNotification && onDelete && (
           <button
             className="text-red-500 hover:text-red-700 ml-2"
             onClick={(e) => {

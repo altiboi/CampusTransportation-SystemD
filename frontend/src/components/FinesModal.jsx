@@ -14,21 +14,21 @@ function FinesModal({ isOpen, onClose, fines, vehicle, fineType }) {
         <table className="w-full border-collapse">
           <thead>
             <tr className="bg-gray-200">
-              <th className="border p-2">Date</th>
+              <th className="border p-2">Date Issued</th>
               <th className="border p-2">Amount</th>
-              <th className="border p-2">Rental ID</th>
-              <th className="border p-2">User ID</th>
+              <th className="border p-2">User</th>
+              <th className="border p-2">Vehicle Reg.</th>
             </tr>
           </thead>
           <tbody>
             {fines.map((fine) => (
               <tr key={fine.rentalID}>
                 <td className="border p-2">
-                  {new Date(fine.issuedAt).toLocaleDateString()}
+                  {new Date(fine.issuedAt).toDateString()}
                 </td>
-                <td className="border p-2">${fine.amount}</td>
-                <td className="border p-2">{fine.rentalID}</td>
-                <td className="border p-2">{fine.userID}</td>
+                <td className="border p-2">R{fine.amount}</td>
+                <td className="border p-2">{fine.user}</td>
+                <td className="border p-2">{fine.vehicleReg}</td>
               </tr>
             ))}
           </tbody>

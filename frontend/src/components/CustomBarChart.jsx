@@ -15,70 +15,30 @@ import FinesModal from "./FinesModal"; // We'll create this component next
 // Assuming you have a function to fetch fines data
 // import { getFinesForVehicle } from "../services/finesService";
 
-function CustomBarChart({ data }) {
+function CustomBarChart({ chartData, fines }) {
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedFines, setSelectedFines] = useState([]);
   const [selectedVehicle, setSelectedVehicle] = useState("");
   const [fineType, setFineType] = useState("");
 
   const handleBarClick = async (entry, dataKey) => {
-    const vehicle = entry.name;
+    const vehicle = entry.name == "Scooters" ? "scooter" : entry.name == "Skateboards" ? "skateboard" : entry.name == "Bikes" ? "bike" : "none";
+    console.log("Selected vehicle:", entry.name); // Debugging line
 
     const isPaid = dataKey === "paidFines";
 
-    // Fetch fines data for the selected vehicle
-    // const fines = await getFinesForVehicle(vehicle);
+    // Filter fines based on the selected vehicle
+    const vehicleFines = fines.filter((fine) => fine.vehicleType === vehicle);
 
-    const fines = {
-      "9ZHlT5ScrPIzoxSerMOQ": [
-        {
-          amount: 50,
-          issuedAt: "Thu, 03 Oct 2024 13:18:55 GMT",
-          paid: true,
-          rentalID: "XOMkrTClECDmbtHafxRm",
-          userID: "nB0yuSKAXhceZifZWpqhRjnpJxs1",
-          vehicleID: "9ZHlT5ScrPIzoxSerMOQ",
-        },
-        {
-          amount: 75,
-          issuedAt: "Fri, 04 Oct 2024 10:30:00 GMT",
-          paid: false,
-          rentalID: "ABCdefGHIjklMNOpqrST",
-          userID: "nB0yuSKAXhceZifZWpqhRjnpJxs1",
-          vehicleID: "9ZHlT5ScrPIzoxSerMOQ",
-        },
-      ],
-      "1ABCdefGHIjklMNOpqrS": [
-        {
-          amount: 100,
-          issuedAt: "Wed, 02 Oct 2024 09:45:30 GMT",
-          paid: true,
-          rentalID: "UVWxyzABCdefGHIjklM",
-          userID: "mC1zvTLBYidgZjgAXqrnSknqKyt2",
-          vehicleID: "1ABCdefGHIjklMNOpqrS",
-        },
-        {
-          amount: 60,
-          issuedAt: "Sat, 05 Oct 2024 14:20:15 GMT",
-          paid: false,
-          rentalID: "NOPqrsTUVwxyzABCdef",
-          userID: "mC1zvTLBYidgZjgAXqrnSknqKyt2",
-          vehicleID: "1ABCdefGHIjklMNOpqrS",
-        },
-      ],
-      // Add more vehicles as needed
-    };
-
-    // Get the fines for the selected vehicle
-    const vehicleFines = fines[vehicle] || [];
+    console.log("Vehicle fines:", vehicleFines); // Debugging line
 
     // Filter fines based on paid status
     const filteredFines = vehicleFines.filter((fine) => fine.paid === isPaid);
 
-    console.log("Filtered fines:", filteredFines); // Add this line for debugging
+    console.log("Filtered fines:", filteredFines); // Debugging line
 
     setSelectedFines(filteredFines);
-    setSelectedVehicle(vehicle);
+    setSelectedVehicle(entry.name);
     setFineType(isPaid ? "Paid" : "Unpaid");
     setModalOpen(true);
   };
@@ -87,7 +47,7 @@ function CustomBarChart({ data }) {
     <>
       <ResponsiveContainer width="100%" height="100%">
         <BarChart
-          data={data}
+          data={chartData}
           margin={{
             top: 5,
             right: 30,

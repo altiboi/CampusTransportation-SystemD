@@ -7,7 +7,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPencil } from "@fortawesome/free-solid-svg-icons";
 import { useEffect } from "react";
 import { useAppContext } from "../contexts/AppContext";
-
+import { db } from "../firebase/firebase";
+import { doc, updateDoc } from "firebase/firestore";
 const ProfilePage = () => {
   const { setTitle, setTask } = useAppContext();
 
@@ -15,6 +16,7 @@ const ProfilePage = () => {
     setTitle("Profile");
     setTask(1);
   }, [setTitle, setTask]);
+
   const { currentUser } = useAuth();
   const navigate = useNavigate();
   const [uploadedImage, setUploadedImage] = useState(null);
@@ -41,9 +43,15 @@ const ProfilePage = () => {
     }
   };
 
-  const handleSaveImage = () => {
-    setUploadedImage(tempImage);
-    setTempImage(null);
+  const handleSaveImage = async () => {
+    try {
+      const userRef = doc(db, "Users", currentUser.uid); // Reference to the user document
+      setUploadedImage(tempImage); // Update the UI 
+      await updateDoc(userRef, { displayImage: tempImage }); // Save Base64 string to Firestore
+      setTempImage(null); // Clear the temporary image
+    } catch (error) {
+      console.error("Error saving image:", error);
+    }
   };
 
   return (

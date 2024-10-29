@@ -8,7 +8,7 @@ import { useAppContext } from "../../contexts/AppContext";
 import scooter from "../../assets/scooter.svg";
 import skateboard from "../../assets/skateBoard.svg";
 import bike from "../../assets/bike.svg";
-import { getAllVehicles, getAllRentals } from "../../api/functions";
+import { getAllVehicles, getAllRentals, getAllFines } from "../../api/functions";
 import CustomLineChart from "../../components/CustomLineChart";
 
 function StaffAnalyticsPage({ vehicles }) {
@@ -23,6 +23,7 @@ function StaffAnalyticsPage({ vehicles }) {
   const [lineChartData, setLineChartData] = useState([]);
   const [timeframe, setTimeframe] = useState("days");
   const [selectedVehicle, setSelectedVehicle] = useState("totalRentals");
+  const [finesChartData, setFinesChartData] = useState([]);
   const [finesData, setFinesData] = useState([]);
 
   useEffect(() => {
@@ -31,26 +32,7 @@ function StaffAnalyticsPage({ vehicles }) {
 
     // Fetch vehicles and rentals when component mounts
     fetchVehiclesAndRentals();
-
-    // Generate demo fines data
-    const demoFinesData = [
-      {
-        name: "Scooters",
-        paidFines: Math.floor(Math.random() * 1000),
-        unpaidFines: Math.floor(Math.random() * 1000),
-      },
-      {
-        name: "Bikes",
-        paidFines: Math.floor(Math.random() * 1000),
-        unpaidFines: Math.floor(Math.random() * 1000),
-      },
-      {
-        name: "Skateboards",
-        paidFines: Math.floor(Math.random() * 1000),
-        unpaidFines: Math.floor(Math.random() * 1000),
-      },
-    ];
-    setFinesData(demoFinesData);
+    fetchFinesData();
   }, [setTitle, setTask]);
 
   const fetchVehiclesAndRentals = async () => {
@@ -85,6 +67,39 @@ function StaffAnalyticsPage({ vehicles }) {
     }
   };
 
+  const fetchFinesData = async () => {
+    try {
+        const fines = await getAllFines();
+        setFinesData(fines);
+        const categorizedFines = fines.reduce((acc, fine) => {
+            const vehicleType = fine.vehicleType.toLowerCase();
+            if (!acc[vehicleType]) {
+                acc[vehicleType] = { paidFines: 0, unpaidFines: 0 };
+            }
+            if (fine.paid) {
+                acc[vehicleType].paidFines += fine.amount;
+            } else {
+                acc[vehicleType].unpaidFines += fine.amount;
+            }
+            return acc;
+        }, {
+            scooter: { paidFines: 0, unpaidFines: 0 },
+            bike: { paidFines: 0, unpaidFines: 0 },
+            skateboard: { paidFines: 0, unpaidFines: 0 },
+        });
+
+        const finesData = [
+            { name: "Scooters", ...categorizedFines.scooter },
+            { name: "Bikes", ...categorizedFines.bike },
+            { name: "Skateboards", ...categorizedFines.skateboard },
+        ];
+
+        setFinesChartData(finesData);
+    } catch (error) {
+        console.error("Error fetching fines data:", error);
+    }
+  };
+
   useEffect(() => {
     processRentalsByTimeframe(allRentals);
   }, [timeframe, allRentals]);
@@ -101,7 +116,7 @@ function StaffAnalyticsPage({ vehicles }) {
       // Determine time grouping based on selected timeframe
       switch (timeframe) {
         case "days":
-          rentedTime = new Date(rental.rentedAt).toLocaleDateString();
+          rentedTime = new Date(rental.rentedAt).toISOString().slice(0, 10);
           break;
         case "weeks":
           const date = new Date(rental.rentedAt);
@@ -140,6 +155,8 @@ function StaffAnalyticsPage({ vehicles }) {
 
       return acc;
     }, {});
+
+    console.log(rentalsByTimeframe);
 
     // Add demo fines data
     const chartData = Object.keys(rentalsByTimeframe).map((time) => ({
@@ -280,7 +297,7 @@ function StaffAnalyticsPage({ vehicles }) {
           <Card className="w-full p-4 bg-white">
             <div className="text-lg font-semibold mb-4">Fines Overview</div>
             <div className="w-full h-64">
-              <CustomBarChart data={finesData} />
+              <CustomBarChart chartData={finesChartData} fines={finesData}/>
             </div>
           </Card>
         </div>
