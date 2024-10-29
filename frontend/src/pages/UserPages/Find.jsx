@@ -108,6 +108,8 @@ function Find() {
       // Filter out locations with null coordinates
       const validLocations = allLocations.filter(location => location.coordinates);
       setLocations(validLocations);
+      console.log(travelMode)
+      console.log(searchQuery1)
     } catch (error) {
       console.error("Error fetching locations:", error);
     }
@@ -116,7 +118,7 @@ function Find() {
   const fetchFavouirites = async () => {
     try {
       const favourites = await getFavourites(currentUser.email);
-      console.log(favourites)
+      
       setFavourites(favourites)
 
     } catch (error) {
@@ -290,7 +292,6 @@ function Find() {
 
       setSearchQuery1(selectedLocation.name); // Update the input with selected location name
       setStartpoint({lat:selectedLocation.coordinates.latitude,lng:selectedLocation.coordinates.longitude});      // Update the destination state with the object
-      alert(selectedLocation.coordinates.latitude)
     } else {
       setSearchQuery1("My Location"); // Update the input with selected location name
       
@@ -488,7 +489,7 @@ function Find() {
                     }}
                     icon={{
                       url: danger,
-                      scaledSize: new google.maps.Size(25, 25), // Adjust size
+                      scaledSize:google?.maps?.Size ? new google.maps.Size(25, 25) : null, // Adjust size
                     }}
                     title={`Incident: ${incident.type}`}
                     label={
@@ -523,8 +524,8 @@ function Find() {
                 )}
 
                 {/* Markers for accessible entrances */}
-                {accessibleMode &&
-                  locations.find(location => location.name === searchQuery2).accessible_entrances?.map((entrance, entranceIndex) => (
+                {accessibleMode && searchQuery2 && 
+                  locations.find(location => location.name === searchQuery2)?.accessible_entrances?.map((entrance, entranceIndex) => (
 
                     <Marker
                       key={`${entranceIndex}`} // Unique key for each entrance
@@ -730,8 +731,12 @@ function Find() {
                     className={`rounded-md p-2 focus:outline-none ${travelMode === "ACCESSIBLE" ? "bg-black-500 text-blue-500" : "bg-black text-white"
                       }`}
                     onClick={() => {
-                      setTravelMode("ACCESSIBLE")
-                      setAccessibleMode(true);
+                      
+                  
+                        setTravelMode("ACCESSIBLE")
+                        setAccessibleMode(true);
+                      
+                      
 
 
                     }}
@@ -742,6 +747,7 @@ function Find() {
                     className={`rounded-md p-2 mr-4 focus:outline-none ${travelMode === "DRIVING" ? "bg-black-500 text-blue-500" : "bg-black text-white"
                       }`}
                     onClick={() => {
+                      
                       setTravelMode("DRIVING")
                       setAccessibleMode(true);
                     }}
