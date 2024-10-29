@@ -1,5 +1,5 @@
 // components/BarChart.js
-import React from "react";
+import React, { useState } from "react";
 import {
   BarChart,
   Bar,
@@ -7,30 +7,94 @@ import {
   YAxis,
   CartesianGrid,
   Tooltip,
-  Legend,
   ResponsiveContainer,
+  Legend,
 } from "recharts";
+import FinesModal from "./FinesModal"; // We'll create this component next
 
-const CustomBarChart = ({ data }) => {
+// Assuming you have a function to fetch fines data
+// import { getFinesForVehicle } from "../services/finesService";
+
+function CustomBarChart({ chartData, fines }) {
+  const [modalOpen, setModalOpen] = useState(false);
+  const [selectedFines, setSelectedFines] = useState([]);
+  const [selectedVehicle, setSelectedVehicle] = useState("");
+  const [fineType, setFineType] = useState("");
+
+  const handleBarClick = async (entry, dataKey) => {
+    const vehicle = entry.name == "Scooters" ? "scooter" : entry.name == "Skateboards" ? "skateboard" : entry.name == "Bikes" ? "bike" : "none";
+    console.log("Selected vehicle:", entry.name); // Debugging line
+
+    const isPaid = dataKey === "paidFines";
+
+    // Filter fines based on the selected vehicle
+    const vehicleFines = fines.filter((fine) => fine.vehicleType === vehicle);
+
+    console.log("Vehicle fines:", vehicleFines); // Debugging line
+
+    // Filter fines based on paid status
+    const filteredFines = vehicleFines.filter((fine) => fine.paid === isPaid);
+
+    console.log("Filtered fines:", filteredFines); // Debugging line
+
+    setSelectedFines(filteredFines);
+    setSelectedVehicle(entry.name);
+    setFineType(isPaid ? "Paid" : "Unpaid");
+    setModalOpen(true);
+  };
+
   return (
-    <div style={{ width: "100%", height: 300 }}>
+    <>
       <ResponsiveContainer width="100%" height="100%">
         <BarChart
-          data={data}
-          margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
+          data={chartData}
+          margin={{
+            top: 5,
+            right: 30,
+            left: 20,
+            bottom: 5,
+          }}
         >
-          <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="name" />
-          <YAxis />
+          <CartesianGrid horizontal={true} vertical={false} stroke="#E5E7EB" />
+          <XAxis
+            dataKey="name"
+            stroke="#000000"
+            axisLine={false}
+            tickLine={false}
+            tick={{ fontWeight: "bold" }}
+          />
+          <YAxis
+            stroke="#000000"
+            axisLine={false}
+            tickLine={false}
+            tickMargin={10}
+            tick={{ fontWeight: "bold" }}
+          />
           <Tooltip />
           <Legend />
-          <Bar dataKey="scooters" fill="#82ca9d" />
-          <Bar dataKey="bikes" fill="#ffc658" />
-          <Bar dataKey="skateboards" fill="#FF8042" />
+          <Bar
+            dataKey="paidFines"
+            name="Paid Fines"
+            fill="#848484"
+            onClick={(entry) => handleBarClick(entry, "paidFines")}
+          />
+          <Bar
+            dataKey="unpaidFines"
+            name="Unpaid Fines"
+            fill="#222222"
+            onClick={(entry) => handleBarClick(entry, "unpaidFines")}
+          />
         </BarChart>
       </ResponsiveContainer>
-    </div>
+      <FinesModal
+        isOpen={modalOpen}
+        onClose={() => setModalOpen(false)}
+        fines={selectedFines}
+        vehicle={selectedVehicle}
+        fineType={fineType}
+      />
+    </>
   );
-};
+}
 
 export default CustomBarChart;

@@ -25,6 +25,7 @@ import UserMap from "../pages/UserPages/UserMap";
 import Returns from "../pages/UserPages/Returns";
 import ReturnConfirmation from "../pages/UserPages/ReturnConfirmation";
 import ScheduleDetailsPage from "../pages/staffPages/ScheduleDetailsPage";
+import ProfilePage from "../components/ProfilePage";
 import UserFrom from "../pages/UserPages/UserFrom";
 
 function UserRoutes({ currentUser }) {
@@ -49,6 +50,8 @@ function UserRoutes({ currentUser }) {
         path="/userService"
         element={<ProtectedRoute element={<UserService />} />}
       />
+      <Route path="/profile" element={<ProfilePage />} />
+
       <Route path="/userFind" element={<ProtectedRoute element={<Find />} />} />
       <Route
         path="/userRental"
@@ -56,12 +59,14 @@ function UserRoutes({ currentUser }) {
       />
       <Route
         path="/Returns"
-        element={<ProtectedRoute element={<Returns currentUser={currentUser}/>} />}
+        element={
+          <ProtectedRoute element={<Returns currentUser={currentUser} />} />
+        }
       />
-         <Route
+      <Route
         path="/ReturnConfirmation"
         element={<ProtectedRoute element={<ReturnConfirmation />} />}
-        />
+      />
       <Route
         path="/book/:itemName"
         element={<ProtectedRoute element={<Book />} />}
@@ -72,7 +77,11 @@ function UserRoutes({ currentUser }) {
       />
       <Route
         path="/confirmation"
-        element={<ProtectedRoute element={<Confirmation currentUser={currentUser}/>} />}
+        element={
+          <ProtectedRoute
+            element={<Confirmation currentUser={currentUser} />}
+          />
+        }
       />
       <Route
         path="/finalDetails"
@@ -80,11 +89,17 @@ function UserRoutes({ currentUser }) {
       />
       <Route
         path="/userActivity"
-        element={<ProtectedRoute element={<UserActivity currentUser={currentUser}/>} />}
+        element={
+          <ProtectedRoute
+            element={<UserActivity currentUser={currentUser} />}
+          />
+        }
       />
       <Route
         path="/userFines"
-        element={<ProtectedRoute element={<UserFines currentUser={currentUser}/>} />}
+        element={
+          <ProtectedRoute element={<UserFines currentUser={currentUser} />} />
+        }
       />
       <Route
         path="/userPayments"
@@ -96,15 +111,19 @@ function UserRoutes({ currentUser }) {
       />
       <Route
         path="/notifications"
-        element={<ProtectedRoute element={<NotificationsPage currentUser={currentUser}/>} />}
+        element={
+          <ProtectedRoute
+            element={<NotificationsPage currentUser={currentUser} />}
+          />
+        }
       />
       <Route
         path="/UserWhereTo"
-        element={<ProtectedRoute element={<UserWhereTo/>} />}
+        element={<ProtectedRoute element={<UserWhereTo />} />}
       />
       <Route
         path="/UserBusSchedule"
-        element={<ProtectedRoute element={<UserBusSchedule/>} />}
+        element={<ProtectedRoute element={<UserBusSchedule />} />}
       />
       <Route
         path="/scheduledetails/:id"
@@ -112,12 +131,9 @@ function UserRoutes({ currentUser }) {
       />
       <Route
         path="/UserMap"
-        element={<ProtectedRoute element={<UserMap/>} />}
+        element={<ProtectedRoute element={<UserMap />} />}
       />
-      <Route
-        path="/From"
-        element={<ProtectedRoute element={<UserFrom/>} />}
-      />
+      <Route path="/From" element={<ProtectedRoute element={<UserFrom />} />} />
       {/* Optional: Catch-all route for undefined paths */}
       <Route path="*" element={<NotFoundPage />} />
     </Routes>
