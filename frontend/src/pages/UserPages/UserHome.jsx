@@ -385,7 +385,7 @@ function UserHome() {
               <Link to="/userRental" className="Links">
               <Card className="card">
                 <section className="card-icon">
-                  <img src={car} alt="Car icon for rental" className="icon" style={{ height: '3.6rem' }} />
+                  <img src={car} alt="Car icon for rental" className="icon" style={{ height: '4.5rem' }} />
                 </section>
                 <section className="card-content">
                   <span className="card-title">Rent</span>
@@ -395,7 +395,7 @@ function UserHome() {
             <Link to="/userFind" className="Links">
               <Card className="card">
                 <section className="card-icon">
-                  <img src={find} alt="Find icon" className="icon" style={{ height: '3.6rem' }} />
+                  <img src={find} alt="Find icon" className="icon" style={{ height: '4.5rem' }} />
                 </section>
                 <section className="card-content">
                   <span className="card-title">Find</span>
