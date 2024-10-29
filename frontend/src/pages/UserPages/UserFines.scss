@@ -42,29 +42,58 @@
     .fines-card {
       flex: 1;
       margin-right: 10px;
-      
-      section {
-        h2 {
-          margin: 5px 0;
-          font-size: 16px;
-          color: #333;
+      flex-direction: row;
+      width: 90%;
+      section{
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        .amount{
+          display: flex;
+          align-items: center;
+          flex-direction: column;
+          span{
+            font-size: larger;
+            font-weight: bolder;
+
+          };
+          h2 {
+            margin: 5px 0;
+            font-size: 16px;
+            color: #333;
+          }
+  
         }
-        
-        .fines-card-title {
-          font-weight: bold;
-        }
-        
-        .fines-place,
-        .fines-time {
-          color: #666;
+        .rental-details{
+          display: flex;
+          align-items: start;
+          flex-direction: column;
+          span{
+            font-size: larger;
+            font-weight: bolder;
+            
+          };
+          .fines-card-title {
+            font-weight: bold;
+          }
+          
+          .fines-place,
+          .fines-time {
+            color: #666;
+          }
+  
         }
       }
+
+      
     }
   
     .fines-details {
       display: flex;
       flex-direction: column;
       align-items: flex-start;
+      width: 10%;
       
       p {
         margin: 0;

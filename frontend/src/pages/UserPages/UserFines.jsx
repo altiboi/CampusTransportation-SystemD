@@ -62,9 +62,14 @@ function UserFines({ currentUser }) {
             <section className='fines-upper-card' key={fine.id}>
               <Card className="fines-card">
                 <section>
-                  <h2 className="fines-card-title">R {fine.amount}</h2>
+                  <div className='amount'>
+                    <span>amount</span>
+                    <h2 className="fines-card-title">R {fine.amount}</h2>
+                  </div>
+                
                   {fine.rentalDetails && (
                     <div className="rental-details">
+                      <span>Details</span>
                       <p>Fine Issued: {new Date(fine.issuedAt).toLocaleDateString()}</p>
                       <p>Reason: Fine {calculateOverdueTime(fine.rentalDetails.dueReturnAt, fine.rentalDetails.returnedAt)}</p>
                     </div>
