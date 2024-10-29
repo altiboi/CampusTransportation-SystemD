@@ -21,12 +21,23 @@ const getRandomColor = () => {
   return COLORS[Math.floor(Math.random() * COLORS.length)];
 };
 
+const getColorFromName = (name) => {
+  // Generate a hash from the name
+  let hash = 0;
+  for (let i = 0; i < name.length; i++) {
+    hash = name.charCodeAt(i) + ((hash << 5) - hash);
+  }
+
+  // Use the hash to select a color from the COLORS array
+  return COLORS[Math.abs(hash) % COLORS.length];
+};
+
 const Avatar = ({ name, size = 50 }) => {
   // Extract the first letter of the name, fallback to a question mark if name is empty
   const initial = name ? name.charAt(0).toUpperCase() : "?";
 
-  // Get a random background color
-  const backgroundColor = getRandomColor();
+  // Get a consistent background color based on the name
+  const backgroundColor = name ? getColorFromName(name) : getRandomColor();
 
   return (
     <div

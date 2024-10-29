@@ -13,7 +13,6 @@ const CreateNotificationModal = ({ isOpen, onClose, onCreate ,currentUser}) => {
     const newNotification = {
       Title,
       Body,
-      isRead: false,
       Audience,
       Sender,
       SenderID,

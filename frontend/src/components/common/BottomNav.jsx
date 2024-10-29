@@ -1,5 +1,5 @@
 // components/BottomNav.jsx
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -11,6 +11,9 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 
 const BottomNav = ({ handleMenuItemClick, role, className }) => {
+  const location = useLocation();
+  const [activeMenuItem, setActiveMenuItem] = useState("Home");
+
   useEffect(() => {
     switch (location.pathname) {
       case "/home":
@@ -22,11 +25,16 @@ const BottomNav = ({ handleMenuItemClick, role, className }) => {
       case "/userActivity":
         setActiveMenuItem("Activity");
         break;
+      case "/staffanalytics":
+        setActiveMenuItem("Analytics");
+        break;
+      case "/stafftasks":
+        setActiveMenuItem("Tasks");
+        break;
       default:
         setActiveMenuItem("Home");
     }
   }, [location.pathname]);
-  const [activeMenuItem, setActiveMenuItem] = useState("Home");
 
   const renderNavItems = () => {
     if (role === "staff") {
