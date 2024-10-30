@@ -7,6 +7,9 @@ import './Returns.css';
 import { useAppContext } from "../../contexts/AppContext";
 import { getRentalDetails, returnVehicleAndIssueFine } from '../../api/functions';
 import { useAuth } from '../../contexts/AuthProvider';
+import bike from "../../assets/bike.svg";
+import scooter from "../../assets/scooter.svg";
+import skateBoard from "../../assets/skateBoard.svg";
 
 const Returns = ({ currentUser }) => {
   const { setTitle, setTask } = useAppContext();
@@ -64,7 +67,7 @@ const Returns = ({ currentUser }) => {
   const getVehicleImage = (type) => {
     switch (type) {
       case "bike":
-        return bikeImage;
+        return bike;
       case "scooter":
         return scooter;
       case "skateboard":
