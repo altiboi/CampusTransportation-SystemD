@@ -136,6 +136,12 @@ export const returnVehicleAndIssueFine = async (rentalID, vehicleID) => {
     }
 
     const rentalData = rentalDoc.data();
+
+    // Check if the vehicle has already been returned
+    if (rentalData.returnedAt) {
+      throw new Error("Vehicle has already been returned");
+    }
+
     const dueReturnAt = new Date(rentalData.dueReturnAt); // Convert dueReturnAt back to Date object
 
     // Calculate the time difference between dueReturnAt and returnedAt in milliseconds

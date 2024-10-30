@@ -8,12 +8,13 @@ import { useAppContext } from "../../contexts/AppContext";
 import {
   createNotification,
   fetchUserNotifications,
+  deleteNotification
 } from "../../api/functions"; // Update the path
 import { setNotificationAsRead } from "../../api/functions"; // Import your function to mark notifications as read
 import { useAuth } from "../../contexts/AuthProvider";
 
 const NotificationsPage = ({ currentUser }) => {
-  const [notifications, setNotifications] = useState([]);
+  const [notifications, setNotifications] = useState({ received: [], created: [] });
   const [selectedNotification, setSelectedNotification] = useState(null);
   const [isNotificationModalOpen, setIsNotificationModalOpen] = useState(false);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
@@ -27,11 +28,13 @@ const NotificationsPage = ({ currentUser }) => {
 
   const refreshNotifications = async () => {
     try {
-      //console.log(currentUser)
-      const updatedNotifications = await fetchUserNotifications(
-        currentUser.uid
-      );
-      setNotifications(updatedNotifications);
+      const { receivedNotifications, createdNotifications } = await fetchUserNotifications(currentUser.uid);
+      console.log("Received notifications:", receivedNotifications);
+      console.log("Created notifications:", createdNotifications);
+      setNotifications({
+        received: receivedNotifications,
+        created: createdNotifications
+      });
       setIsLoading(false);
     } catch (error) {
       console.error("Failed to fetch notifications:", error);
@@ -62,13 +65,15 @@ const NotificationsPage = ({ currentUser }) => {
     if (isMobile) {
       setShowDetails(true);
     }
-    if (!notification.isRead) {
+    console.log("Selected notification:", notification);
+    if (!notification.isRead && notification.SenderID !== currentUser.uid) {
       await setNotificationAsRead(currentUser.uid, notification.id);
-      setNotifications((prevNotifications) =>
-        prevNotifications.map((n) =>
+      setNotifications((prevNotifications) => ({
+        ...prevNotifications,
+        received: prevNotifications.received.map((n) =>
           n.id === notification.id ? { ...n, isRead: true } : n
-        )
-      );
+        ),
+      }));
       await refreshCurrentUser();
     }
   };
@@ -93,13 +98,24 @@ const NotificationsPage = ({ currentUser }) => {
     }
   };
 
-  const handleDeleteNotification = (id) => {
-    setNotifications(notifications.filter((n) => n.id !== id));
+  const handleDeleteNotification = async (id) => {
+    try {
+      // Update the state to remove the notification from the created list
+      setNotifications((prevNotifications) => ({
+        ...prevNotifications,
+        created: prevNotifications.created.filter((n) => n.id !== id)
+      }));
+
+      // Delete the notification from the database
+      await deleteNotification(id);
+    } catch (error) {
+      console.error("Error deleting notification:", error.message);
+    }
   };
 
   const filteredNotifications = showUserNotifications
-    ? notifications.filter((n) => n.createdByUser)
-    : notifications;
+  ? notifications.created
+  : notifications.received;
 
   useEffect(() => {
     const handleResize = () => {
@@ -127,26 +143,6 @@ const NotificationsPage = ({ currentUser }) => {
           >
             <div className="bg-white p-6 rounded-lg shadow-lg mb-4 flex-shrink-0">
               <h1 className="text-2xl font-bold mb-4">Notifications</h1>
-
-              <div className="flex justify-between items-center mb-4">
-                <button
-                  className="bg-black text-white px-4 py-2 rounded hover:bg-gray-800"
-                  onClick={openCreateNotificationModal}
-                >
-                  Create Notification
-                </button>
-
-                <button
-                  className="bg-gray-200 px-4 py-2 rounded hover:bg-gray-300"
-                  onClick={() =>
-                    setShowUserNotifications(!showUserNotifications)
-                  }
-                >
-                  {showUserNotifications
-                    ? "Show All Notifications"
-                    : "Show My Notifications"}
-                </button>
-              </div>
             </div>
 
             <div className="overflow-y-auto flex-grow bg-white rounded-lg shadow-lg">
@@ -177,12 +173,12 @@ const NotificationsPage = ({ currentUser }) => {
                               ? `${notification.Body.substring(0, 50)}...`
                               : notification.Body,
                           style: {
-                            fontWeight: notification.isRead ? "normal" : "bold",
+                            fontWeight: notification.isRead || notification.SenderID === currentUser.uid ? "normal" : "bold",
                           },
                         }}
                         onClick={() => openNotificationModal(notification)}
                         onDelete={
-                          notification.Sender === currentUser.Name
+                          notification.SenderID === currentUser.uid
                             ? () => handleDeleteNotification(notification.id)
                             : null
                         }
@@ -190,6 +186,7 @@ const NotificationsPage = ({ currentUser }) => {
                           selectedNotification &&
                           selectedNotification.id === notification.id
                         }
+                        currentUser={currentUser}
                       />
                     </div>
                     {index < filteredNotifications.length - 1 && (

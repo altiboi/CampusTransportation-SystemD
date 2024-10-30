@@ -33,6 +33,9 @@ import axios from "axios"; // Import axios
 
 import { useAppContext } from "../../contexts/AppContext";
 function Find() {
+
+
+
   const [currentLocation, setCurrentLocation] = useState(null);
   const [isMinimized, setIsMinimized] = useState(false);
 
@@ -108,7 +111,7 @@ function Find() {
       // Filter out locations with null coordinates
       const validLocations = allLocations.filter(location => location.coordinates);
       setLocations(validLocations);
-      console.log(travelMode)
+      console.log(currentLocation)
       console.log(searchQuery1)
     } catch (error) {
       console.error("Error fetching locations:", error);
@@ -254,9 +257,6 @@ function Find() {
       alert('Please select both a start point and destination');
       return;
     }
-    console.log(startpoint)
-    console.log(destinationPosition)
-    console.log(travelMode)
 
 
     setShowDirections(true);
@@ -448,20 +448,45 @@ function Find() {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  // Get user's current location
+  // Location tracking effect
   useEffect(() => {
+    let watchId;
+
+  
     if (navigator.geolocation) {
-      navigator.geolocation.watchPosition(
+      watchId = navigator.geolocation.watchPosition(
         (position) => {
           const { latitude, longitude } = position.coords;
           setCurrentLocation({ lat: latitude, lng: longitude });
         },
         (error) => {
-          console.error("Error getting user location:", error);
+          console.error("Error watching location:", error);
+  
+          // If there's an error (like timeout), set fallback location
+          if (error.code === error.TIMEOUT || error.code === error.POSITION_UNAVAILABLE) {
+            setCurrentLocation({ lat: -26.189706888942244, lng: 28.026747050123817 });
+          }
+        },
+        {
+          enableHighAccuracy: true,
+          timeout: 20000,   // Max wait time
+          maximumAge: 0     // Always get a fresh position
         }
       );
+    } else {
+      console.error("Geolocation is not supported by this browser.");
+      // Set fallback location if geolocation isn’t supported
+      setCurrentLocation({ lat: -26.189706888942244, lng: 28.026747050123817 });
     }
-  }, []);
+  
+    // Cleanup function to clear watch
+    return () => {
+      if (watchId !== undefined) {
+        navigator.geolocation.clearWatch(watchId);
+      }
+    };
+  }, []); // Empty dependency array means this runs once on mount
+  
 
 
   return (
@@ -489,7 +514,7 @@ function Find() {
                     }}
                     icon={{
                       url: danger,
-                      scaledSize:google?.maps?.Size ? new google.maps.Size(25, 25) : null, // Adjust size
+                      scaledSize:new google.maps.Size(25, 25) , // Adjust size
                     }}
                     title={`Incident: ${incident.type}`}
                     label={
@@ -708,7 +733,7 @@ function Find() {
                     showDropdown={showDropdown1}
                     filteredLocations={filteredLocations1}
                     handleSelect={handleLocationDropdownSelect}
-                    placeholder="Search for location"
+                    placeholder="Select Start position"
                     includeMyLocation={true}
                     isDark={true}
                   />
@@ -898,7 +923,7 @@ function Find() {
               <FontAwesomeIcon icon={faLocationDot} className="text-black text-xl mr-2" />
               <span className="font-semibold text-gray-600">Location</span>
             </div>
-            <div className="flex items-center w-full">
+            <div className="flex items-center w-1/2 ml-1">
               <FontAwesomeIcon icon={faWalking} className="text-black text-xl mr-2" />
               <SearchInput
                 searchQuery={searchQuery1}
@@ -919,11 +944,13 @@ function Find() {
             <div className="flex items-center w-full mb-2">
               <FontAwesomeIcon icon={faCheckCircle} className="text-black text-xl mr-2" />
               <span className="font-semibold text-gray-600 mr-2">Destination</span>
+            </div>
+
 
               {/* Input Field */}
-              <div className="flex items-center w-1/2 justify-end">
+              <div className="flex items-center w-full  justify-end">
                 <FontAwesomeIcon icon={faStar} 
-                className={`${isFavorite(searchQuery2) ? 'text-yellow-500' : 'text-black'} text-xl ml-2 cursor-pointer`}
+                className={`${isFavorite(searchQuery2) ? 'text-yellow-500' : 'text-black'} text-xl cursor-pointer`}
 
                 onClick={handleSave}/>
 
@@ -938,7 +965,6 @@ function Find() {
 
                 />
               </div>
-            </div>
           </div>
 
             {/* Start Button Below */}

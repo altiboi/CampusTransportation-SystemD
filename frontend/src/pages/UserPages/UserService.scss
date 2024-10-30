@@ -6,7 +6,7 @@
     overflow: hidden; 
 
     .actions-section {
-        width: 80%;
+        width: 100%;
         height: 100%;    
         display: flex;
         flex-direction: column;
@@ -46,6 +46,7 @@
               
                 width: 30%;
                 border: 2px solid silver;
+                background-color: white;
 
                 &:hover {
                     scale: 1.01;
@@ -103,21 +104,6 @@
         }
     }
 
-    .notification-section {
-        width: 50%;
-        height: 100vh;
-        border: 2px solid silver;
-        padding: 0rem 1rem;
-        padding-top: 4rem;
-        overflow-y: auto; 
-        .notification-container {
-            width: 100%;
-            height: auto; 
-            border: 2px solid black;
-            border-radius: 0.5rem;
-            padding: 1rem;
-        }
-    }
 }
 @media (max-width: 1440px) {
     .user-service-container {
@@ -130,7 +116,7 @@
         overflow: hidden; 
     
         .actions-section {
-            width: 80%;
+            width: 100%;
             height: 100%;    
             display: flex;
             flex-direction: column;
@@ -168,6 +154,7 @@
                     height: 25%;
                     width: 45%;
                     border: 2px solid silver;
+                    background-color: white;
     
                     &:hover {
                         scale: 1.01;
@@ -204,7 +191,7 @@
                             text-align: center;
     
                             .icon-large {
-                                width: 80%; 
+                                width: 40%; 
                                 height: 80%;
                                 object-fit: cover;
                             }
@@ -212,11 +199,6 @@
                     }
                 }
             }
-        }
-    
-        .notification-section {
-            display: none;
-
         }
     }
     
@@ -259,7 +241,7 @@
                     width:100%;
                     height: 15%;
                     border: 2px solid silver;
-    
+                    background-color: white;
                     &:hover {
                         scale: 1.01;
                     }

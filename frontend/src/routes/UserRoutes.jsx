@@ -131,7 +131,7 @@ function UserRoutes({ currentUser }) {
       />
       <Route
         path="/UserMap"
-        element={<ProtectedRoute element={<UserMap />} />}
+        element={<ProtectedRoute element={<Find />} />}
       />
       <Route path="/From" element={<ProtectedRoute element={<UserFrom />} />} />
       {/* Optional: Catch-all route for undefined paths */}

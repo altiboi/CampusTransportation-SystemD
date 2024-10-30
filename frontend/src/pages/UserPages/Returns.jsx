@@ -6,6 +6,7 @@ import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import './Returns.css';
 import { useAppContext } from "../../contexts/AppContext";
 import { getRentalDetails, returnVehicleAndIssueFine } from '../../api/functions';
+import { useAuth } from '../../contexts/AuthProvider';
 
 const Returns = ({ currentUser }) => {
   const { setTitle, setTask } = useAppContext();
@@ -13,6 +14,7 @@ const Returns = ({ currentUser }) => {
   const [rentalDetails, setRentalDetails] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const { refreshCurrentUser } = useAuth();
 
   useEffect(() => {
     setTitle("Return Vehicle");
@@ -44,6 +46,8 @@ const Returns = ({ currentUser }) => {
   const handleReturn = async () => {
     try {
       const returnData = await returnVehicleAndIssueFine(rentalDetails.rentalID, rentalDetails.vehicleID);
+      await refreshCurrentUser();
+
       navigate('/ReturnConfirmation', {
         state: {
           returnDetails: returnData.rentalDetails,
@@ -57,12 +61,30 @@ const Returns = ({ currentUser }) => {
     }
   };
 
+  const getVehicleImage = (type) => {
+    switch (type) {
+      case "bike":
+        return bikeImage;
+      case "scooter":
+        return scooter;
+      case "skateboard":
+        return skateBoard;
+      default:
+        return null;
+    }
+  };
+
   if (loading) {
     return <p>Loading...</p>;
   }
 
   if (error) {
-    return <p>{error}</p>;
+    console.error(error);
+    return (
+      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+        <p style={{ fontWeight: 'bold' }}>{error}</p>
+      </div>
+    );
   }
 
   const formatDueReturnAt = (dueReturnAt) => {
@@ -84,7 +106,7 @@ const Returns = ({ currentUser }) => {
           <h2 className="text-lg font-semibold mb-4">Return Details</h2>
           <div className="flex mb-4">
             <img
-              src={rentalDetails.vehicleImage}
+              src={getVehicleImage(rentalDetails.vehicle.type)}
               alt={`${rentalDetails.vehicle.make} ${rentalDetails.vehicle.model}`}
               className="w-24 h-24 object-cover"
             />
@@ -103,7 +125,9 @@ const Returns = ({ currentUser }) => {
         </div>
       )}
       {!rentalDetails && !error && (
-        <p>You don't currently have a vehicle rented.</p>
+          <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+        <p style={{ fontWeight: 'bold' }}>You don't currently have a vehicle rented.</p>
+      </div>
       )}
     </main>
   );

@@ -143,7 +143,7 @@ function StaffHomePage({ currentUser, vehicles }) {
     try {
       const allNotifications = await fetchUserNotifications(currentUser.uid);
       console.log(allNotifications);
-      const recent = allNotifications.slice(0, 3);
+      const recent = allNotifications.receivedNotifications.slice(0, 3);
       setRecentNotifications(recent);
     } catch (error) {
       console.error("Failed to fetch recent notifications:", error);
@@ -232,7 +232,7 @@ function StaffHomePage({ currentUser, vehicles }) {
           )}
         </div>
 
-        {/* <Card className="mb-12 bg-gray-100">
+        <Card className="mb-12 bg-gray-100">
           <h2 className="text-xl font-semibold mb-4">Recent Notifications</h2>
           {isLoadingNotifications ? (
             <>
@@ -245,6 +245,7 @@ function StaffHomePage({ currentUser, vehicles }) {
               <React.Fragment key={notification.id}>
                 <NotificationCard
                   notification={notification}
+                  currentUser={currentUser}
                   onClick={() => {}} // You can add a function to handle click if needed
                 />
                 <br />
@@ -259,7 +260,7 @@ function StaffHomePage({ currentUser, vehicles }) {
           >
             View all notifications
           </Link>
-        </Card> */}
+        </Card>
       </div>
     </div>
   );

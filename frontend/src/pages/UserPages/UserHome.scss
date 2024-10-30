@@ -252,6 +252,7 @@ $hover-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
               align-items: center;
               flex-direction: column;
               border: 2px solid silver;
+              background-color: white;
 
 
               .card-icon{
@@ -816,6 +817,7 @@ $hover-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
           justify-content: center;
           flex-direction: row;
           padding-left: 0.5rem;
+          background-color: white;
           
           .Links{
             width: 100%;

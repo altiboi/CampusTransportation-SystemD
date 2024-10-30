@@ -58,7 +58,7 @@ function UserService() {
     setIsNotificationModalOpen(false);
     setSelectedNotification(null);
   };
-
+      
   const openCreateNotificationModal = () => {
     setIsCreateModalOpen(true);
   };
@@ -76,8 +76,6 @@ function UserService() {
       console.error("Error creating notification:", error.message);
     }
   };
-
-  const filteredNotifications = (notifications || []).filter((n) => !n.isRead);
 
   const formatDate = (dateString) => {
     const options = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit', hour12: true };
@@ -156,12 +154,12 @@ function UserService() {
         </section>
       </section>
 
-      <section className='notification-section'>
+      {/* <section className='notification-section'>
         <div>
           <div className="bg-white p-6 rounded-lg shadow-lg mb-6">
             <h1 className="text-2xl font-bold mb-4">Notifications</h1>
 
-            {/* Show only unread notifications */}
+            
             {filteredNotifications.length > 0 ? (
               <div className="grid grid-cols-1 gap-4">
                 {filteredNotifications.map((notification) => (
@@ -240,7 +238,7 @@ function UserService() {
             </Modal>
           )}
 
-          {/* Create Notification Modal */}
+
           {isCreateModalOpen && (
             <CreateNotificationModal
               isOpen={isCreateModalOpen}
@@ -250,7 +248,7 @@ function UserService() {
             />
           )}
         </div>
-      </section>
+      </section> */}
     </main>
   );
 }

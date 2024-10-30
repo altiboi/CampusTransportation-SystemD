@@ -252,7 +252,7 @@ function UserHome() {
                   ))}
                 </select>
               </div>
-                <p className="nobike">No available bikes at the moment :(</p>
+                <p className="nobike">No available bikes at the moment</p>
                   </>
               )}
             </div>
@@ -280,7 +280,7 @@ function UserHome() {
                             <span className="inner">{current[0].type}</span>
                           </span>
                             <div className="option">
-                            <p className="text">You have a booked vehicle :)</p>
+                            <p className="text">You have a booked vehicle</p>
                             </div>
                           </div>
                         ) : (
@@ -300,7 +300,7 @@ function UserHome() {
                             ))}
                           </select>
                         </div>
-                          <p className="nobike">No available bikes at the moment :(</p>
+                          <p className="nobike">No available bikes at the moment</p>
                             </>
                         )}
                       </div>

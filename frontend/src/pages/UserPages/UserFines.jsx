@@ -13,6 +13,7 @@ function UserFines({ currentUser }) {
   const loadFines = async () => {
     const userFines = await fetchUserFines(currentUser?.uid);
     setFines(userFines || []); // Fallback to an empty array if undefined
+    console.log(userFines);
   };
   
 
@@ -45,7 +46,7 @@ function UserFines({ currentUser }) {
 
   return (
     <main className='fines-main-container'>
-      <section className='fines-upper-part mb-10'>
+      <section className='fines-upper-part mb-10 '>
         <h2>Manage and Pay your Fines</h2>
       </section>
       <section className='fines-lower-part'>
@@ -63,7 +64,7 @@ function UserFines({ currentUser }) {
               <Card className="fines-card">
                 <section>
                   <div className='amount'>
-                    <span>amount</span>
+                    <span>Amount</span>
                     <h2 className="fines-card-title">R {fine.amount}</h2>
                   </div>
                 

@@ -17,7 +17,7 @@ const ProfilePage = () => {
     setTask(1);
   }, [setTitle, setTask]);
 
-  const { currentUser } = useAuth();
+  const { currentUser, refreshCurrentUser } = useAuth();
   const navigate = useNavigate();
   const [uploadedImage, setUploadedImage] = useState(null);
   const [tempImage, setTempImage] = useState(null);
@@ -48,6 +48,7 @@ const ProfilePage = () => {
       const userRef = doc(db, "Users", currentUser.uid); // Reference to the user document
       setUploadedImage(tempImage); // Update the UI 
       await updateDoc(userRef, { displayImage: tempImage }); // Save Base64 string to Firestore
+      await refreshCurrentUser(); // Refresh the user data
       setTempImage(null); // Clear the temporary image
     } catch (error) {
       console.error("Error saving image:", error);
