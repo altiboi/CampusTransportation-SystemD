@@ -1,5 +1,5 @@
 import { auth, rentalservice_db,mapping_db , preference_db, db } from "../firebase/firebase.js";
-import { Firestore,collection,getDoc, addDoc, setDoc, doc, updateDoc, getDocs, query, where } from "firebase/firestore";
+import { Firestore,collection,getDoc, addDoc, setDoc, doc, updateDoc, deleteDoc, getDocs, query, where } from "firebase/firestore";
 
 
 export const getAllVehicles = async () => {
@@ -136,6 +136,12 @@ export const returnVehicleAndIssueFine = async (rentalID, vehicleID) => {
     }
 
     const rentalData = rentalDoc.data();
+
+    // Check if the vehicle has already been returned
+    if (rentalData.returnedAt) {
+      throw new Error("Vehicle has already been returned");
+    }
+
     const dueReturnAt = new Date(rentalData.dueReturnAt); // Convert dueReturnAt back to Date object
 
     // Calculate the time difference between dueReturnAt and returnedAt in milliseconds
@@ -363,6 +369,32 @@ export const handleFinePayment = async (fineID) => {
   }
 };
 
+export const getAllFines = async () => {
+  const fines = [];
+  try {
+      const finesCollection = collection(rentalservice_db, 'RentalFines');
+      const querySnapshot = await getDocs(finesCollection);
+
+      for (const fineDoc of querySnapshot.docs) {
+          const fineData = fineDoc.data();
+          const vehicleDocRef = doc(rentalservice_db, 'Vehicles', fineData.vehicleID);
+          const vehicleDoc = await getDoc(vehicleDocRef);
+          const userDocRef = doc(db, 'Users', fineData.userID);
+          const userDoc = await getDoc(userDocRef);
+
+
+          if (vehicleDoc.exists()) {
+              fines.push({ id: fineDoc.id, vehicleReg: vehicleDoc.data().registration, vehicleType: vehicleDoc.data().type, user: userDoc.data().name + " " + userDoc.data().surname, ...fineData });
+          } else {
+              console.error("Vehicle not found:", fineData.vehicleID);
+          }
+      }
+  } catch (error) {
+      console.error("Error fetching fines:", error);
+  }
+  return fines;
+};
+
 //Notifications
 
 export const getNotifications = async () => {
@@ -390,6 +422,7 @@ export const createNotification = async (notification) => {
       Body: notification.Body,
       Date: notification.Date,
       Sender: notification.Sender,
+      SenderID: notification.SenderID,
       Title: notification.Title
     };
 
@@ -412,7 +445,10 @@ export const createNotification = async (notification) => {
                            (notification.Audience === "Staff" && userRole === "staff") ||
                            (notification.Audience === "Users" && userRole === "user");
 
-      if (isInAudience) {
+      // Exclude the user who created the notification
+      const isNotSender = userDoc.id !== notification.SenderID;
+
+      if (isInAudience && isNotSender) {
         // Ensure the user has a 'readNotification' field initialized as an array
         const readNotifications = userData.userNotifications || [];
 
@@ -510,8 +546,31 @@ export const fetchUserNotifications = async (userId) => {
 
       notifications.sort((a, b) => new Date(b.Date) - new Date(a.Date));
   
-      // Return the list of notifications for the user
-      return notifications;
+      // Prepare an array to hold the notifications created by the user
+    const createdNotifications = [];
+
+    // If the user is a staff member, fetch the notifications they created
+    if (userData.role === "staff") {
+      const createdNotificationsSnapshot = await getDocs(
+        query(collection(db, 'Notifications'), where('SenderID', '==', userId))
+      );
+
+      createdNotificationsSnapshot.forEach((doc) => {
+        createdNotifications.push({
+          ...doc.data(),
+          isRead: true,
+          id: doc.id
+        });
+      });
+
+      createdNotifications.sort((a, b) => new Date(b.Date) - new Date(a.Date));
+    }
+
+    // Return the list of notifications for the user and the list of notifications they created
+    return {
+      receivedNotifications: notifications,
+      createdNotifications: createdNotifications
+    };
   
     } catch (error) {
       console.error("Error fetching user notifications:", error.message);
@@ -519,6 +578,34 @@ export const fetchUserNotifications = async (userId) => {
     }
   };  
   
+export const deleteNotification = async (notificationId) => {
+    try {
+      // Delete the notification from the 'Notifications' collection
+      await deleteDoc(doc(db, 'Notifications', notificationId));
+      console.log(`Notification with ID: ${notificationId} deleted from Notifications collection`);
+  
+      // Fetch all user documents from the 'Users' collection
+      const usersSnapshot = await getDocs(collection(db, 'Users'));
+  
+      // Loop through each user and remove the notification from their 'userNotifications' field
+      usersSnapshot.forEach(async (userDoc) => {
+        const userData = userDoc.data();
+        const userNotifications = userData.userNotifications || [];
+  
+        // Filter out the notification to be deleted
+        const updatedNotifications = userNotifications.filter(notification => notification.id !== notificationId);
+  
+        // Update the user's document with the new 'userNotifications' array
+        await updateDoc(doc(db, 'Users', userDoc.id), {
+          userNotifications: updatedNotifications
+        });
+      });
+  
+    } catch (error) {
+      console.error("Error deleting notification:", error.message);
+      throw error;
+    }
+  };
 
 //Bus Schedules
 

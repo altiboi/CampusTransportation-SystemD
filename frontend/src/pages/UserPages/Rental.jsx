@@ -6,6 +6,11 @@ import { faArrowLeft, faSearch } from '@fortawesome/free-solid-svg-icons';
 import './Rental.css';
 import { useAppContext } from "../../contexts/AppContext";
 import { fetchRentalStations, getAllVehicles } from '../../api/functions';
+import { useAuth } from '../../contexts/AuthProvider';
+import bikeImage from "../../assets/vehicles.jpg"
+import bike from "../../assets/bike.svg";
+import scooter from "../../assets/scooter.svg";
+import skateBoard from "../../assets/skateBoard.svg";
 
 const RentalStations = ({ onSelectStation, stations }) => (
   <div className="rental-stations mb-6 p-4 border rounded-lg shadow">
@@ -27,6 +32,7 @@ const RentalStations = ({ onSelectStation, stations }) => (
 
 export default function UserRental() {
   const { setTitle, setTask } = useAppContext();
+  const { currentUser } = useAuth();
   const categories = ['All', 'Bike', 'Scooter', 'Skateboard'];
 
   const [activeCategory, setActiveCategory] = useState('All');
@@ -66,18 +72,31 @@ export default function UserRental() {
     setFilteredRentalItems(filteredItems);
   }, [activeCategory, searchText, selectedStation, vehicles]);
 
+  const getVehicleImage = (type) => {
+    switch (type) {
+      case "bike":
+        return bike;
+      case "scooter":
+        return scooter;
+      case "skateboard":
+        return skateBoard;
+      default:
+        return null;
+    }
+  };
+
   return (
     <main 
     className={`p-4 max-w-7xl mx-auto w-full ${selectedStation !== null ? 'selected-station-bg' : ''}`}  // Conditionally add class for background image
     >
       <header className="desktop-header mb-4 flex items-center">
         {selectedStation ? (
-          <button onClick={() => setSelectedStation(null)} className="mr-4">
+          <button onClick={() => setSelectedStation(null)} className="mr-4 hidden lg:block">
             <FontAwesomeIcon icon={faArrowLeft} className="text-xl" />
           </button>
         ) : (
           <Link to="/" className="mr-4">
-            <FontAwesomeIcon icon={faArrowLeft} className="text-xl" />
+            <FontAwesomeIcon icon={faArrowLeft} className="text-xl hidden lg:block" />
           </Link>
         )}
         <h1 className="text-xl font-bold">Rental</h1>
@@ -125,39 +144,43 @@ export default function UserRental() {
             {activeCategory === 'All' ? 'Available Vehicles' : `Available ${activeCategory}s`}
           </h2>
     
-          {filteredRentalItems.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {filteredRentalItems.map((item, index) => (
-                <Card key={index} className="desktop-card flex items-center justify-between p-4 rounded-lg shadow">
-                  <div>
-                    <h3 className="font-semibold mb-2">{item.make} {item.model} ({item.year})</h3>
-                    <p className="mb-2 text-sm text-gray-500">Available: {item.available ? "Yes" : "No"}</p>
-
-                    {item.available && (
-                      <div className="space-x-2">
-                        <Link 
-                          to={`/Book/${item.name}`} 
-                          className="px-4 py-2 bg-black text-white rounded"
-                          state={{ item, rentalStationID: selectedStation.id }}  // Pass vehicle details as state
-                        >
-                          Book now
-                        </Link>
-                        <Link 
-                          to={`/Reserve/${item.name}`} 
-                          className="px-4 py-2 bg-gray-200 text-black rounded"
-                          state={{ item, rentalStationID: selectedStation.id }}  // Pass vehicle details as state
-                        >
-                          Reserve
-                        </Link>
-                      </div>
-                    )}
-                  </div>
-                  <img src={item.image} alt={item.name} className="w-24 h-24 object-cover" />
-                </Card>
-              ))}
-            </div>
+          {currentUser?.currentRentalID ? (
+            <p className="text-center text-red-500 font-bold">You already have a rental. Please return it before booking or reserving another vehicle.</p>
           ) : (
-            <p className="text-center text-gray-500">No results found</p>
+            filteredRentalItems.length > 0 ? (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {filteredRentalItems.map((item, index) => (
+                  <Card key={index} className="desktop-card flex items-center justify-between p-4 rounded-lg shadow">
+                    <div>
+                      <h3 className="font-semibold mb-2">{item.make} {item.model} ({item.year})</h3>
+                      <p className="mb-2 text-sm text-gray-500">Available: {item.available ? "Yes" : "No"}</p>
+
+                      {item.available && (
+                        <div className="space-x-2">
+                          <Link 
+                            to={`/Book/${item.name}`} 
+                            className="px-4 py-2 bg-black text-white rounded"
+                            state={{ item, rentalStationID: selectedStation.id }}  // Pass vehicle details as state
+                          >
+                            Book now
+                          </Link>
+                          <Link 
+                            to={`/Reserve/${item.name}`} 
+                            className="px-4 py-2 bg-gray-200 text-black rounded"
+                            state={{ item, rentalStationID: selectedStation.id }}  // Pass vehicle details as state
+                          >
+                            Reserve
+                          </Link>
+                        </div>
+                      )}
+                    </div>
+                    <img src={getVehicleImage(item.type)} alt={item.registration} className="w-24 h-24 object-cover" />
+                  </Card>
+                ))}
+              </div>
+            ) : (
+              <p className="text-center text-gray-500">No results found</p>
+            )
           )}
         </>
       )}

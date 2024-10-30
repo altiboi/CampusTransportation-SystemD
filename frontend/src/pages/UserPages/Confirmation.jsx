@@ -3,6 +3,9 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import './Confirmation.css';
 import { useAuth } from '../../contexts/AuthProvider';
 import { addNewRentalAndUpdateVehicle } from '../../api/functions';
+import bike from "../../assets/bike.svg";
+import scooter from "../../assets/scooter.svg";
+import skateBoard from "../../assets/skateBoard.svg";
 
 const Confirmation = ({ currentUser }) => {
   const navigate = useNavigate();
@@ -36,19 +39,27 @@ const Confirmation = ({ currentUser }) => {
     return <div>Loading...</div>; // Loading spinner or message while waiting for Firebase
   }
 
+  const getVehicleImage = (type) => {
+    switch (type) {
+      case "bike":
+        return bike;
+      case "scooter":
+        return scooter;
+      case "skateboard":
+        return skateBoard;
+      default:
+        return null;
+    }
+  };
+
   return (
     <div className="confirmation-container">
       <header className="confirmation-header">
-        <button 
-          onClick={handleBack} 
-          className="back-button"
-        >
-          &larr; Back
-        </button>
+       
         <h1>Your {itemName} has been {action == 'book' ? 'booked' : action == 'reserve' ? 'reserved' : ''}...</h1>
       </header>
       <img 
-        src={`/images/${itemName.toLowerCase().replace(/\s/g, '')}.jpeg`} 
+        src={getVehicleImage(item.type)} 
         alt={itemName} 
         className="confirmation-image" 
       />

@@ -12,8 +12,10 @@ function UserFines({ currentUser }) {
 
   const loadFines = async () => {
     const userFines = await fetchUserFines(currentUser?.uid);
-    setFines(userFines);
+    setFines(userFines || []); // Fallback to an empty array if undefined
+    console.log(userFines);
   };
+  
 
   useEffect(() => {
     loadFines();
@@ -44,12 +46,13 @@ function UserFines({ currentUser }) {
 
   return (
     <main className='fines-main-container'>
-      <section className='fines-upper-part mb-10'>
+      <section className='fines-upper-part mb-10 '>
         <h2>Manage and Pay your Fines</h2>
       </section>
       <section className='fines-lower-part'>
         <button
           className='absolute top-5 left 6 p-2 text-gray-600 hover:text-gray-800'
+           aria-label="Back"
           onClick={handleBackClick}
         >
           <FontAwesomeIcon icon={faArrowLeft} className='text-xl' />
@@ -60,9 +63,14 @@ function UserFines({ currentUser }) {
             <section className='fines-upper-card' key={fine.id}>
               <Card className="fines-card">
                 <section>
-                  <h2 className="fines-card-title">R {fine.amount}</h2>
+                  <div className='amount'>
+                    <span>Amount</span>
+                    <h2 className="fines-card-title">R {fine.amount}</h2>
+                  </div>
+                
                   {fine.rentalDetails && (
                     <div className="rental-details">
+                      <span>Details</span>
                       <p>Fine Issued: {new Date(fine.issuedAt).toLocaleDateString()}</p>
                       <p>Reason: Fine {calculateOverdueTime(fine.rentalDetails.dueReturnAt, fine.rentalDetails.returnedAt)}</p>
                     </div>

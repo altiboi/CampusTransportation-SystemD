@@ -9,8 +9,7 @@ import { AppProvider, useAppContext } from "./contexts/AppContext";
 import MobileHeader from "./components/common/MobileHeader";
 import DesktopHeader from "./components/common/DesktopHeader";
 import { useAuth } from "./contexts/AuthProvider";
-import { getAllVehicles , getNotifications } from "./api/functions"; 
-
+import { getAllVehicles, getNotifications } from "./api/functions";
 
 export function App() {
   const [activeMenuItem, setActiveMenuItem] = useState("");
@@ -19,13 +18,11 @@ export function App() {
   const [vehicles, setVehicles] = useState([]); // Add state for vehicles
   const [notifs, setNotifs] = useState([]); // Add state for notifs
 
-
   const location = useLocation();
   const { task } = useAppContext();
 
   useEffect(() => {
     const fetchUserRole = async () => {
-   
       if (currentUser) {
         try {
           setRole(currentUser.role);
@@ -64,77 +61,85 @@ export function App() {
     fetchNotifs();
   }, []);
 
-
-
   useEffect(() => {
-    switch (location.pathname) {
-      case "/home":
-        setActiveMenuItem("Home");
-        break;
-      case "/":
-        setActiveMenuItem("Home");
-        break;
-      case "/staffanalytics":
-        setActiveMenuItem("Analytics");
-        break;
+    console.log("Current pathname:", location.pathname);
+    if (location.pathname.startsWith("/scheduledetails/")) {
+      console.log("Matched /scheduledetails/ route");
+      setActiveMenuItem("Update Bus Schedule");
+    } else {
+      switch (location.pathname) {
+        case "/home":
+        case "/":
+          setActiveMenuItem("Home");
+          break;
+        case "/staffanalytics":
+          setActiveMenuItem("Analytics");
+          break;
+
         case "/confirmation":
-        setActiveMenuItem("Services");
-        break;
-      case "/userRental":
-        setActiveMenuItem("home");
-        break;
+          setActiveMenuItem("Services");
+          break;
+        case "/profile":
+          setActiveMenuItem("Profile");
+          break;
+        case "/userRental":
+          setActiveMenuItem("home");
+          break;
         case "/Reserve/undefined":
-        setActiveMenuItem("Services");
-        break;
+          setActiveMenuItem("Services");
+          break;
         case "/finalDetails":
           setActiveMenuItem("Services");
           break;
-          
+
         case "/Book/undefined":
           setActiveMenuItem("Services");
           break;
-      case "/stafftasks":
-        setActiveMenuItem("Tasks");
-        break;
-      case "/updatebusschedule":
-        setActiveMenuItem("Update Bus Schedule");
-        break;
-      case "/notifications":
-        setActiveMenuItem("Create Notification");
-        break;
-      case "/userFind":
-        setActiveMenuItem("Home");
-        break;
+        case "/stafftasks":
+          setActiveMenuItem("Tasks");
+          break;
+        case "/updatebusschedule":
+          setActiveMenuItem("Update Bus Schedule");
+          break;
+        case "/notifications":
+          setActiveMenuItem("Create Notification");
+          break;
+        case "/userFind":
+          setActiveMenuItem("Home");
+          break;
 
-      case "/userService":
-        setActiveMenuItem("Services");
-        break;
+        case "/userService":
+          setActiveMenuItem("Services");
+          break;
 
-      case "/userActivity":
-        setActiveMenuItem("Activity");
-        break;
+        case "/userActivity":
+          setActiveMenuItem("Activity");
+          break;
         case "/UserBuses":
-        setActiveMenuItem("Services");
-        break;
+          setActiveMenuItem("Services");
+          break;
         case "/UserBusSchedule":
-        setActiveMenuItem("Services");
-        break;
+          setActiveMenuItem("Services");
+          break;
 
-      case "/scheduledetails/:id":
-        setActiveMenuItem("Update Bus Schedule");
-        break;
-      case "/vehicles":
-        setActiveMenuItem("Vehicles");
-        break;
+        case "/scheduledetails/:id":
+          console.log("Matched /scheduledetails/:id route");
+          setActiveMenuItem("Update Bus Schedule");
+          break;
+        case "/vehicles":
+          setActiveMenuItem("Vehicles");
+          break;
         case "/Returns":
-        setActiveMenuItem("Services");
+          setActiveMenuItem("Services");
         case "/ReturnConfirmation":
-        setActiveMenuItem("Vehicles");
-        break;
-        break;
-      default:
-        setActiveMenuItem(""); // Clear active menu item if path doesn't match
-        break;
+          setActiveMenuItem("Vehicles");
+          break;
+          break;
+        default:
+          console.log("No match found, clearing activeMenuItem");
+          setActiveMenuItem("");
+          break;
+      }
     }
   }, [location.pathname]);
 
@@ -144,10 +149,15 @@ export function App() {
 
   const renderRoutes = () => {
     if (role === "staff") {
-      return <StaffRoutes vehicles={vehicles} notifs = {notifs} currentUser = {currentUser} />;
-      
+      return (
+        <StaffRoutes
+          vehicles={vehicles}
+          notifs={notifs}
+          currentUser={currentUser}
+        />
+      );
     } else if (role === "user") {
-      return <UserRoutes currentUser={currentUser}/>;
+      return <UserRoutes currentUser={currentUser} />;
     } else {
       return <AppRoutes />;
     }
@@ -165,7 +175,7 @@ export function App() {
             handleMenuItemClick={handleMenuItemClick}
             role={role}
           />
-          <DesktopHeader currentUser={currentUser}/>
+          <DesktopHeader currentUser={currentUser}></DesktopHeader>
         </>
       )}
       <div className={`flex-1 flex flex-col ${userLoggedIn ? "ml-1/4" : ""}`}>
@@ -179,7 +189,7 @@ export function App() {
           />
         )}
       </div>
-      {userLoggedIn && !isNotFoundRoute && <MobileHeader />}
+      {userLoggedIn && <MobileHeader />}
     </div>
   );
 }

@@ -7,6 +7,9 @@ import 'react-datepicker/dist/react-datepicker.css';
 import './RentalDetails.css';
 import { addNewRentalAndUpdateVehicle } from '../../api/functions';
 import { useAuth } from '../../contexts/AuthProvider';
+import bike from "../../assets/bike.svg";
+import scooter from "../../assets/scooter.svg";
+import skateBoard from "../../assets/skateBoard.svg";
 
 export default function RentalDetails({ item, itemName, action }) {
   const [startDate, setStartDate] = useState(new Date());
@@ -20,6 +23,18 @@ export default function RentalDetails({ item, itemName, action }) {
     });
   };
   
+  const getVehicleImage = (type) => {
+    switch (type) {
+      case "bike":
+        return bike;
+      case "scooter":
+        return scooter;
+      case "skateboard":
+        return skateBoard;
+      default:
+        return null;
+    }
+  };
 
   return (
     <div className="rental-details-container">
@@ -34,8 +49,8 @@ export default function RentalDetails({ item, itemName, action }) {
 
       <div className="rental-content">
         <img 
-          src={`/images/${itemName.toLowerCase().replace(/\s/g, '')}.jpeg`} 
-          alt={itemName} 
+          src={getVehicleImage(item.type)} 
+          alt={item.name} 
           className="rental-image" 
         />
 

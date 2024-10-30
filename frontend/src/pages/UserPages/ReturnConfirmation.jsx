@@ -18,7 +18,8 @@ const ReturnConfirmation = () => {
   const returnDue = new Date(dueReturnAt);
 
   // Calculate if the vehicle was returned late
-  const isLate = fineDetails !== null;
+  const gracePeriod = 10 * 60 * 1000; // 10 minutes in milliseconds
+  const isLate = returnDate.getTime() > (returnDue.getTime() + gracePeriod);
 
   const handleViewFines = () => {
     navigate('/UserFines');

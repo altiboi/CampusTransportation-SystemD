@@ -6,73 +6,117 @@
     align-items: center;
     padding: 20px;
     height: 7%;
-  }
-  
-  .fines-upper-part {
-    margin-top:2rem;
-    height: 93%;
-    width: 100%;
-    text-align: center;
-    margin-bottom: 20px;
-    
-    h2 {
-      font-size: 24px;
-      color: #333;
-      margin: 0;
-    }
-  }
-  
-  .fines-lower-part {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-  }
-  
-  .fines-upper-card {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: #f9f9f9;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    padding: 15px;
-    width: 100%;
-    
-    .fines-card {
-      flex: 1;
-      margin-right: 10px;
+    .fines-upper-part {
+      margin-top:2rem;
+      height: 93%;
+      width: 100%;
+      text-align: center;
+      margin-bottom: 20px;
       
-      section {
-        h2 {
-          margin: 5px 0;
-          font-size: 16px;
-          color: #333;
-        }
-        
-        .fines-card-title {
-          font-weight: bold;
-        }
-        
-        .fines-place,
-        .fines-time {
-          color: #666;
-        }
+      h2 {
+        font-size: 24px;
+        color: #333;
+        margin: 0;
       }
     }
-  
-    .fines-details {
+    
+    .fines-lower-part {
+      width: 100%;
       display: flex;
       flex-direction: column;
-      align-items: flex-start;
+      gap: 15px;
+    }
+    .fines-upper-card {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: #f9f9f9;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      padding: 15px;
+      width: 100%;
       
-      p {
-        margin: 0;
-        font-size: 14px;
-        color: #666;
+      .fines-card {
+        flex: 1;
+        margin-right: 10px;
+        flex-direction: row;
+        width: 90%;
+        section{
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          justify-content: space-between;
+          .amount{
+            display: flex;
+            align-items: center;
+            flex-direction: column;
+            span{
+              font-size: larger;
+              font-weight: bolder;
+              color: #0056b3
+  
+            };
+            h2 {
+              margin: 5px 0;
+              font-size: 16px;
+              color: #333;
+            }
+    
+          }
+          .rental-details{
+            display: flex;
+            align-items: start;
+            flex-direction: column;
+            span{
+              font-size: larger;
+              font-weight: bolder;
+              color: #0056b3
+              
+            };
+            .fines-card-title {
+              font-weight: bold;
+            }
+            
+            .fines-place,
+            .fines-time {
+              color: #666;
+            }
+    
+          }
+        }
+  
+        
+      }
+    
+      .fines-details {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        width: 10%;
+        
+        p {
+          margin: 0;
+          font-size: 14px;
+          color: #666;
+        }
+        
+        .button {
+          background-color: #007bff;
+          color: #fff;
+          border: none;
+          padding: 8px 16px;
+          border-radius: 4px;
+          cursor: pointer;
+          transition: background-color 0.3s ease;
+    
+          &:hover {
+            background-color: #0056b3;
+          }
+        }
       }
       
-      .button {
+      // Styling for the Pay button when not using the button class
+      button {
         background-color: #007bff;
         color: #fff;
         border: none;
@@ -80,26 +124,140 @@
         border-radius: 4px;
         cursor: pointer;
         transition: background-color 0.3s ease;
-  
+        width: 100%;
         &:hover {
           background-color: #0056b3;
         }
       }
     }
     
-    // Styling for the Pay button when not using the button class
-    button {
-      background-color: #007bff;
-      color: #fff;
-      border: none;
-      padding: 8px 16px;
-      border-radius: 4px;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
+    
+  }
+  @media (max-width:412px) {
+  .fines-main-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    height: 7%;
+    .fines-upper-part {
+      margin-top:2rem;
+      height: 93%;
       width: 100%;
-      &:hover {
-        background-color: #0056b3;
+      text-align: center;
+      margin-bottom: 20px;
+      
+      h2 {
+        font-size: 24px;
+        color: #333;
+        margin: 0;
       }
     }
+    
+    .fines-lower-part {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+    .fines-upper-card {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: #f9f9f9;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      padding: 15px;
+      width: 100%;
+      
+      .fines-card {
+        flex: 1;
+        margin-right: 10px;
+        flex-direction: row;
+        width: 80%;
+        section{
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          justify-content: space-between;
+          .amount{
+            display: flex;
+            align-items: center;
+            flex-direction: column;
+            span{
+              font-size: large;
+              font-weight: bolder;
+              color: #0056b3
+            };
+            h2 {
+              margin: 5px 0;
+              font-size: 10px;
+              color: #333;
+            }
+    
+          }
+          .rental-details{
+            display: flex;
+            align-items: start;
+            flex-direction: column;
+            font-size: 10px;
+            span{
+              font-size: large;
+              color: #0056b3
+              
+            };
+          }
+        }
+
+        
+      }
+    
+      .fines-details {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        width: 20%;
+        
+        p {
+          margin: 0;
+          font-size: 14px;
+          color: #666;
+        }
+        
+        .button {
+          background-color: #007bff;
+          color: #fff;
+          border: none;
+          padding: 5px 10px;
+          border-radius: 4px;
+          cursor: pointer;
+          transition: background-color 0.3s ease;
+    
+          &:hover {
+            background-color: #0056b3;
+          }
+        }
+      }
+      
+      // Styling for the Pay button when not using the button class
+      button {
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        padding: 8px 16px;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        width: 100%;
+        &:hover {
+          background-color: #0056b3;
+        }
+      }
+    }
+    
+    
   }
+}
+  
+
   

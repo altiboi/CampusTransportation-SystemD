@@ -1,124 +1,173 @@
-// UserService.test.jsx
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
-import { BrowserRouter as Router } from 'react-router-dom';
-import { vi } from 'vitest'; // Importing 'vi' for mocking
+import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import UserService from '../../src/pages/UserPages/UserService';
+import { describe, it, expect } from 'vitest';
+import {fetchUserNotifications} from '../../src/api/functions'; 
+import '@testing-library/jest-dom';
 
-// Mock the context
-const mockSetTitle = vi.fn();
-const mockSetTask = vi.fn();
 
-vi.mock('../../src/contexts/AppContext', () => {
-  return {
+
+const ReturnsPage = () => <div>Returns Page</div>;
+const ReservePage = () => <div>Reserve Page</div>;
+const CampusMapPage = () => <div>Campus Map Page</div>;
+const RentPage = () => <div>Rent Page</div>;
+const BusSchedulePage = () => <div>Bus Page</div>;
+const FinesPage = () => <div>Fines Page</div>;
+
+
+
+
+
+vi.mock('../../src/api/functions',()=>({
+    fetchUserNotifications:vi.fn()
+}));
+
+
+  vi.mock('../../src/contexts/AppContext', () => ({
     useAppContext: () => ({
-      setTitle: mockSetTitle,
-      setTask: mockSetTask,
+      setTitle: vi.fn(),
+      setTask: vi.fn(),
     }),
-    AppProvider: ({ children }) => <div>{children}</div>, // Mocking AppProvider
-  };
-});
+  }));
+  vi.mock('../../src/contexts/AuthProvider', () => ({
+    useAuth: () => ({
+      currentUser: { uid: '12345', name: 'Test User' }, 
+      refreshCurrentUser: vi.fn(),
+    }),
+  }));
+describe('UseService Component', () => {
+    const renderComponent = (initialEntries = ['/']) => {
+      render(
+        <MemoryRouter initialEntries={initialEntries}>
+          <Routes>
+            <Route path="/" element={<UserService />} />
+            <Route path="/Returns" element={<ReturnsPage />} />
+            <Route path="/UserReserve" element={<ReservePage/>} />
+            <Route path="/UserMap" element={<CampusMapPage />} />
+            <Route path="/userRental" element={<RentPage />} />
+            <Route path="/UserBuses" element={<BusSchedulePage />} />
+            <Route path="/UserFines" element={<FinesPage />} />
+          </Routes>
+        </MemoryRouter>
+      );
+    };
+    beforeEach(() => {
+       
+        vi.clearAllMocks();
+      });
+      it('should call fetchUserNotifications on mount', async () => {
 
-describe('UserService Component', () => {
-  beforeEach(() => {
-    mockSetTitle.mockClear();
-    mockSetTask.mockClear();
-  });
+        const mockNotifications = [
+            { id: '1', Title: 'Notification 1', Body: 'Body of notification 1', Sender: 'Sender 1', isRead: false },
+            { id: '2', Title: 'Notification 2', Body: 'Body of notification 2', Sender: 'Sender 2', isRead: true },
+          ];
 
-  const renderComponent = () => {
-    render(
-      <Router>
-        <UserService />
-      </Router>
-    );
-  };
+          fetchUserNotifications.mockResolvedValueOnce(mockNotifications);
 
-  it('should render the header title', () => {
-    renderComponent();
-    expect(screen.getByText('Go Anywhere!')).not.toBeNull();
-  });
+          renderComponent();
+          expect(fetchUserNotifications).toHaveBeenCalledWith('12345');
+          expect(screen.queryByText('Body of notification 1...')).not.toBeInTheDocument();
 
-  it('should render the trip card', () => {
-    renderComponent();
-
-    const tripCard = screen.getByText('Trip');
-    expect(tripCard).not.toBeNull();
-
-    const tripLink = tripCard.closest('a');
-    expect(tripLink).not.toBeNull(); 
-  });
-
-  it('should render the nearby rental stations card', () => {
-    renderComponent();
-
-    const rentalCard = screen.getByText('Rental Stations');
-    expect(rentalCard).not.toBeNull();
-    const rentalLink = rentalCard.closest('a');
-    expect(rentalLink).not.toBeNull();
-    expect(rentalLink.getAttribute('href')).toBe('/UserMap'); 
-  });
-
-  it('should set the correct title and task in context', () => {
-    renderComponent();
-
-    expect(mockSetTitle).toHaveBeenCalledWith('Services');
-    expect(mockSetTask).toHaveBeenCalledWith(1);
-  });
-
-  it('should navigate to the correct route when a card is clicked', () => {
-    renderComponent();
-
-    const busCard = screen.getByText('Bus Schedule');
-    fireEvent.click(busCard.closest('a')); 
-    expect(window.location.pathname).toBe('/UserBuses');
-
-    const StationsCard = screen.getByText('Rental Stations');
-    fireEvent.click(StationsCard);
-    expect(window.location.pathname).toBe('/UserMap');
-
-    const TripCard = screen.getByText('Trip');
-    fireEvent.click(TripCard);
-    expect(window.location.pathname).toBe('/userFind');
-
-
-    const BusCard = screen.getByText('Bus Schedule');
-    fireEvent.click(BusCard);
-    expect(window.location.pathname).toBe('/UserBuses');
-
-
-    const FinesCard = screen.getByText('Fines');
-    fireEvent.click(FinesCard);
-    expect(window.location.pathname).toBe('/UserFines');
-
-    const ReturnCard = screen.getByText('Returns');
-    fireEvent.click(ReturnCard);
-    expect(window.location.pathname).toBe('/Returns');
-
-    const CampusCard = screen.getByText('Campus Map');
-    fireEvent.click(CampusCard);
-    expect(window.location.pathname).toBe('/UserMap');
-  });
-
-  it('should render action cards', () => {
-    renderComponent();
-
-    const actionCardRent = screen.getByText('Rent');
-    expect(actionCardRent).not.toBeNull();
-
+     
+      });
+      it('should navigate to the Returns page when Returns card is clicked', () => {
+        renderComponent();
+        const FinesCards = screen.getByText('Returns');
+        expect(FinesCards).toBeInTheDocument();
+        const findLink = FinesCards.closest('a');
+        expect(findLink).toBeInTheDocument();
+        expect(findLink.getAttribute('href')).toBe('/Returns'); 
     
-    const finesCard = screen.getByText('Fines');
-    expect(finesCard).not.toBeNull();
-
-    const returnsCard = screen.getByText('Returns');
-    expect(returnsCard).not.toBeNull();
-
-    const campusMapCard = screen.getByText('Campus Map');
-    expect(campusMapCard).not.toBeNull();
-
-    const reserveCard = screen.getByText('Reserve');
-    expect(reserveCard).not.toBeNull();
-
-    const BusCard = screen.getByText('Bus Schedule');
-    expect(BusCard).not.toBeNull();
-  });
+    
+        fireEvent.click(findLink);
+    
+    
+        expect(screen.getByText('Returns Page')).toBeInTheDocument();
+       
+      });
+      it('should navigate to the Reserve page when Resserve card is clicked', () => {
+        renderComponent();
+        const ReserveCards = screen.getByText('Reserve');
+        expect(ReserveCards).toBeInTheDocument();
+        const findLink = ReserveCards.closest('a');
+        expect(findLink).toBeInTheDocument();
+        expect(findLink.getAttribute('href')).toBe('/UserReserve'); 
+    
+    
+        fireEvent.click(findLink);
+    
+    
+        expect(screen.getByText('Reserve Page')).toBeInTheDocument();
+       
+      });
+      it('should navigate to the Campus map page when Campus map  card is clicked', () => {
+        renderComponent();
+        const MapCards = screen.getByText('Campus Map');
+        expect(MapCards).toBeInTheDocument();
+        const findLink = MapCards.closest('a');
+        expect(findLink).toBeInTheDocument();
+        expect(findLink.getAttribute('href')).toBe('/UserMap'); 
+    
+    
+        fireEvent.click(findLink);
+    
+    
+        expect(screen.getByText('Campus Map Page')).toBeInTheDocument();
+       
+      });
+      it('should navigate to the Rent page when  Rent  card is clicked', () => {
+        renderComponent();
+        const RentCards = screen.getByText('Rent');
+        expect(RentCards).toBeInTheDocument();
+        const findLink = RentCards.closest('a');
+        expect(findLink).toBeInTheDocument();
+        expect(findLink.getAttribute('href')).toBe('/userRental'); 
+    
+    
+        fireEvent.click(findLink);
+    
+    
+        expect(screen.getByText('Rent Page')).toBeInTheDocument();
+       
+      });
+      it('should navigate to the Bus page when Bus Schedule card is clicked', () => {
+        renderComponent();
+        const BusCards = screen.getByText('Bus Schedule');
+        expect(BusCards).toBeInTheDocument();
+        const findLink =  BusCards .closest('a');
+        expect(findLink).toBeInTheDocument();
+        expect(findLink.getAttribute('href')).toBe('/UserBuses'); 
+    
+    
+        fireEvent.click(findLink);
+    
+    
+        expect(screen.getByText('Bus Page')).toBeInTheDocument();
+       
+      });
+      it('should navigate to the Fines page when Fine card is clicked', () => {
+        renderComponent();
+        const FineCards = screen.getByText('Fines');
+        expect(FineCards).toBeInTheDocument();
+        const findLink =  FineCards .closest('a');
+        expect(findLink).toBeInTheDocument();
+        expect(findLink.getAttribute('href')).toBe('/UserFines'); 
+    
+    
+        fireEvent.click(findLink);
+    
+    
+        expect(screen.getByText('Fines Page')).toBeInTheDocument();
+       
+      });
+      it('should render images correctly', () => {
+        renderComponent();
+        expect(screen.getByAltText('Returns')).not.toBeNull();
+        expect(screen.getByAltText('Reserve')).not.toBeNull();
+        expect(screen.getByAltText('Campus_Map')).not.toBeNull();
+        expect(screen.getByAltText('Rent')).not.toBeNull();
+        expect(screen.getByAltText('Bus_Schedule')).not.toBeNull();
+        expect(screen.getByAltText('Fines')).not.toBeNull();
+      });
 });
